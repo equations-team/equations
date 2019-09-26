@@ -4,3 +4,4 @@
 
 ## Team Members
 * [Professor Limber](https://github.com/mlimber)
+* [Nicanor Vergara](https://gitbub.com/npvergara)
