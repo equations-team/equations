@@ -7,3 +7,5 @@
 * [Derrek Woodworth](https://github.com/DerrekWoodworth)
 * [Nicanor Vergara](https://gitbub.com/npvergara)
 * [Stephen Mingolelli](https://github.com/smingolelli)
+* [Nicola Mingolelli](https://github.com/nmingolelli)
+
