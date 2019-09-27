@@ -4,4 +4,6 @@
 
 ## Team Members
 * [Professor Limber](https://github.com/mlimber)
+* [Derrek Woodworth](https://github.com/DerrekWoodworth)
+* [Nicanor Vergara](https://gitbub.com/npvergara)
 * [James P Armstrong IV](https://github.com/PlanetaryTennis)
