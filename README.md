@@ -6,5 +6,6 @@
 * [Professor Limber](https://github.com/mlimber)
 * [Derrek Woodworth](https://github.com/DerrekWoodworth)
 * [Nicanor Vergara](https://gitbub.com/npvergara)
-* [Stephen Mingolelli](https://github.com/smingolelli)
+* [Stephen Mingolelli](https://github.com/smingolelli)\
+* [James P Armstrong IV](https://github.com/PlanetaryTennis)
 
