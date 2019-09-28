@@ -19,6 +19,8 @@ public abstract class Die {
 		myUpSide = sides[diceRoller.nextInt(6)];
 	}
 	
+	public abstract void roll();
+	
 	public int getMyRotation() {
 		return myRotation;
 	}
