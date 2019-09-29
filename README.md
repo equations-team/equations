@@ -13,3 +13,4 @@
 ## Resources
 * [Git Guide](git-guide.md)
 
+* [Running Docker](https://docs.docker.com/get-started/part2/)
