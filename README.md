@@ -8,3 +8,9 @@
 * [Nicanor Vergara](https://gitbub.com/npvergara)
 * [Stephen Mingolelli](https://github.com/smingolelli)
 * [Nicola Mingolelli](https://github.com/nmingolelli)
+* [Oliver Haney](https://github.com/haney-oliver)
+
+## Resources
+* [Git Guide](git-guide.md)
+
+* [Running Docker](https://docs.docker.com/get-started/part2/)
