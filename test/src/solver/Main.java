@@ -1,7 +1,7 @@
-package test;
+package solver;
 import javax.script.ScriptException;
 
-import test.Algebra;
+import solver.Algebra;
 
 public class Main {
 

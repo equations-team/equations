@@ -1,4 +1,4 @@
-package test;
+package solver;
 import javax.script.*;
 
 public class Solver {
