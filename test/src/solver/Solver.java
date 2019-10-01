@@ -1,4 +1,6 @@
-package test;
+package solver;
+import java.util.regex.Pattern;
+
 import javax.script.*;
 
 public class Solver {
@@ -26,6 +28,14 @@ public class Solver {
 		int playerAnswer = 0;
 		
 		try {
+			
+			for(int i = 0; i+1 < eq.length(); i++) {
+			    if(eq == a.getEquation() && Character.isDigit(eq.charAt(i)) && Character.isDigit(eq.charAt(i+1)) == true) {
+					System.out.println("ERROR not a valid equation -- no two digit numbers in YOUR solution.");
+					return 0;
+			} 
+		}
+		
 			playerAnswer = (int) en.eval(eq);
 		} catch (ScriptException e) {
 
