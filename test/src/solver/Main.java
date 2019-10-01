@@ -13,7 +13,6 @@ public class Main {
 		
 		System.out.println("Your answer equals: " + manage.calculate(a.getEquation()));
 		System.out.println("The real answer equals: " + manage.calculate(a.getSolution()));		
-		System.out.println(manage.checkAnswer(manage.calculate(a.getEquation())));
 	}
 
 }
