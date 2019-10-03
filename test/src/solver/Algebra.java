@@ -1,4 +1,4 @@
-package test;
+package solver;
 
 
 public class Algebra {
@@ -7,8 +7,9 @@ public class Algebra {
 	private String equation;
 	
 	public Algebra(String eq, String goal){
+		
 		solution = goal;
-		equation = eq;
+		equation = eq;	
 	}
 	
 	
