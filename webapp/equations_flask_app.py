@@ -1,6 +1,6 @@
 #============================================================================
 # Name        : equations_web_server.py
-# Author      : Stephen Mingolelli, Mussaed
+# Author      : Stephen Mingolelli, Mussaed, Ruslan Spivak
 # Description :  Web server for the equations game using Flask. It refers
 # to a 'static' and 'templates' directory, which act as the source material
 # for any scripts, images, text, etc. that will appear on a page.
@@ -140,8 +140,8 @@ SERVER_ADDRESS = (HOST, PORT) = 'localhost', 80
 def make_server(server_address, application):
     server = WSGIServer(server_address)
     server.set_app(application)
-    return serve
-app = Flask(__name__)
+    return server
+app = Flask('flaskapp')
 
 app.secret_key = 'your secret key'
 
@@ -283,15 +283,13 @@ def profile():
     # User is not loggedin redirect to login page
     return redirect(url_for('login'))
 
-@app.route('/index')
-def index():
-    return Response(
-    render_template('index.html')
-    )
-server = app.wsgi_app
+#@app.route('/index')
+#def index():
+#    return Response(
+#    render_template('index.html')
+#    )
 
 def main():
-    server = flask_app.wsgi_app
     return render_template('index.html') # Index refers to the 'main page'
 
 if __name__ == "__main__":
@@ -305,3 +303,5 @@ if __name__ == "__main__":
     print(f'WSGIServer: Serving HTTP on port {PORT} ...\n')
     httpd.serve_forever()
     app.run(debug = True, host = "0.0.0.0", port = 80)
+
+server = app.wsgi_app
