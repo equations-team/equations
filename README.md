@@ -10,6 +10,7 @@
 * [Nicola Mingolelli](https://github.com/nmingolelli)
 * [Oliver Haney](https://github.com/haney-oliver)
 * [Mussaed Alahmadi](https://github.com/mussaed)
+* [Ruby Wang](https://github.com/Rubyw123) 
 
 ## Resources
 * [Git Guide](git-guide.md)
