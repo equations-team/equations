@@ -61,6 +61,9 @@ class WSGIServer(object):
             f'< {line}\n' for line in request_data.splitlines()
         ))
 
+        # This will handle empty requests and stop it from crashing
+        if request_data == '':
+            return
         self.parse_request(request_data)
 
         # Construct environment dictionary using request data
