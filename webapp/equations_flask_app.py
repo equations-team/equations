@@ -9,7 +9,7 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 from flask import Response
 from flask_mysqldb import MySQL
-from pusher import pusher
+from flask_socketio import SocketIO, emit
 import MySQLdb.cursors
 import re
 import io
@@ -17,7 +17,7 @@ import socket
 import sys
 
     # Possible actions
-    ACT = {'cn':'Challenge Now',
+ACT = {'cn':'Challenge Now',
            'ci':'Challenge Impossible',
            'rf':'Red to Forbidden',
            'gf':'Green to Forbidden',
@@ -52,19 +52,9 @@ import sys
 
 
 app = Flask('flaskapp')
+socketio = SocketIO(app)
 
 app.secret_key = 'your secret key'
-
-# Set up Pusher Channel
-pusher = pusher_client = pusher.Pusher(
-    app_id='875336',
-    key='780b979b9a53b5501288',
-    secret='926a0bfa9aafb63235d3',
-    cluster='us3',
-    ssl=True
-    )
-
-name = ''
 
 # Enter your database connection details below
 app.config['MYSQL_HOST'] = 'localhost'
@@ -204,33 +194,14 @@ def profile():
     # User is not loggedin redirect to login page
     return redirect(url_for('login'))
 
-app.route('/play')
-def play():
-    global name
-    name = request.args.get('username')
-    #return render_template('gamepath.html')
-
-@app.route("/pusher/auth", methods = ['POST'])
-def pusher_authentication():
-    auth = pusher_authenticate(
-        channel = request.form['channel name']
-        socket_id=request.form['socket_id']
-        )
-    return json.dumps(auth)
+@socketio.on()('connect', namespace = '/test')
+def connect():
+    emit(conn)
 
 def main():
     return render_template('index.html') # Index refers to the 'main page'
 
 if __name__ == "__main__":
-    if len(sys.argv) < 2:
-        sys.exit('Provide a WSGI application object as module:callable')
-    app_path = sys.argv[1]
-    module, application = app_path.split(':')
-    module = __import__(module)
-    application = getattr(module, application)
-    httpd = make_server(SERVER_ADDRESS, application)
-    print(f'WSGIServer: Serving HTTP on port {PORT} ...\n')
-    httpd.serve_forever()
     app.run(debug = True, host = "0.0.0.0", port = 80)
 
 server = app.wsgi_app
