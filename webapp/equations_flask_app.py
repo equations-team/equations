@@ -20,7 +20,53 @@ class WSGIServer(object):
 
     address_family = socket.AF_INET
     socket_type = socket.SOCK_STREAM
-    request_queue_size = 1
+    request_queue_size = 4
+    BACKLOG = 3
+
+    # Possible actions
+    ACT = {'cn':'Challenge Now',
+           'ci':'Challenge Impossible',
+           'rf':'Red to Forbidden',
+           'gf':'Green to Forbidden',
+           'bf':'Blue to Forbidden',
+           'kf':'Black to Forbidden',
+           'rr':'Red to Required',
+           'gr':'Green to Required',
+           'br':'Blue to Required',
+           'kr':'Black to Required',
+           'rp':'Red to Required',
+           'gp':'Green to Permitted',
+           'bp':'Blue to Permitted',
+           'kp':'Black to Permitted',}
+
+           # Report that a player made a move, whether it be challenge or
+           # move a cube from resources to the mat.
+           #def report_choice(username):
+              #print(opponent['username'], 'chose to %cn.'
+               #print(opponent['username'], 'chose to %ci.'
+               #print(opponent['username'], 'chose to move %rf.'
+               #print(opponent['username'], 'chose to move %gf.'
+               #print(opponent['username'], 'chose to move %bf.'
+               #print(opponent['username'], 'chose to move %kf.'
+               #print(opponent['username'], 'chose to move %rr.'
+               #print(opponent['username'], 'chose to move %gr.'
+               #print(opponent['username'], 'chose to move %br.'
+               #print(opponent['username'], 'chose to move %kr.'
+               #print(opponent['username'], 'chose to move %rp.'
+               #print(opponent['username'], 'chose to move %gp.'
+               #print(opponent['username'], 'chose to move %bp.'
+               #print(opponent['username'], 'chose to move %kp.'
+
+    # Handle more than one request
+    def handle_request(client_connection):
+        request = client_connection.recv(1024)
+        print(request.decode())
+
+        while True:
+            client_connection, client_address = listen_socket.accept()
+            handle_request(client_connection)
+            client_connection.close()
+
 
     def __init__(self, server_address):
         # Create a listening socket
