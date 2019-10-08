@@ -21,4 +21,13 @@ public class Mat {
 		return myMat.removeElement(out);
 	}
 
+	public boolean reorderDice(int firstIndex,int secondIndex) {
+		Die first = myMat.get(firstIndex);
+		Die second = myMat.get(secondIndex);
+		myMat.remove(firstIndex);
+		myMat.remove(secondIndex);
+		myMat.insertElementAt(first, secondIndex);
+		myMat.insertElementAt(second, firstIndex);
+		return true;
+	}
 }

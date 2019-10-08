@@ -4,7 +4,7 @@ package fundementalgamemechanics;
 
 public class BlueDie extends Die{
 	
-	public final static char[] BLUESIDES = new char[] {'0','1','2','3','÷','×'};
+	public final static String[] BLUESIDES = new String[] {"0","1","2","3","÷","×"};
 	
 	BlueDie() {
 		roll();

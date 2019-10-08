@@ -4,7 +4,7 @@ package fundementalgamemechanics;
 
 public class GreenDie extends Die{
 	
-	public final static char[] GREENSIDES = new char[] {'*','×','-','6','5','4'};
+	public final static String[] GREENSIDES = new String[] {"*","×","-","6","5","4"};
 	
 	GreenDie() {
 		roll();

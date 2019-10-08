@@ -6,16 +6,16 @@ import java.util.Random;
 
 public abstract class Die {
 	
-	private char myUpSide;
+	private String myUpSide;
 	private int myRotation;
 	
 	public static final Random diceRoller = new Random(System.currentTimeMillis());
 	
-	public int getMyUpSide() {
+	public String getMyUpSide() {
 		return myUpSide;
 	}
 	
-	public void roll(char[] sides) {
+	public void roll(String[] sides) {
 		myUpSide = sides[diceRoller.nextInt(6)];
 	}
 	
