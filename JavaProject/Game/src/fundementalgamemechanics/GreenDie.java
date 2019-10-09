@@ -6,7 +6,7 @@ public class GreenDie extends Die{
 	
 	public final static String[] GREENSIDES = new String[] {"*","×","-","6","5","4"};
 	
-	GreenDie() {
+	public GreenDie() {
 		roll();
 	}
 	

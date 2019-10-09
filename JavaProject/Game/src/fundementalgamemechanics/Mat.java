@@ -16,6 +16,16 @@ public class Mat {
 		myMat.add(in);
 	}
 	
+	public boolean removeDieByIndex(int index) {
+		try {
+			myMat.get( index );
+		} catch ( IndexOutOfBoundsException e ) {
+			return false;
+		}
+		myMat.removeElementAt(index);
+		return true;
+	}
+	
 	//This is only meant for use by the Resource Mat
 	public boolean removeDie(Die out) {
 		return myMat.removeElement(out);
@@ -25,8 +35,8 @@ public class Mat {
 		Die first = myMat.get(firstIndex);
 		Die second = myMat.get(secondIndex);
 		myMat.remove(firstIndex);
-		myMat.remove(secondIndex);
-		myMat.insertElementAt(first, secondIndex);
+		myMat.remove(secondIndex-1);
+		myMat.insertElementAt(first, secondIndex-1);
 		myMat.insertElementAt(second, firstIndex);
 		return true;
 	}

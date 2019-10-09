@@ -6,7 +6,7 @@ public class RedDie extends Die{
 	
 	public final static String[] REDSIDES = new String[] {"0","1","2","3","-","+"};
 	
-	RedDie() {
+	public RedDie() {
 		roll();
 	}
 	

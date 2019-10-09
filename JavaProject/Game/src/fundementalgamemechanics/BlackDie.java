@@ -6,7 +6,7 @@ public class BlackDie extends Die{
 	
 	public final static String[] BLACKSIDES = new String[] {"√","÷","+","7","8","9"};
 	
-	BlackDie() {
+	public BlackDie() {
 		roll();
 	}
 	

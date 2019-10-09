@@ -6,7 +6,7 @@ public class BlueDie extends Die{
 	
 	public final static String[] BLUESIDES = new String[] {"0","1","2","3","÷","×"};
 	
-	BlueDie() {
+	public BlueDie() {
 		roll();
 	}
 	
