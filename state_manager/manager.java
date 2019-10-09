@@ -15,6 +15,7 @@ public class manager
         this.p = p;
         this.b = new Board(d);
     }
+    
 
     /*
      * Basic game move logic, moving a dice or making a challenge.
