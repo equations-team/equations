@@ -1,6 +1,9 @@
 #!/bin/bash
 # This file contains all of the commands required to build all of the sub projects within this repository.
 
+# Set the script to abort whenever a project encounters an error
+set -e
+
 # Building the project under "JavaProject"
 echo 'Building java project "JavaProject"...'
 javac $(find JavaProject -name "*.java") 
