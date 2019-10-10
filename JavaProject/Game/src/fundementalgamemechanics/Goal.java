@@ -3,6 +3,10 @@ package fundementalgamemechanics;
 public class Goal extends Mat {
 	private String myGoal;
 	
+	public Goal() {
+		this.addToMyMat(new SpecialDie(2));
+	}
+	
 	public void Read() {
 		myGoal = "";
 		for(int i = 0;i < this.getMyMat().capacity();i++) {
@@ -12,10 +16,28 @@ public class Goal extends Mat {
 		}
 	}
 	
-	public void addPerentisis(int firstIndex,int secondIndex) {
-		String one = (String) myGoal.subSequence(0, firstIndex);
-		String two = (String) myGoal.subSequence(firstIndex, secondIndex);
-		String three = (String) myGoal.subSequence(secondIndex, myGoal.length());
-		myGoal = one + "(" + two + ")" + three;
+	@Override
+	public boolean reorderDice(int firstIndex,int secondIndex) {
+		Die first;
+		try {
+			first = myMat.get(firstIndex);
+		} catch ( IndexOutOfBoundsException e ) {
+			return false;
+		}
+		Die second;
+		try {
+			second = myMat.get(secondIndex);
+		} catch ( IndexOutOfBoundsException e ) {
+			return false;
+		}
+		if(firstIndex < secondIndex) {
+			secondIndex--;
+		}
+		myMat.remove(firstIndex);
+		myMat.remove(secondIndex);
+		myMat.insertElementAt(first, secondIndex);
+		myMat.insertElementAt(second, firstIndex);
+		return true;
 	}
+	
 }

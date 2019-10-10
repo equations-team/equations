@@ -96,4 +96,19 @@ public class MatTests extends TestCase {
 		assertEquals(firstOrder, firstRealOrder);		
 		assertEquals(secondOrder, secondRealOrder);		
 	}
+	
+	@Test
+	public void reorderMissingDice() {
+		//Arrange
+		final Die testDie = new RedDie();
+		final Mat testMat = new Mat();
+		
+		//Act
+		testMat.addToMyMat(testDie);
+		final boolean falureTest = testMat.reorderDice(0, 1);
+		
+		//Assert
+		assertEquals(false, falureTest);		
+	}
+	
 }

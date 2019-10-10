@@ -1,6 +1,6 @@
 package fundementalgamemechanics;
 
-//This is the red die it contains a '0','1','2','3','÷', and '×' sides.
+//This is the blue die it contains a '0','1','2','3','÷', and '×' sides.
 
 public class BlueDie extends Die{
 	

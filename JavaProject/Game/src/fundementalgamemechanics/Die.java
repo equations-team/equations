@@ -11,6 +11,10 @@ public abstract class Die {
 	
 	public static final Random diceRoller = new Random(System.currentTimeMillis());
 	
+	protected void setMyUpSide(String inPutString) {
+		myUpSide = inPutString;
+	}
+	
 	public String getMyUpSide() {
 		return myUpSide;
 	}

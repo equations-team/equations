@@ -1,6 +1,6 @@
 package fundementalgamemechanics;
 
-//This is the green die it contains a '√','÷','+','7','8', and '9' sides.
+//This is the black die it contains a '√','÷','+','7','8', and '9' sides.
 
 public class BlackDie extends Die{
 	

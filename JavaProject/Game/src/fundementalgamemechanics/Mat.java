@@ -6,7 +6,7 @@ import java.util.Vector;
 
 public class Mat {
 	
-	private Vector<Die> myMat = new Vector<Die>();
+	protected Vector<Die> myMat = new Vector<Die>();
 	
 	public Vector<Die> getMyMat() {
 		return myMat;
@@ -32,11 +32,24 @@ public class Mat {
 	}
 
 	public boolean reorderDice(int firstIndex,int secondIndex) {
-		Die first = myMat.get(firstIndex);
-		Die second = myMat.get(secondIndex);
+		Die first;
+		try {
+			first = myMat.get(firstIndex);
+		} catch ( IndexOutOfBoundsException e ) {
+			return false;
+		}
+		Die second;
+		try {
+			second = myMat.get(secondIndex);
+		} catch ( IndexOutOfBoundsException e ) {
+			return false;
+		}
+		if(firstIndex < secondIndex) {
+			secondIndex--;
+		}
 		myMat.remove(firstIndex);
-		myMat.remove(secondIndex-1);
-		myMat.insertElementAt(first, secondIndex-1);
+		myMat.remove(secondIndex);
+		myMat.insertElementAt(first, secondIndex);
 		myMat.insertElementAt(second, firstIndex);
 		return true;
 	}
