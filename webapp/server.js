@@ -7,6 +7,7 @@ let current_turn = 0;
 let timeOut;
 let _turn = 0;
 const MAX_WAITING = 5000;
+var database = null;
 
 var validgame = function(req){
   // What must exist in order for the game to start
@@ -21,6 +22,16 @@ var validgame = function(req){
 
 var IO = null;
 
+// Define a valid game and make sure it meets requirements
+
+var game = function(req){
+
+  var valid = validgame(req);
+  if(!valid){
+    this.emit('error', {message: "This game does not meet proper requirements."});
+  }
+}
+
 // When a player joins
 
 var join = function(gameID){
@@ -31,6 +42,21 @@ var join = function(gameID){
     gameID : gameID,
     session: sess
   };
+
+  // Check if they can join
+  if(gameID !== sess.gameID){
+    console.log('Permission denied.', debugInfo);
+    this.emit('error', {message : "This game cannot be joined."});
+    return;
+
+  }
+
+  // Find game by ID, if it doesn't exist, say so
+  var game = database.find(gameID);
+  if(!game){
+    console.log('Game could not be found.', debugInfo);
+    this.emit('error', {message: "Game not found. Check the ID."});
+  }
 
   // Add this player to the actual game
   var result = game.addPlayer(sess);
@@ -48,7 +74,7 @@ var join = function(gameID){
   IO.sockets.in(gameID).emit('update', game);
 };
 
-// When a player makes a move
+// When a player makes a move, such as moving a dice from resources to the mat, or making a challenge
 
 var move = function(data){
   var sess = this.handshake.session;
@@ -115,6 +141,13 @@ var remove = function(){
     session : sess
   };
 
+  // Check if the game exists
+  var game = database.find(gameID);
+  if(!game){
+    console.log('Game could not be found.', debugInfo);
+    this.emit('error', {message: "Game not found. Maybe there was a mistake?"});
+  }
+
   // Remove this player
 
   var result = game.removePlayer(sess);
@@ -134,8 +167,9 @@ var remove = function(){
 
 // Attach events / functions to socket.io
 
-exports.attach = function(io){
+exports.attach = function(io, db){
   IO = io;
+  database = db;
 
   io.sockets.on('connection', function (socket){
 
@@ -158,7 +192,7 @@ function nextTurn(){
 
 function triggerTimeout(){
   timeOut = setTimeout(()=>{
-    next_turn();
+    nextTurn();
   },MAX_WAITING);
 }
 
@@ -176,7 +210,7 @@ function resetTimeOut(){
   socket.on('pass_turn',function(){
      if(players[_turn] == socket){
         resetTimeOut();
-        next_turn();
+        nextTurn();
      }
   })
 
