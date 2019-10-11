@@ -10,7 +10,7 @@ public class Game {
 	public static final int BLACKUMBER = 6;
 	public static final int BLUENUMBER = 6;
 	
-	public Game() {
+	public void populateMats() {
 		for(int i = 0; i < DICENUMBER; i++) {
 			if(i < REDNUMBER) {
 				myResources.addToMyMat(new RedDie());
@@ -21,7 +21,7 @@ public class Game {
 			}else {
 				myResources.addToMyMat(new BlackDie());
 			}
-		}	
+		}
 	}
 	
 	public int moveDie(int index, int destination) {
