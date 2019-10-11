@@ -7,8 +7,9 @@ public class Algebra {
 	private String equation;
 	
 	public Algebra(String eq, String goal){
+		
 		solution = goal;
-		equation = eq;
+		equation = eq;	
 	}
 	
 	
