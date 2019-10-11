@@ -4,7 +4,8 @@ package fundementalgamemechanics;
 
 public class BlackDie extends Die{
 	
-	public final static String[] BLACKSIDES = new String[] {"√","÷","+","7","8","9"};
+	public final static DiceFace[] BLACKSIDES = new DiceFace[] {DiceFace.SEVEN,DiceFace.EIGHT,DiceFace.NINE,DiceFace.ADDITION,
+			DiceFace.DIVISION,DiceFace.ROOT};
 	
 	public BlackDie() {
 		roll();

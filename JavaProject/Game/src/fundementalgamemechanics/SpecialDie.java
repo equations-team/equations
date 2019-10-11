@@ -5,7 +5,8 @@ package fundementalgamemechanics;
 public class SpecialDie extends Die {
 	
 //	~ is used as an unsused string space this may be replaced at a later time if another character is needed.
-	public final static String[] SPECIALSIDES = new String[] {"(",")","=","~","~","~"};
+	public final static DiceFace[] SPECIALSIDES = new DiceFace[] {DiceFace.LEFT,DiceFace.RIGHT,DiceFace.LEFT,
+			DiceFace.RIGHT,DiceFace.LEFT,DiceFace.RIGHT};
 	
 	public SpecialDie(int index){
 		

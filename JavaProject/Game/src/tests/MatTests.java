@@ -77,27 +77,6 @@ public class MatTests extends TestCase {
 	}
 	
 	@Test
-	public void reorderDice() {
-		//Arrange
-		final Die testDie = new RedDie();
-		final Die testBlackDie = new BlackDie();
-		final Mat testMat = new Mat();
-		
-		//Act
-		final String firstOrder = testDie.getMyUpSide() + testBlackDie.getMyUpSide();
-		final String secondOrder = testBlackDie.getMyUpSide() + testDie.getMyUpSide();
-		testMat.addToMyMat(testDie);
-		testMat.addToMyMat(testBlackDie);
-		final String firstRealOrder = testMat.getMyMat().get(0).getMyUpSide()+testMat.getMyMat().get(1).getMyUpSide();
-		testMat.reorderDice(0, 1);
-		final String secondRealOrder = testMat.getMyMat().get(0).getMyUpSide()+testMat.getMyMat().get(1).getMyUpSide();
-		
-		//Assert
-		assertEquals(firstOrder, firstRealOrder);		
-		assertEquals(secondOrder, secondRealOrder);		
-	}
-	
-	@Test
 	public void reorderMissingDice() {
 		//Arrange
 		final Die testDie = new RedDie();

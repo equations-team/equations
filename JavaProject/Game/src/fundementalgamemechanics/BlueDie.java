@@ -4,7 +4,8 @@ package fundementalgamemechanics;
 
 public class BlueDie extends Die{
 	
-	public final static String[] BLUESIDES = new String[] {"0","1","2","3","÷","×"};
+	public final static DiceFace[] BLUESIDES = new DiceFace[] {DiceFace.ZERO,DiceFace.ONE,DiceFace.TWO,DiceFace.THREE,
+			DiceFace.DIVISION,DiceFace.MULTIPLICATION};
 	
 	public BlueDie() {
 		roll();
