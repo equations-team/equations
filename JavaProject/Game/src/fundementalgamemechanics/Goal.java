@@ -4,16 +4,10 @@ public class Goal extends Mat {
 	private String myGoal;
 	private int myNumNormalDice;
 	
-	public Goal() {
-		this.addToMyMat(new SpecialDie(2));
-	}
-	
 	public void Read() {
 		myGoal = "";
-		for(int i = 0;i < this.getMyMat().capacity();i++) {
-			if(this.getMyMat().get(i)!=null) {
-				myGoal = getMyGoal() + this.getMyMat().get(i).getMyUpSide();
-			}
+		for(int i = 0;i < this.getMyMat().size();i++) {
+			myGoal = getMyGoal() + this.getMyMat().get(i).getMyUpSide();
 		}
 	}
 	
@@ -35,7 +29,6 @@ public class Goal extends Mat {
 	@Override
 	public boolean reorderDice(int firstIndex,int secondIndex) {
 		Die first;
-		if(firstIndex == 0||secondIndex==0) return false;
 		try {
 			first = myMat.get(firstIndex);
 		} catch ( IndexOutOfBoundsException e ) {
