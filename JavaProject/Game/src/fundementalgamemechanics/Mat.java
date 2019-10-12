@@ -12,6 +12,13 @@ public class Mat {
 		return myMat;
 	}
 	
+	public boolean checkEmpty() {
+		if(myMat.size()==0) {
+			return true;
+		}
+		return false;
+	}
+	
 	public void addToMyMat(Die in) {
 		myMat.add(in);
 	}
