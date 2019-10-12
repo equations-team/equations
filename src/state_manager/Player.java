@@ -1,4 +1,4 @@
-package test;
+package state_manager;
 
 public class Player
 {
@@ -8,6 +8,7 @@ public class Player
     private boolean lastMove;
     private int score;
     private String equation;
+    private int redDice;
     
 
     public Player(String n) {
@@ -61,6 +62,18 @@ public class Player
     {
         this.equation = equation;
     }
+
+    public int getRedDice()
+    {
+        return redDice;
+    }
+
+    public void setRedDice(int redDice)
+    {
+        this.redDice = redDice;
+    }
+    
+    
 
    
     

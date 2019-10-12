@@ -1,4 +1,4 @@
-package test;
+package state_manager;
 
 public enum GameMove
 {
