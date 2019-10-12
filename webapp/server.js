@@ -9,14 +9,14 @@ let _turn = 0;
 const MAX_WAITING = 5000;
 var database = null;
 
-var validgame = function(req){
+var validGame = function(req){
   // What must exist in order for the game to start
   if(!req.session.username) {return null; }
   if(!req.session.gameID) {return null; }
 
   return{
-    gameID : req.session.gameID;
-    name : req.session.username;
+    gameID : req.session.gameID,
+    username : req.session.username;
   };
 };
 
@@ -26,11 +26,99 @@ var IO = null;
 
 var game = function(req){
 
-  var valid = validgame(req);
+  var valid = validGame(req);
   if(!valid){
     this.emit('error', {message: "This game does not meet proper requirements."});
-  }
-}
+  };
+};
+
+// If a player wants to create a game it has to be valid. This checks if what they
+// try to pass in is valid.
+var validStartGame = function(req){
+
+  // Must exist
+  if(!req.body['game-id']) {return null; }
+  if(!req.body['host']) {return null; }
+
+  // Bogus whitespace name is returned
+  if (/^\s*$/.test(req.body['game-id'])) {return null;}
+
+  // If all is valid, return a success
+  return {
+    gameID : req.body['game-id'],
+    username : req.body['username'],
+    host : req.body['host']
+  };
+};
+
+
+// Data for starting a game, if it's a success then they should be redirected to
+// a game page. Whatever that may be.
+
+var startGame = function(req, res){
+
+  // Create a game session
+  req.session.regnerate(function(err)){
+    if(err) {res.redirect('/'); return; }
+
+    // Check for validity
+    var valid = validStartGame(req);
+    if(!valid) {res.redirect('/'); return; }
+
+    // If valid, create a game ID
+    var gameID = database.add(valid);
+
+    // Save this data
+    req.session.gameID = gameID;
+    req.session.host = valid.host;
+    req.session.username = valid.username;
+
+    // Redirect to the game's page, using game ID
+    res.redirect('/game/'+gameID);
+
+  };
+};
+
+// This is different from join, as it validates data, if valid, a player can join a game
+var validJoinGame = function(req){
+
+  // Without an id to find then the person can't join
+  if(!req.body['game-id']) {return null; }
+
+  // If the ID is bogus (white space) then just return null
+  if (/^\s*$/.test(req.body['game-id'])) {return null;}
+
+  // If all is valid, return a success
+  return {
+    gameID : req.body['game-id'],
+    username : req.body['username']
+  };
+};
+
+// Also different from join, because this redirects
+var joinGame = function(req, res){
+
+  // Create session
+  req.session.regenerate(function(err)){
+    if(err) {res.redirect('/'); return; }
+
+    // Check for validity
+    var valid = validateJoinGame(req);
+    if(!valid) {res.redirect('/'); return; }
+
+    // Find game
+    var game = database.find(valid.gameID);
+    if(!game) {res.redirect('/'); return; }
+
+    // Save data
+    req.session.gameID = valid.gameID;
+    req.session.username = valid.username;
+
+    // Redirect to game page
+    res.redirect('/game/'+valid.gameID);
+
+  });
+};
 
 // When a player joins
 
@@ -163,7 +251,7 @@ var remove = function(){
 
   // Skip a turn, unless we want the game to end.
   this.nextTurn;
-}
+};
 
 // Attach events / functions to socket.io
 
@@ -180,28 +268,28 @@ exports.attach = function(io, db){
     socket.on('remove', remove);
 
     console.log('Socket'+socket.id+' connected');
-  })
-}
+  });
+};
 
 function nextTurn(){
   _turn = current_turn++ % players.length;
   players[_turn].emit('your_turn');
   console.log("next turn triggered " , _turn);
   triggerTimeout();
-}
+};
 
 function triggerTimeout(){
   timeOut = setTimeout(()=>{
     nextTurn();
   },MAX_WAITING);
-}
+};
 
 function resetTimeOut(){
   if(typeof timeOut === 'object'){
     console.log("timeout reset");
     clearTimeout(timeOut);
   }
-}
+};
 
  io.on('connection', function(socket){
   console.log('A player connected');
@@ -212,7 +300,7 @@ function resetTimeOut(){
         resetTimeOut();
         nextTurn();
      }
-  })
+  });
 
 socket.on('disconnect', function(){
   console.log('A player disconnected');
