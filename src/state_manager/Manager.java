@@ -1,5 +1,10 @@
 package state_manager;
 import java.util.Scanner;
+
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
+
 import fundementalgamemechanics.*;
 import solver.*;
 
@@ -21,6 +26,7 @@ public class Manager
     private Solver    solver;
     private GameTimer timer;
     private Player[]  players;
+    private ScriptEngine engine;
 
     private Mat  myResources;
     private Goal myGoal;
@@ -28,7 +34,10 @@ public class Manager
     private Mat  myPermitted;
     private Mat  myRequired;
 
+    private String goalEquation;
     private Player currentPlayer;
+    private Player nextPlayer;
+    private Player lastPlayer;
     private Player goalSetter;
     private int    count;
     private int    numPlayers;
@@ -44,6 +53,7 @@ public class Manager
         myPermitted = new Mat();
         myRequired = new Mat();
         timer = new GameTimer(1);
+        engine = new ScriptEngineManager().getEngineByName("js");
 
         players = p;
         numPlayers = players.length;
@@ -111,18 +121,34 @@ public class Manager
      */
     public void gameSetup(int[] goals)
     {
+        try {
+            StringBuilder str = new StringBuilder();
+            
+            for (int i = 0; i < goals.length; i++)
+            {
+                myGoal.addToMyMat(myResources.getMyMat().get(goals[i]));;
+            }
+            
+            myGoal.Read();
+            
+            for (int i = 0; i < myGoal.getMyGoal().size(); i++)
+            {
+                str.append(this.dieFaceTranslator(myGoal.getMyGoal().elementAt(i)));
+            }
+            goalEquation = str.toString();
+            int answer = (int) engine.eval(goalEquation);
+            currentPlayer = this.nextPlayer();
 
-        for (int i = 0; i < goals.length; i++)
-        {
-            myGoal.addToMyMat(myResources.getMyMat().get(goals[i]));;
+            for (int i = 0; i < myResources.getMyMat().size(); i++)
+            {
+                myResources.getMyMat().elementAt(i).roll();
+            }
+            
+        }catch(ScriptException e) {
+            System.out.println("ERROR not a valid equation -- Please set a valid goal");
         }
 
-        currentPlayer = this.nextPlayer();
-
-        for (int i = 0; i < myResources.getMyMat().size(); i++)
-        {
-            myResources.getMyMat().elementAt(i).roll();
-        }
+        
     }
 
     /**
@@ -130,14 +156,7 @@ public class Manager
      */
     public void setSolver(String equation)
     {
-        myGoal.Read();
-        String goalEquation;
-        StringBuilder str = new StringBuilder();
-        for (int i = 0; i < myGoal.getMyGoal().size(); i++)
-        {
-            str.append(this.dieFaceTranslator(myGoal.getMyGoal().elementAt(i)));
-        }
-        goalEquation = str.toString();
+        
         solver = new Solver(new Algebra(equation, goalEquation));
     }
 
@@ -150,9 +169,6 @@ public class Manager
      * @param gamemove decision
      * @return 
      */
-    // TODO:
-    // 1.Make sure player after the goal setter cannot challenge
-    // 2.Need player input information for challenge
     public boolean moveDie(Player p, int index, GameMove decision)
     {
 
@@ -184,6 +200,8 @@ public class Manager
 
             case CHALLENGEIMPOSSIBLE :
 
+                if(myRequired.checkEmpty() && myPermitted.checkEmpty() && myForbidden.checkEmpty())
+                    return false;
                 p1 = this.lastPlayer();
                 // For test purpose
                 System.out
@@ -210,7 +228,9 @@ public class Manager
                 break;
 
             case CHALLENGENOW :
-
+                if(myRequired.checkEmpty() && myPermitted.checkEmpty() && myForbidden.checkEmpty())
+                    return false;
+                
                 p1 = this.lastPlayer();
 
                 // For test purpose
@@ -253,28 +273,30 @@ public class Manager
      * 
      * @return next player
      */
-    public Player nextPlayer()
+    private Player nextPlayer()
     {
         count++;
         if (count == numPlayers)
         {
             count = 0;
         }
-        return players[count];
+        nextPlayer = players[count];
+        return nextPlayer;
     }
 
     /**
      * 
      * @return last player
      */
-    public Player lastPlayer()
+    private Player lastPlayer()
     {
         count--;
         if (count < 0)
         {
             count = numPlayers - 1;
         }
-        return players[count];
+        lastPlayer = players[count];
+        return lastPlayer;
     }
 
     /**
@@ -336,7 +358,7 @@ public class Manager
     }
 
     /**
-     * Translate a diceface to string
+     * Translate a dice face to string
      * TODO: Need to figure out the root symbol which solver can use
      * @param diceface
      * @return String
@@ -422,6 +444,17 @@ public class Manager
     private void enteringEquation(Player p, String eq)
     {
         p.setEquation(eq);
+    }
+
+    
+    public Player getNextPlayer()
+    {
+        return nextPlayer;
+    }
+
+    public Player getLastPlayer()
+    {
+        return lastPlayer;
     }
 
     public Mat getMyResources()
