@@ -172,7 +172,16 @@ var move = function(data){
     move : data.move,
     session: sess
   };
-  //var result = game.move(data.move)
+
+  // Find the game to make the move
+  var game = database.find(gameID);
+  if(!game){
+    console.log('Game could not be found.', debugInfo);
+    this.emit('error', {message: "Game not found. Check the ID."});
+  }
+
+  // Make the move
+  var result = game.move(data.move);
   if(!result){
     console.log('Invalid move!', debugInfo);
     this.emit('error', {message: "Invalid move, try again."});
@@ -200,6 +209,13 @@ var withdraw = function(gameID){
     session: sess
   };
 
+  // Find the game to withdraw from
+  var game = database.find(gameID);
+  if(!game){
+    console.log('Game could not be found.', debugInfo);
+    this.emit('error', {message: "Game not found. Check the ID."});
+  }
+
   // Begin withdrawal process
   var result = game.withdraw(sess);
   // Something goes wrong
@@ -210,7 +226,6 @@ var withdraw = function(gameID){
   }
 
   // Update this to the game and players
-
   IO.sockets.in(gameID).emit('update', game);
   console.log(gameID+' '+sess.username+'': Withdrew');
 
@@ -229,7 +244,7 @@ var remove = function(){
     session : sess
   };
 
-  // Check if the game exists
+  // Check if the game exists, otherwise they can't disconnect
   var game = database.find(gameID);
   if(!game){
     console.log('Game could not be found.', debugInfo);
