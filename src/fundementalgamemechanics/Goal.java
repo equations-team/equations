@@ -3,12 +3,13 @@ package fundementalgamemechanics;
 import java.util.Vector;
 
 public class Goal extends Mat {
-	private Vector<DiceFace> myGoal;
+	private Vector<DiceFace> myGoal = new Vector<DiceFace>();
 	private int myNumNormalDice;
 	
 	public void Read() {
 		myGoal.clear();
 		for(int i = 0;i < this.getMyMat().size();i++) {
+		    System.out.println(myMat.get(i).getMyUpSide());
 			myGoal.add(myMat.get(i).getMyUpSide());
 		}
 	}
@@ -53,7 +54,7 @@ public class Goal extends Mat {
 	}
 	
 	public Vector<DiceFace> getMyGoal() {
-		return getMyGoal();		
+		return myGoal;		
 	}
 	
 	public int getMyNumNormalDice() {

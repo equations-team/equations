@@ -16,6 +16,7 @@ public class Player
         checkTurn = false;
         checkwin = false;
         lastMove = false;
+        redDice = -1;
         
     }
 

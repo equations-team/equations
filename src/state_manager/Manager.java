@@ -13,7 +13,7 @@ import solver.*;
  * @author Ruby
  *
  */
-public class Manager
+public class Manager implements Manger_Reader
 {
     //Constants
     public static final int DICENUMBER  = 24;
@@ -78,23 +78,17 @@ public class Manager
     }
 
     /**
-     * Let a player to roll a red dice before the game started.
+     * Roll a red dice till it is a integer number
+     * @param p
      */
-    public void rollRedDice(Player p)
-    {
-        int redDice;
-        RedDie die = new RedDie();
-        die.roll();
-        try
-        {
-            redDice = Integer
-                    .parseInt(this.dieFaceTranslator(die.getMyUpSide()));
-            p.setRedDice(redDice);;
-        } catch (Exception e)
-        {
-            System.out.println("Not a number. Please roll again!");
-        }
+    public void setGoalSetter(Player p) {
+            p.setRedDice(-1);
+            while(p.getRedDice() == -1) {
+            this.rollRedDice(p);
+            }
+        
     }
+    
 
     /**
      * After the players rolled their red dices. Compare their results to decide
@@ -113,13 +107,20 @@ public class Manager
                 count = i;
             }
         }
+        
+        System.out.println("Goal setter is:"+goalSetter.getName());
+        
+        for (int i = 0; i < myResources.getMyMat().size(); i++)
+        {
+            myResources.getMyMat().elementAt(i).roll();
+        }
 
     }
     
     /**
      * Using for the goal setter to set the goal mat, and roll the dices
      */
-    public void gameSetup(int[] goals)
+    public void setGoal(int[] goals)
     {
         try {
             StringBuilder str = new StringBuilder();
@@ -139,10 +140,7 @@ public class Manager
             int answer = (int) engine.eval(goalEquation);
             currentPlayer = this.nextPlayer();
 
-            for (int i = 0; i < myResources.getMyMat().size(); i++)
-            {
-                myResources.getMyMat().elementAt(i).roll();
-            }
+            
             
         }catch(ScriptException e) {
             System.out.println("ERROR not a valid equation -- Please set a valid goal");
@@ -165,35 +163,47 @@ public class Manager
     /**
      * Basic move dice operation.
      * @param player
-     * @param index of dice in the resources mat
+     * @param index of dice in the resources mat, -1 for challenge
      * @param gamemove decision
      * @return 
      */
     public boolean moveDie(Player p, int index, GameMove decision)
     {
-
-        if (p.getName() != currentPlayer.getName())
-            return false;
-
+        Die moved;
         Player p1;
-        Die moved = myResources.getMyMat().get(index);
-        if (moved == null)
-            return false;
-        myResources.removeDie(moved);
+
+        if(index != -1) {
+            if (p.getName() != currentPlayer.getName())
+                return false;
+
+            moved = myResources.getMyMat().get(index);
+            if (moved == null)
+                return false;
+            
+        }else {
+            moved = new SpecialDie(1);
+        }
+              
         switch (decision)
         {
             case ADDFORBIDDEN :
+                if(moved.getMyUpSide() == null) return false;
                 myForbidden.addToMyMat(moved);
+                myResources.removeDie(moved); 
                 System.out.println(
                         p.getName() + " moves a dice to forbidden mat!");
                 break;
             case ADDREQUIRED :
+                if(moved.getMyUpSide() == null) return false;
                 myRequired.addToMyMat(moved);
+                myResources.removeDie(moved); 
                 System.out.println(
                         p.getName() + " moves a dice to required mat!");
                 break;
             case ADDPERMITTED :
+                if(moved.getMyUpSide() == null) return false;
                 myPermitted.addToMyMat(moved);
+                myResources.removeDie(moved); 
                 System.out.println(
                         p.getName() + " moves a dice to permitted mat!");
                 break;
@@ -263,9 +273,29 @@ public class Manager
             default :
                 throw new AssertionError("Please make a valid move!");
         }
+        
 
         currentPlayer = this.nextPlayer();
         return true;
+    }
+    
+    /**
+     * Let a player to roll a red dice before the game started.
+     */
+    private void rollRedDice(Player p)
+    {
+        int redDice;
+        RedDie die = new RedDie();
+        die.roll();
+        try
+        {
+            redDice = Integer
+                    .parseInt(this.dieFaceTranslator(die.getMyUpSide()));
+            p.setRedDice(redDice);;
+        } catch (Exception e)
+        {
+            System.out.println(" ");
+        }
     }
     
     
@@ -457,9 +487,24 @@ public class Manager
         return lastPlayer;
     }
 
+    public Player getGoalSetter()
+    {
+        return goalSetter;
+    }
+
+    public Player getCurrentPlayer()
+    {
+        return currentPlayer;
+    }
+
     public Mat getMyResources()
     {
         return myResources;
+    }
+
+    public String getGoalEquation()
+    {
+        return goalEquation;
     }
 
     public Goal getMyGoal()
@@ -481,5 +526,12 @@ public class Manager
     {
         return myRequired;
     }
+
+
+    public Solver getSolver()
+    {
+        return solver;
+    }
+    
 
 }
