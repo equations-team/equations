@@ -2,7 +2,7 @@ package fundementalgamemechanics;
 
 import java.util.Vector;
 
-public class Goal extends Mat {
+public class Goal extends Mat implements MatReader{
 	private Vector<DiceFace> myGoal;
 	private int myNumNormalDice;
 	
@@ -26,30 +26,6 @@ public class Goal extends Mat {
 	
 	public boolean removeDieByIndex(int index) {
 		return false;
-	}
-	
-	@Override
-	public boolean reorderDice(int firstIndex,int secondIndex) {
-		Die first;
-		try {
-			first = myMat.get(firstIndex);
-		} catch ( IndexOutOfBoundsException e ) {
-			return false;
-		}
-		Die second;
-		try {
-			second = myMat.get(secondIndex);
-		} catch ( IndexOutOfBoundsException e ) {
-			return false;
-		}
-		if(firstIndex < secondIndex) {
-			secondIndex--;
-		}
-		myMat.remove(firstIndex);
-		myMat.remove(secondIndex);
-		myMat.insertElementAt(first, secondIndex);
-		myMat.insertElementAt(second, firstIndex);
-		return true;
 	}
 	
 	public Vector<DiceFace> getMyGoal() {

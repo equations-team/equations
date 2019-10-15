@@ -4,7 +4,7 @@ import java.util.Vector;
 
 //The Mat is a class that contains dice.
 
-public class Mat {
+public class Mat implements DieHolder{
 	
 	protected Vector<Die> myMat = new Vector<Die>();
 	
