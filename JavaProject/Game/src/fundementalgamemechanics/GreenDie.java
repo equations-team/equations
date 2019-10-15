@@ -1,12 +1,13 @@
 package fundementalgamemechanics;
 
-//This is the green die it contains a *, ×, -, 6, 5, and 4 sides.
+//This is the green die it contains a *, Ã—, -, 6, 5, and 4 sides.
 
 public class GreenDie extends Die{
 	
-	public final static char[] GREENSIDES = new char[] {'*','×','-','6','5','4'};
+	public final static DiceFace[] GREENSIDES = new DiceFace[] {DiceFace.FOUR,DiceFace.FIVE,DiceFace.SIX,DiceFace.SUBTRACTION,
+			DiceFace.POWER,DiceFace.MULTIPLICATION};
 	
-	GreenDie() {
+	public GreenDie() {
 		roll();
 	}
 	

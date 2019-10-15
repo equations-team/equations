@@ -1,12 +1,13 @@
 package fundementalgamemechanics;
 
-//This is the red die it contains a '0','1','2','3','÷', and '×' sides.
+//This is the blue die it contains a '0','1','2','3','Ã·', and 'Ã—' sides.
 
 public class BlueDie extends Die{
 	
-	public final static char[] BLUESIDES = new char[] {'0','1','2','3','÷','×'};
+	public final static DiceFace[] BLUESIDES = new DiceFace[] {DiceFace.ZERO,DiceFace.ONE,DiceFace.TWO,DiceFace.THREE,
+			DiceFace.DIVISION,DiceFace.MULTIPLICATION};
 	
-	BlueDie() {
+	public BlueDie() {
 		roll();
 	}
 	
