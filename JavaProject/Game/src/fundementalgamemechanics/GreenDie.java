@@ -1,6 +1,6 @@
 package fundementalgamemechanics;
 
-//This is the green die it contains a *, ×, -, 6, 5, and 4 sides.
+//This is the green die it contains a *, Ã—, -, 6, 5, and 4 sides.
 
 public class GreenDie extends Die{
 	

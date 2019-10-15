@@ -18,7 +18,7 @@ public class Mat implements DieHolder{
 		}
 		return false;
 	}
-	
+  
 	public void addToMyMat(Die in) {
 		myMat.add(in);
 	}
