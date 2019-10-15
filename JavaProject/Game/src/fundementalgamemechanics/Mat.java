@@ -13,10 +13,7 @@ public class Mat implements DieHolder{
 	}
 	
 	public boolean checkEmpty() {
-		if(myMat.size()==0) {
-			return true;
-		}
-		return false;
+		return myMat.Size() == 0;
 	}
   
 	public void addToMyMat(Die in) {
