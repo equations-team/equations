@@ -4,18 +4,22 @@ import java.util.Random;
 
 //Die is an abstract class to hold the various dice used in the equations game. Dice have six sides, can be rolled to randomly bring a side up, has an individual up side, and a rotation.
 
-public abstract class Die {
+public abstract class Die implements Dice{
 	
-	private char myUpSide;
+	private DiceFace myUpSide;
 	private int myRotation;
 	
 	public static final Random diceRoller = new Random(System.currentTimeMillis());
 	
-	public int getMyUpSide() {
+	protected void setMyUpSide(DiceFace inPutString) {
+		myUpSide = inPutString;
+	}
+	
+	public DiceFace getMyUpSide() {
 		return myUpSide;
 	}
 	
-	public void roll(char[] sides) {
+	public void roll(DiceFace[] sides) {
 		myUpSide = sides[diceRoller.nextInt(6)];
 	}
 	

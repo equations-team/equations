@@ -17,4 +17,5 @@ EXPOSE 80
 ENV NAME fgmApp
 
 # Run app.py when the container launches
+
 CMD ["java", "Game.class"]

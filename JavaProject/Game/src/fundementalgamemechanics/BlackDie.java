@@ -1,12 +1,13 @@
 package fundementalgamemechanics;
 
-//This is the green die it contains a '√','÷','+','7','8', and '9' sides.
+//This is the black die it contains a '√','÷','+','7','8', and '9' sides.
 
 public class BlackDie extends Die{
 	
-	public final static char[] BLACKSIDES = new char[] {'√','÷','+','7','8','9'};
+	public final static DiceFace[] BLACKSIDES = new DiceFace[] {DiceFace.SEVEN,DiceFace.EIGHT,DiceFace.NINE,DiceFace.ADDITION,
+			DiceFace.DIVISION,DiceFace.ROOT};
 	
-	BlackDie() {
+	public BlackDie() {
 		roll();
 	}
 	

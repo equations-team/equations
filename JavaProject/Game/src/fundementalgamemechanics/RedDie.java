@@ -4,9 +4,10 @@ package fundementalgamemechanics;
 
 public class RedDie extends Die{
 	
-	public final static char[] REDSIDES = new char[] {'0','1','2','3','-','+'};
+	public final static DiceFace[] REDSIDES = new DiceFace[] {DiceFace.ZERO,DiceFace.ONE,DiceFace.TWO,DiceFace.THREE
+			,DiceFace.SUBTRACTION,DiceFace.ADDITION};
 	
-	RedDie() {
+	public RedDie() {
 		roll();
 	}
 	
