@@ -3,7 +3,7 @@ package fundementalgamemechanics;
 import java.util.Vector;
 
 public class Goal extends Mat implements MatReader{
-	private Vector<DiceFace> myGoal;
+	private Vector<DiceFace> myGoal = new Vector<DiceFace>();
 	private int myNumNormalDice;
 	
 	public void Read() {
@@ -29,7 +29,7 @@ public class Goal extends Mat implements MatReader{
 	}
 	
 	public Vector<DiceFace> getMyGoal() {
-		return getMyGoal();		
+		return myGoal;		
 	}
 	
 	public int getMyNumNormalDice() {
