@@ -8,6 +8,10 @@ let timeOut;
 let _turn = 0;
 const MAX_WAITING = 5000;
 var database = null;
+var app = require('htpp').createServer(handler);
+var IO = require('socket.io')(app);
+
+app.listen(80);
 
 var validGame = function(req){
   // What must exist in order for the game to start
@@ -20,7 +24,6 @@ var validGame = function(req){
   };
 };
 
-var IO = null;
 
 // Define a valid game and make sure it meets requirements
 
