@@ -17,3 +17,8 @@
 * [Git Guide](git-guide.md)
 
 * [Running Docker](https://docs.docker.com/get-started/part2/)
+
+## Team Docs
+
+### Opponent AI Interatction Time Map
+![oai-timemap](/readme-images/EquationsComputerOpponentInteractionTimeMap.png "Time Map") 
