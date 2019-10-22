@@ -190,22 +190,18 @@ public class Manager implements Manger_Reader
                 if(moved.getMyUpSide() == null) return false;
                 myForbidden.addToMyMat(moved);
                 myResources.removeDie(moved); 
-                System.out.println(
-                        p.getName() + " moves a dice to forbidden mat!");
                 break;
             case ADDREQUIRED :
                 if(moved.getMyUpSide() == null) return false;
                 myRequired.addToMyMat(moved);
                 myResources.removeDie(moved); 
-                System.out.println(
-                        p.getName() + " moves a dice to required mat!");
+               
                 break;
             case ADDPERMITTED :
                 if(moved.getMyUpSide() == null) return false;
                 myPermitted.addToMyMat(moved);
                 myResources.removeDie(moved); 
-                System.out.println(
-                        p.getName() + " moves a dice to permitted mat!");
+               
                 break;
 
             case CHALLENGEIMPOSSIBLE :
@@ -339,6 +335,8 @@ public class Manager implements Manger_Reader
     {
 
         int resource_dice_num = 0;
+        int[] Rdices = new int[myRequired.getMyMat().size()];
+        int[] Pdices = new int[myPermitted.getMyMat().size()];
         switch (flag)
         {
             case 1 :
@@ -364,6 +362,12 @@ public class Manager implements Manger_Reader
                 if (resource_dice_num > 1)
                     return false;
         }
+        for(int i = 0; i < myPermitted.getMyMat().size();i++) {
+            if(str.contains(this.dieFaceTranslator(
+                    myPermitted.getMyMat().elementAt(i).getMyUpSide()))) {
+                Pdices[i]++;
+            }
+        }
 
         for (int i = 0; i < myForbidden.getMyMat().size(); i++)
         {
@@ -376,9 +380,22 @@ public class Manager implements Manger_Reader
 
         for (int i = 0; i < myRequired.getMyMat().size(); i++)
         {
-            if (!str.contains(this.dieFaceTranslator(
+            if (str.contains(this.dieFaceTranslator(
                     myRequired.getMyMat().elementAt(i).getMyUpSide())))
             {
+                Rdices[i]++;
+            }
+            
+        }
+        
+        for(int i = 0; i < myPermitted.getMyMat().size(); i++) {
+            if(Pdices[i] > 1) {
+                return false;
+            }
+        }
+        
+        for(int i = 0; i < myRequired.getMyMat().size(); i++) {
+            if (Rdices[i] != 1) {
                 return false;
             }
         }
