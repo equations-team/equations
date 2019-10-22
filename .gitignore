@@ -1,0 +1,13 @@
+/Working Tree/JavaProject/Game/.classpath
+/Working Tree/JavaProject/Game/.project
+# We want to ignore all builds and caches, we strictly want source code to be stored in the repository
+
+# Ignore the python cache
+webapp/__pycache__/
+
+# Ignore the java builds
+JavaProject/Game/bin
+
+# The build script is unrefined and creates build artifacts along side the source file.
+# For the time being I'm just adding them to the git ignore, we need a more permanent soultion
+test/src/solver/*.class
