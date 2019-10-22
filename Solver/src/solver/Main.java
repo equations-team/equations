@@ -7,7 +7,7 @@ public class Main {
 
 	public static void main(String[] args) throws ScriptException {
 
-		Algebra a = new Algebra("5.0/6.0","10.0/12.0");
+		Algebra a = new Algebra("1.0/2.0","2.0/5.0");
 		
 		Solver manage = new Solver(a);
 		
@@ -16,6 +16,8 @@ public class Main {
 		System.out.println("Your answer is: " + manage.checkAnswer(a.getEquation()));
 		
 		System.out.println("This equation is valid: " + manage.validEquation(a.getEquation()));
+		
+		System.out.println(manage.checkSolution());
 		
 	}
 

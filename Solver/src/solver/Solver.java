@@ -113,4 +113,15 @@ public class Solver implements Calculator{
 		return true;
 	}
 	
+	public boolean checkSolution() {
+		
+		boolean equation = validEquation(a.getEquation());
+		
+		if(equation == false) return false;
+		
+		if (checkAnswer(a.getEquation()) == false) return false;
+		
+		return true;
+	}
+	
 }
