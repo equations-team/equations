@@ -84,6 +84,17 @@ class SolverTests {
 		assertFalse(manage.checkAnswer(a.getEquation()));
 		
 	}
+	
+	@Test
+	void orderOfOpsTest() {
+		
+		Algebra a = new Algebra("(3.0*2.0)+1.0","7.0");
+		
+		Solver manage = new Solver(a);
+		
+		assertEquals(7.0, manage.calculate(a.getEquation()), 0.0);
+		
+	}
 
 
 }
