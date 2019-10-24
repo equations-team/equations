@@ -3,7 +3,14 @@ import java.util.regex.Pattern;
 
 import javax.script.*;
 
-public class Solver {
+
+interface Calculator{
+	public double calculate(String equation);
+	public boolean checkAnswer(String equation);
+	public boolean validEquation(String equation); 
+}
+
+public class Solver implements Calculator{
 	
 	private Algebra a;
 	
@@ -102,6 +109,17 @@ public class Solver {
 
 			return false;
 		}
+		
+		return true;
+	}
+	
+	public boolean checkSolution() {
+		
+		boolean equation = validEquation(a.getEquation());
+		
+		if(equation == false) return false;
+		
+		if (checkAnswer(a.getEquation()) == false) return false;
 		
 		return true;
 	}

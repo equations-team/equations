@@ -1,9 +1,14 @@
 package solver;
 import java.util.regex.Pattern;
-
 import javax.script.*;
 
-public class Solver {
+
+interface Calculator{
+	public int calculate(String equation);
+	public boolean checkAnswer(int input);
+}
+
+ 	class Solver implements Calculator {
 	
 	private Algebra a;
 	
@@ -53,5 +58,7 @@ public class Solver {
 		
 		return false;	
 	}
+
+
 	
 }
