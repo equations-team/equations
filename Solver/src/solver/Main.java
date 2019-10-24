@@ -7,7 +7,7 @@ public class Main {
 
 	public static void main(String[] args) throws ScriptException {
 
-		Algebra a = new Algebra("1.0/2.0","2.0/5.0");
+		Algebra a = new Algebra("5.0","Math.sqrt(25.0)");
 		
 		Solver manage = new Solver(a);
 		
