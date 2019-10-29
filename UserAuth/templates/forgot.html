@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Login</title>
+		<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
+	</head>
+	<body>
+		<div class="login">
+			<h1>Input Username</h1>
+			<form action="{{ url_for('forgot') }}" method="post">
+				<label for="username">
+					<i class="fas fa-user"></i>
+				</label>
+				<input type="text" name="username" placeholder="Username" id="username" required>
+				<a href="{{ url_for('login') }}">Back Login</a>
+				<div class="msg">{{ msg }}</div>
+				<input type="submit" value="Reset Password">
+			</form>
+		</div>
+	</body>
+</html>
