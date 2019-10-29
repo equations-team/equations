@@ -10,10 +10,8 @@ const MAX_WAITING = 5000;
 var database = null;
 var app = require('htpp').createServer(handler);
 var IO = require('socket.io')(app);
-
 app.listen(80);
-
-var validGame = function(req){
+var validgame = function(req){
   // What must exist in order for the game to start
   if(!req.session.username) {return null; }
   if(!req.session.gameID) {return null; }
@@ -24,11 +22,12 @@ var validGame = function(req){
   };
 };
 
+var IO = null;
 
 // Define a valid game and make sure it meets requirements
 
 var game = function(req){
-
+  
   var valid = validGame(req);
   if(!valid){
     this.emit('error', {message: "This game does not meet proper requirements."});
@@ -185,6 +184,7 @@ var move = function(data){
 
   // Make the move
   var result = game.move(data.move);
+  
   if(!result){
     console.log('Invalid move!', debugInfo);
     this.emit('error', {message: "Invalid move, try again."});
@@ -218,7 +218,6 @@ var withdraw = function(gameID){
     console.log('Game could not be found.', debugInfo);
     this.emit('error', {message: "Game not found. Check the ID."});
   }
-
   // Begin withdrawal process
   var result = game.withdraw(sess);
   // Something goes wrong
@@ -246,8 +245,6 @@ var remove = function(){
     event : 'disonnect',
     session : sess
   };
-
-  // Check if the game exists, otherwise they can't disconnect
   var game = database.find(gameID);
   if(!game){
     console.log('Game could not be found.', debugInfo);
@@ -270,6 +267,7 @@ var remove = function(){
   // Skip a turn, unless we want the game to end.
   this.nextTurn;
 };
+
 
 // Attach events / functions to socket.io
 
