@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="Equations.LibraryTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2019-10-29T17:38:23" hostname="derrek-MacBookPro" time="0.0">
-  <properties/>
-  <testcase name="testSomeLibraryMethod" classname="Equations.LibraryTest" time="0.0"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>
