@@ -12,8 +12,13 @@ import fundementalgamemechanics.Mat;
 import fundementalgamemechanics.RedDie;
 import fundementalgamemechanics.SpecialDie;
 
-class GoalTests {
+public class GoalTests {
 	
+  // Default constructor needed to run
+  public GoalTests() {
+
+  }
+
 	@Test
 	public void removeDieTest() {
 		// Arrange

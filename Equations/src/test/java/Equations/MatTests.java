@@ -7,6 +7,11 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
 public class MatTests {
+  
+  // Default Constructor
+  public MatTests() {
+
+  }
 	
 	@Test
 	public void addDieTest() {
