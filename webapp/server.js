@@ -10,10 +10,8 @@ const MAX_WAITING = 5000;
 var database = null;
 var app = require('htpp').createServer(handler);
 var IO = require('socket.io')(app);
-
 app.listen(80);
-
-var validGame = function(req){
+var validgame = function(req){
   // What must exist in order for the game to start
   if(!req.session.username) {return null; }
   if(!req.session.gameID) {return null; }
@@ -24,6 +22,7 @@ var validGame = function(req){
   };
 };
 
+var IO = null;
 
 // Define a valid game and make sure it meets requirements
 
@@ -185,6 +184,7 @@ var move = function(data){
 
   // Make the move
   var result = game.move(data.move);
+
   if(!result){
     console.log('Invalid move!', debugInfo);
     this.emit('error', {message: "Invalid move, try again."});
@@ -218,7 +218,6 @@ var withdraw = function(gameID){
     console.log('Game could not be found.', debugInfo);
     this.emit('error', {message: "Game not found. Check the ID."});
   }
-
   // Begin withdrawal process
   var result = game.withdraw(sess);
   // Something goes wrong
@@ -231,14 +230,10 @@ var withdraw = function(gameID){
   // Update this to the game and players
   IO.sockets.in(gameID).emit('update', game);
   console.log(gameID+' '+sess.username+'': Withdrew');
-
   // Skip a turn, unless we want the game to end.
   this.nextTurn;
-
 };
-
 // Removing a player from the game when they disconnect.
-
 var remove = function(){
   var sess = this.handshake.session;
   var debugInfo = {
@@ -246,72 +241,55 @@ var remove = function(){
     event : 'disonnect',
     session : sess
   };
-
-  // Check if the game exists, otherwise they can't disconnect
   var game = database.find(gameID);
   if(!game){
     console.log('Game could not be found.', debugInfo);
     this.emit('error', {message: "Game not found. Maybe there was a mistake?"});
   }
-
   // Remove this player
-
   var result = game.removePlayer(sess);
   if(!result){
     console.log(sess.username+' failed to leave'+sess.gameID);
     return;
   }
-
   // Make update to players
-
   console.log(sess.username+' disconnected' +sess.gameID);
   console.log('Socket '+this.id+' disconnected');
-
   // Skip a turn, unless we want the game to end.
   this.nextTurn;
 };
-
 // Attach events / functions to socket.io
-
 exports.attach = function(io, db){
   IO = io;
   database = db;
-
   io.sockets.on('connection', function (socket){
-
     // Event handling
     socket.on('join',join);
     socket.on('move', move);
     socket.on('withdraw', withdraw);
     socket.on('remove', remove);
-
     console.log('Socket'+socket.id+' connected');
   });
 };
-
 function nextTurn(){
   _turn = current_turn++ % players.length;
   players[_turn].emit('your_turn');
   console.log("next turn triggered " , _turn);
   triggerTimeout();
 };
-
 function triggerTimeout(){
   timeOut = setTimeout(()=>{
     nextTurn();
   },MAX_WAITING);
 };
-
 function resetTimeOut(){
   if(typeof timeOut === 'object'){
     console.log("timeout reset");
     clearTimeout(timeOut);
   }
 };
-
  io.on('connection', function(socket){
   console.log('A player connected');
-
   players.push(socket);
   socket.on('pass_turn',function(){
      if(players[_turn] == socket){
@@ -319,7 +297,6 @@ function resetTimeOut(){
         nextTurn();
      }
   });
-
 socket.on('disconnect', function(){
   console.log('A player disconnected');
   players.splice(players.indexOf(socket),1);

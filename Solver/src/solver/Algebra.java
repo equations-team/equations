@@ -1,4 +1,4 @@
-package test;
+package solver;
 
 
 public class Algebra {
@@ -6,9 +6,19 @@ public class Algebra {
 	private String solution;
 	private String equation;
 	
+	/**
+	 * @param eq
+	 * @param goal
+	 * 
+	 * Takes equation (the player's) and the goal (set by a player at the start).
+	 * This simply stores them and returns them when asked.
+	 * 
+	 */
+	
 	public Algebra(String eq, String goal){
+		
 		solution = goal;
-		equation = eq;
+		equation = eq;	
 	}
 	
 	
