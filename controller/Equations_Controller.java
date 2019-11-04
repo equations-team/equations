@@ -1,5 +1,13 @@
 import java.util.Random;
 
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import fundementalgamemechanics.Die;
 import fundementalgamemechanics.Game;
 
 /**
@@ -10,6 +18,8 @@ import fundementalgamemechanics.Game;
  * @author Stephen Mingolelli
  *
  */
+
+@Controller
 public class Equations_Controller {
 
 	private MockView myView;
@@ -23,6 +33,7 @@ public class Equations_Controller {
 	public Equations_Controller() {
 		myView = new MockView(this);
 		myModel = new Game();
+		// This connects the drop/move methods.
 		myTurn = this.determineFirst();
 		myIsWon = false;
 		myView.setGoalSetter(myTurn);
@@ -38,6 +49,7 @@ public class Equations_Controller {
 	 * 
 	 * @return high, the highest number.
 	 */
+	
 	private int determineFirst() {
 		int p1 = 0;
 		int p2 = 0;
@@ -57,6 +69,13 @@ public class Equations_Controller {
 		}
 		return myTurn;
 	}
+	
+	@GetMapping("/drop")
+	public String drop(@RequestParam(name = "die", required = true) Die drop, Model model){
+		model.addAttribute("drop", drop);
+		return "drop";
+	}
+	
 
 	/**
 	 * This takes in view knowledge of the mat. More specifically, what the player
@@ -174,6 +193,14 @@ public class Equations_Controller {
 
 	public void setIsWon(boolean w) {
 		this.myIsWon = w;
+	}
+	
+	public Game getGame() {
+		return myModel;
+	}
+	
+	public void setGame(Game g) {
+		myModel = g;
 	}
 
 }

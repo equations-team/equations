@@ -52,7 +52,8 @@ public class Equations_Controller_Tests {
 	public void testMoveToForbidden() {
 
 		Equations_Controller e = new Equations_Controller();
-		assertTrue(e.moveDie(0,0));
+		assertTrue(e.moveDie(0,1));
+		assertFalse(e.getGame().getMyForbidden().checkEmpty());
 	}
 	
 	/**
@@ -62,7 +63,9 @@ public class Equations_Controller_Tests {
 	public void testMoveToRequired() {
 
 		Equations_Controller e = new Equations_Controller();
-		assertTrue(e.moveDie(0,1));
+		assertTrue(e.moveDie(1,2));
+		assertFalse(e.getGame().getMyRequired().checkEmpty());
+
 	}
 	
 	/**
@@ -72,7 +75,9 @@ public class Equations_Controller_Tests {
 	public void testMoveToAllowed() {
 
 		Equations_Controller e = new Equations_Controller();
-		assertTrue(e.moveDie(0,2));
+		assertTrue(e.moveDie(2,3));
+		assertFalse(e.getGame().getMyAllowed().checkEmpty());
+
 	}
 	
 	/**
