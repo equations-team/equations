@@ -6,7 +6,7 @@ public class GameTimer extends Thread{
 	
 	private int myLength; //In half minutes
 	
-	GameTimer(int length) {
+	public GameTimer(int length) {
 		myLength = length;
 	}
 	
