@@ -22,27 +22,42 @@ import fundementalgamemechanics.Game;
 @Controller
 public class Equations_Controller {
 
-	private MockView myView;
+	//private MockView myView;
 	private Game myModel;
 	private int myTurn;
-	private boolean myIsWon;
+	private Model myWebModel;
+	private String myGoal;
+	private String[] myPlayers;
+	private String myCurrentPlayerID;
 
 	/**
 	 * The Constructor
 	 */
 	public Equations_Controller() {
-		myView = new MockView(this);
+		//myView = new MockView(this);
 		myModel = new Game();
-		// This connects the drop/move methods.
 		myTurn = this.determineFirst();
-		myIsWon = false;
-		myView.setGoalSetter(myTurn);
+		//myView.setGoalSetter(myTurn);
+		myPlayers = new String[3];
 	}
 
 	/////////////
 	///METHODS///
 	/////////////
 	
+	/**
+	 * Takes in 3 player IDs ands puts them in the array.
+	 * @param p1
+	 * @param p2
+	 * @param p3
+	 */
+	public void createPlayerArray(String p1, String p2, String p3) {
+		myPlayers[0] = p1;
+		myPlayers[1] = p2;
+		myPlayers[2] = p3;
+	}
+
+
 	/**
 	 * Roll dice and get the highest one. Each player rolls a die, the highest goes
 	 * first.
@@ -70,10 +85,27 @@ public class Equations_Controller {
 		return myTurn;
 	}
 	
-	@GetMapping("/drop")
-	public String drop(@RequestParam(name = "die", required = true) Die drop, Model model){
-		model.addAttribute("drop", drop);
-		return "drop";
+	// The controller's interaction with the other player's view. Informs others of new movement.
+	@GetMapping("/game")
+	public String apprise(Model model, Die moved) {
+		model.addAttribute("game", moved);
+		this.passTurn();
+		return "game";
+		
+	}
+	
+	// Controller setting the goal from input from view.
+	@GetMapping("/game")
+	public String goalSet(Model model, String goal, String playerID) {
+		myGoal = goal;
+		model.addAttribute("game", goal);
+		for(int i = 0; i < 2; i++) {
+			if(playerID == myPlayers[i])
+				myTurn = i;
+		}
+		myCurrentPlayerID = playerID;
+		passTurn();
+		return "game";
 	}
 	
 
@@ -84,11 +116,9 @@ public class Equations_Controller {
 	 * 
 	 * @param index
 	 */
-	public void goalSet(int index) {
+	public void goalSet(int index, Die moved) {
 		// Send die to goal
 		myModel.moveDie(index, 0);
-		passTurn();
-
 	}
 
 	/**
@@ -97,10 +127,10 @@ public class Equations_Controller {
 	public void passTurn() {
 		if (myTurn == 3) {
 			myTurn = 1;
-			myView.setTurn(1);
+			myCurrentPlayerID = myPlayers[1];
 		} else {
 			myTurn++;
-			myView.setTurn(myTurn);
+			myCurrentPlayerID = myPlayers[myTurn];
 		}
 	}
 
@@ -113,6 +143,8 @@ public class Equations_Controller {
 	public boolean moveDie(int location, int index) {
 		switch (location) {
 		case 0:
+			Die moved = myModel.getMyForbidden().getMyMat().elementAt(index);
+			this.apprise(myWebModel, moved);
 			return this.moveToForbidden(index);
 		case 1:
 			return this.moveToRequired(index);
@@ -167,13 +199,42 @@ public class Equations_Controller {
 		return true;
 	}
 	
-	public void challengeImpossible(Algebra solution) {
-		//myGame.Solve...()
+	/**
+	 * Check if the challenge is impossible. The function will return false if the equation is not valid.
+	 * @param playerInput
+	 */
+	public boolean challengeImpossible(String playerInput) {
+		Algebra a = new Algebra(playerInput, myGoal);
+		Solver s = new Solver(a);
+		if(s.validEquation(playerInput)==false)
+			return false;
+		
+		// If this is true, then the challenge was not impossible.
+		if(s.checkAnswer(playerInput)==true)
+			return false;
+		
+		return true;
 	}
 	
-	public void challengeNow() {
-		//myGame.Solve...()
+	/**
+	 * Check if the challenge is possible. The function will return true if the player's
+	 * input is correct and valid, else, false.
+	 * @param playerInput
+	 */
+	public boolean challengeNow(String playerInput) {
+		Algebra a = new Algebra(playerInput, myGoal);
+		Solver s = new Solver(a);
+		if(s.validEquation(playerInput)==false)
+			return false;
+		
+		// If this is true, then the player got the correct answer
+		if(s.checkAnswer(playerInput)==true)
+			return true;
+		
+		return true;
 	}
+	
+	
 	
 	/////////////////////////
 	///GETTERS AND SETTERS///
@@ -186,14 +247,6 @@ public class Equations_Controller {
 	public void setTurn(int t) {
 		this.myTurn = t;
 	}
-
-	public boolean isWon() {
-		return myIsWon;
-	}
-
-	public void setIsWon(boolean w) {
-		this.myIsWon = w;
-	}
 	
 	public Game getGame() {
 		return myModel;
@@ -201,6 +254,22 @@ public class Equations_Controller {
 	
 	public void setGame(Game g) {
 		myModel = g;
+	}
+	
+	public String[] getPlayers() {
+		return myPlayers;
+	}
+
+	public void setPlayers(String[] players) {
+		this.myPlayers = players;
+	}
+	
+	public String getCurrentPlayer() {
+		return myCurrentPlayerID;
+	}
+	
+	public void setCurrentPlayer(String currentPlayerID) {
+		myCurrentPlayerID = currentPlayerID;
 	}
 
 }
