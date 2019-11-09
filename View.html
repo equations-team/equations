@@ -2,7 +2,6 @@
 
 {% block functions %}
 <!-- Sets the style for the elements -->
-<!-- Might need to do the same for all the dice -->
 <style>
 #resources{
 	background-color: #7B3DB2;
@@ -33,10 +32,10 @@
   border: 1px solid black;
 }
 .menuButton{
-height: 50px;
-width: 100px;
-font-size: 100%;
-float: left;
+	height: 50px;
+	width: 100px;
+	font-size: 100%;
+	float: left;
 }
 </style>
 
@@ -54,40 +53,44 @@ function drop(ev) {
 	var data = ev.dataTransfer.getData("text");
 	ev.target.appendChild(document.getElementById(data));
 }
+<!-- Loads the dice images when the page loads -->
+function loadDice(){
+	var diceId = [[${dieId}]];
+	var img = [[${link}]];
+	document.getElementById(dieId).src = link;
+}
 </script>
 {% endblock %}
 
 {% block content %}
-<!-- Makes the dice and puts them in the resources 
-	 DIE FACES WILL CHANGE IN A LATER BUILD-->
+<!-- Makes the dice and puts them in the resources -->
 <div id="resources" ondrop="drop(event)" ondragover="allowDrop(event)">
-<img src="Images/Red0.svg" draggable="true" ondragstart="drag(event)" id="die1">
-<img src="Images/Red0.svg" draggable="true" ondragstart="drag(event)" id="die2"> 
-<img src="Images/Red0.svg" draggable="true" ondragstart="drag(event)" id="die3"> 
-<img src="Images/Red0.svg" draggable="true" ondragstart="drag(event)" id="die4"> 
-<img src="Images/Red0.svg" draggable="true" ondragstart="drag(event)" id="die5"> 
-<img src="Images/Red0.svg" draggable="true" ondragstart="drag(event)" id="die6"> 
-<img src="Images/Red0.svg" draggable="true" ondragstart="drag(event)" id="die7"> 
-<img src="Images/Red0.svg" draggable="true" ondragstart="drag(event)" id="die8"> 
-<img src="Images/Red0.svg" draggable="true" ondragstart="drag(event)" id="die9"> 
-<img src="Images/Red0.svg" draggable="true" ondragstart="drag(event)" id="die10"> 
-<img src="Images/Red0.svg" draggable="true" ondragstart="drag(event)" id="die11"> 
-<img src="Images/Red0.svg" draggable="true" ondragstart="drag(event)" id="die12"> 
-<img src="Images/Red0.svg" draggable="true" ondragstart="drag(event)" id="die13"> 
-<img src="Images/Red0.svg" draggable="true" ondragstart="drag(event)" id="die14"> 
-<img src="Images/Red0.svg" draggable="true" ondragstart="drag(event)" id="die15"> 
-<img src="Images/Red0.svg" draggable="true" ondragstart="drag(event)" id="die16"> 
-<img src="Images/Red0.svg" draggable="true" ondragstart="drag(event)" id="die17"> 
-<img src="Images/Red0.svg" draggable="true" ondragstart="drag(event)" id="die18"> 
-<img src="Images/Red0.svg" draggable="true" ondragstart="drag(event)" id="die19"> 
-<img src="Images/Red0.svg" draggable="true" ondragstart="drag(event)" id="die20"> 
-<img src="Images/Red0.svg" draggable="true" ondragstart="drag(event)" id="die21"> 
-<img src="Images/Red0.svg" draggable="true" ondragstart="drag(event)" id="die22"> 
-<img src="Images/Red0.svg" draggable="true" ondragstart="drag(event)" id="die23"> 
-<img src="Images/Red0.svg" draggable="true" ondragstart="drag(event)" id="die24"> 
+<img [src]="loadDice(1)" draggable="true" ondragstart="drag(event)" id="1">
+<img [src]="loadDice(2)" draggable="true" ondragstart="drag(event)" id="2"> 
+<img [src]="loadDice(3)" draggable="true" ondragstart="drag(event)" id="3"> 
+<img [src]="loadDice(4)" draggable="true" ondragstart="drag(event)" id="4"> 
+<img [src]="loadDice(5)" draggable="true" ondragstart="drag(event)" id="5"> 
+<img [src]="loadDice(6)" draggable="true" ondragstart="drag(event)" id="6"> 
+<img [src]="loadDice(7)" draggable="true" ondragstart="drag(event)" id="7"> 
+<img [src]="loadDice(8)" draggable="true" ondragstart="drag(event)" id="8"> 
+<img [src]="loadDice(9)" draggable="true" ondragstart="drag(event)" id="9"> 
+<img [src]="loadDice(10)" draggable="true" ondragstart="drag(event)" id="10"> 
+<img [src]="loadDice(11)" draggable="true" ondragstart="drag(event)" id="11"> 
+<img [src]="loadDice(12)" draggable="true" ondragstart="drag(event)" id="12"> 
+<img [src]="loadDice(13)" draggable="true" ondragstart="drag(event)" id="13"> 
+<img [src]="loadDice(14)" draggable="true" ondragstart="drag(event)" id="14"> 
+<img [src]="loadDice(15)" draggable="true" ondragstart="drag(event)" id="15"> 
+<img [src]="loadDice(16)" draggable="true" ondragstart="drag(event)" id="16"> 
+<img [src]="loadDice(17)" draggable="true" ondragstart="drag(event)" id="17"> 
+<img [src]="loadDice(18)" draggable="true" ondragstart="drag(event)" id="18"> 
+<img [src]="loadDice(19)" draggable="true" ondragstart="drag(event)" id="19"> 
+<img [src]="loadDice(20)" draggable="true" ondragstart="drag(event)" id="20"> 
+<img [src]="loadDice(21)" draggable="true" ondragstart="drag(event)" id="21"> 
+<img [src]="loadDice(22)" draggable="true" ondragstart="drag(event)" id="22"> 
+<img [src]="loadDice(23)" draggable="true" ondragstart="drag(event)" id="23"> 
+<img [src]="loadDice(24)" draggable="true" ondragstart="drag(event)" id="24"> 
 </div>
-<!-- Makes the places of the board 
-	 MAY NOT ALLOW FOR MORE THAN ONE DIE PER PLACE-->
+<!-- Makes the places of the board -->
 <div id="forbidden" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
 <div id="permitted" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
 <div id="required" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
