@@ -1,0 +1,22 @@
+/*Loads the appropriate die faces
+* Source: https://www.baeldung.com/spring-mvc-model-model-map-model-view
+* Class ModelAndView provided by Spring
+*/
+@RequestMapping("/View")
+public ModelAndView loadDice(Map<String, Object> model){
+	for(int i = 1; i < 25; i++){
+		model.put("dieId", i);
+		String imageLink = model.getDieFace(i);
+		model.put("link", imageLink);
+	}
+	return new ModelAndView("/View")
+}
+
+/*Gets the dropped location of the die
+* Source: https://docs.spring.io/spring/docs/3.2.x/spring-framework-reference/html/mvc.html
+* Contents of method can be edited to fit with the model
+*/
+@RequestMapping(value="/View", method=RequestMethod.GET)
+public void findDroppedDie(@PathVariable droppedLocation, Model model){
+	model.dealWithDroppedLocation(droppedLocation);
+}
