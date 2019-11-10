@@ -1,19 +1,30 @@
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
 
+import java.awt.List;
 import java.awt.Point;
+import java.util.Map;
+import java.util.Vector;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.junit.jupiter.*;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import fundementalgamemechanics.Game;
 
 public class Equations_Controller_Tests {
+	
 	
 	/**
 	 * Tests if the controller accurately defines who goes first.
 	 */
 	@Test
 	public void testControllerGoFirst() {
-		
 		Equations_Controller e = new Equations_Controller();
 		int f = e.getTurn();
 		assertTrue(f != 0);
@@ -50,9 +61,9 @@ public class Equations_Controller_Tests {
 	 */
 	@Test
 	public void testMoveToForbidden() {
-
+		Model mockModel = mock(Model.class);
 		Equations_Controller e = new Equations_Controller();
-		assertTrue(e.moveDie(0,1));
+		assertTrue(e.moveDie(0,1, mockModel));
 		assertFalse(e.getGame().getMyForbidden().checkEmpty());
 	}
 	
@@ -62,8 +73,9 @@ public class Equations_Controller_Tests {
 	@Test
 	public void testMoveToRequired() {
 
+		Model mockModel = mock(Model.class);
 		Equations_Controller e = new Equations_Controller();
-		assertTrue(e.moveDie(1,2));
+		assertTrue(e.moveDie(1,2, mockModel));
 		assertFalse(e.getGame().getMyRequired().checkEmpty());
 
 	}
@@ -73,9 +85,9 @@ public class Equations_Controller_Tests {
 	 */
 	@Test
 	public void testMoveToAllowed() {
-
+		Model mockModel = mock(Model.class);
 		Equations_Controller e = new Equations_Controller();
-		assertTrue(e.moveDie(2,3));
+		assertTrue(e.moveDie(2,3, mockModel));
 		assertFalse(e.getGame().getMyAllowed().checkEmpty());
 
 	}
@@ -91,4 +103,40 @@ public class Equations_Controller_Tests {
 		assertEquals(first, v.getGoalSet());
 		
 	}
+	
+	/**
+	 * Tests if someone can challenge now.
+	 */
+	@Test
+	public void testChallengeNow() {
+		Equations_Controller e = new Equations_Controller();
+		e.setGoal("4");
+		e.challengeNow("3+1");
+		assertTrue(e.challengeNow("4"));
+		
+	}
+	
+	/**
+	 * Tests if someone can challenge impossible.
+	 */
+	@Test
+	public void testChallengeImpossible() {
+		Equations_Controller e = new Equations_Controller();
+		e.setGoal("4");
+		e.challengeNow("3+1");
+		assertTrue(e.challengeImpossible("4"));
+		
+	}
+	
+	/**
+	 * Tests if view can load dice correctly.
+	 */
+	@Test
+	public void testLoadDice() {
+		java.util.Map<String, Object> mockMap = (java.util.Map<String, Object>) mock(Map.class);
+		Equations_Controller e = new Equations_Controller();
+		e.loadDice(mockMap);
+		
+	}
+	
 }
