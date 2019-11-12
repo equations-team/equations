@@ -3,3 +3,8 @@
 
 # Ignore Gradle build output directory
 build
+
+# Ignore Eclipse project files
+Equations/.project
+Equations/.settings
+
