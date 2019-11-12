@@ -1,9 +1,19 @@
 package fundementalgamemechanics;
 
 public enum DiceFace {
-	ONE,TWO,THREE,FOUR,FIVE,SIX,SEVEN,EIGHT,NINE,ZERO,
-	ADDITION,SUBTRACTION,MULTIPLICATION,DIVISION,POWER,ROOT,
-	LEFT,RIGHT;
+	ONE("1"),TWO("2"),THREE("3"),FOUR("4"),FIVE("5"),SIX("6"),SEVEN("7"),EIGHT("8"),NINE("9"),
+	ZERO("0"),ADDITION("+"),SUBTRACTION("-"),MULTIPLICATION("*"),DIVISION("/"),POWER("^"),ROOT("?"),
+	LEFT("("),RIGHT(")");
+
+	private String value;
+
+	public String getValue() {
+		return value;
+	}
+
+	private DiceFace(String v) {
+		value = v;
+	}
 }
 
 // String Expectations for Solver
