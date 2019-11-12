@@ -27,7 +27,7 @@ var IO = null;
 // Define a valid game and make sure it meets requirements
 
 var game = function(req){
-
+  
   var valid = validGame(req);
   if(!valid){
     this.emit('error', {message: "This game does not meet proper requirements."});
@@ -184,7 +184,7 @@ var move = function(data){
 
   // Make the move
   var result = game.move(data.move);
-
+  
   if(!result){
     console.log('Invalid move!', debugInfo);
     this.emit('error', {message: "Invalid move, try again."});
