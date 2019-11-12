@@ -1,6 +1,10 @@
 package fundementalgamemechanics;
 
-//This is the green die it contains a *, ×, -, 6, 5, and 4 sides.
+/**
+ * A Green die that has 4, 5, 6, subtraction, exponents, multiplication symbol faces.
+ * @author James P Armstrong IV
+ *
+ */
 
 public class GreenDie extends Die{
 	

@@ -1,5 +1,10 @@
 package fundementalgamemechanics;
 
+/**
+ * An list of enums to avoid localization issues with characters.
+ * @author James P Armstrong IV
+ *
+ */
 public enum DiceFace {
 	ONE,TWO,THREE,FOUR,FIVE,SIX,SEVEN,EIGHT,NINE,ZERO,
 	ADDITION,SUBTRACTION,MULTIPLICATION,DIVISION,POWER,ROOT,

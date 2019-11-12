@@ -2,6 +2,11 @@ package fundementalgamemechanics;
 
 import java.util.Vector;
 
+/**
+ * The Interface for Goal
+ * @author James P Armstrong IV
+ *
+ */
 public interface MatReader {
 	
 	public void Read();
