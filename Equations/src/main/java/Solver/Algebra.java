@@ -1,10 +1,14 @@
 package Solver;
 
+import gamestatemanager.*;
+
 
 public class Algebra {
 
 	private String solution;
 	private String equation;
+	
+	private Manager m;
 	
 	/**
 	 * @param eq
@@ -19,6 +23,7 @@ public class Algebra {
 		
 		solution = goal;
 		equation = eq;	
+
 	}
 	
 	
