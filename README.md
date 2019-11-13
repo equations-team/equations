@@ -22,7 +22,6 @@
 
 ### Opponent AI Interatction Time Map
 ![oai-timemap](/readme-images/EquationsComputerOpponentInteractionTimeMap.png "Time Map")
-
 ### OAI-ECS Design 
 Using abstract Player class to define bahaviors and references, for both the OAI and human player classes. 
 
@@ -36,12 +35,12 @@ Behaviors:
 
 #### OAI
 Fields:
- - `GameStateManager gsm` (inherited)
- - `String name` (inherited)
+ - `GameStateManager gsm (inherited)`
+ - `String name (inherited)`
  - `Ecs ecs` 
 
 Behaviors:
- - `void takeTurn()` (inherited)
+ - `void takeTurn() (inherited)`
 
 #### EquationsAnswerSolution (Entrypoint of the ECS) 
  - `Score calculateScore()`
