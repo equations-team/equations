@@ -1,9 +1,12 @@
 package Solver;
 import java.util.regex.Pattern;
+import gamestatemanager.*;
 
 import javax.script.*;
 
 public class Solver {
+	
+	private Manager m;
 	
 	private Algebra a;
 	
@@ -36,7 +39,7 @@ public class Solver {
 		try {
 			
 			for(int i = 0; i+1 < eq.length(); i++) {
-			    if(eq == a.getEquation() && Character.isDigit(eq.charAt(i)) && Character.isDigit(eq.charAt(i+1)) == true) {
+			    if(eq == m.getGoalEquation() && Character.isDigit(eq.charAt(i)) && Character.isDigit(eq.charAt(i+1)) == true) {
 					System.out.println("ERROR not a valid equation -- no two digit numbers in YOUR solution.");
 					return 0;
 			} 
@@ -91,7 +94,7 @@ public class Solver {
 		try {
 			
 			for(int i = 0; i+1 < eq.length(); i++) {
-			    if(eq == a.getEquation() && Character.isDigit(eq.charAt(i)) && Character.isDigit(eq.charAt(i+1)) == true) {
+			    if(eq == m.getGoalEquation() && Character.isDigit(eq.charAt(i)) && Character.isDigit(eq.charAt(i+1)) == true) {
 					System.out.println("ERROR not a valid equation -- no two digit numbers in YOUR solution.");
 					return false;
 			} 

@@ -8,15 +8,17 @@ let timeOut;
 let _turn = 0;
 const MAX_WAITING = 5000;
 var database = null;
-
+var app = require('htpp').createServer(handler);
+var IO = require('socket.io')(app);
+app.listen(80);
 var validgame = function(req){
   // What must exist in order for the game to start
   if(!req.session.username) {return null; }
   if(!req.session.gameID) {return null; }
 
   return{
-    gameID : req.session.gameID;
-    name : req.session.username;
+    gameID : req.session.gameID,
+    username : req.session.username;
   };
 };
 
@@ -25,12 +27,100 @@ var IO = null;
 // Define a valid game and make sure it meets requirements
 
 var game = function(req){
-
-  var valid = validgame(req);
+  
+  var valid = validGame(req);
   if(!valid){
     this.emit('error', {message: "This game does not meet proper requirements."});
-  }
-}
+  };
+};
+
+// If a player wants to create a game it has to be valid. This checks if what they
+// try to pass in is valid.
+var validStartGame = function(req){
+
+  // Must exist
+  if(!req.body['game-id']) {return null; }
+  if(!req.body['host']) {return null; }
+
+  // Bogus whitespace name is returned
+  if (/^\s*$/.test(req.body['game-id'])) {return null;}
+
+  // If all is valid, return a success
+  return {
+    gameID : req.body['game-id'],
+    username : req.body['username'],
+    host : req.body['host']
+  };
+};
+
+
+// Data for starting a game, if it's a success then they should be redirected to
+// a game page. Whatever that may be.
+
+var startGame = function(req, res){
+
+  // Create a game session
+  req.session.regnerate(function(err)){
+    if(err) {res.redirect('/'); return; }
+
+    // Check for validity
+    var valid = validStartGame(req);
+    if(!valid) {res.redirect('/'); return; }
+
+    // If valid, create a game ID
+    var gameID = database.add(valid);
+
+    // Save this data
+    req.session.gameID = gameID;
+    req.session.host = valid.host;
+    req.session.username = valid.username;
+
+    // Redirect to the game's page, using game ID
+    res.redirect('/game/'+gameID);
+
+  };
+};
+
+// This is different from join, as it validates data, if valid, a player can join a game
+var validJoinGame = function(req){
+
+  // Without an id to find then the person can't join
+  if(!req.body['game-id']) {return null; }
+
+  // If the ID is bogus (white space) then just return null
+  if (/^\s*$/.test(req.body['game-id'])) {return null;}
+
+  // If all is valid, return a success
+  return {
+    gameID : req.body['game-id'],
+    username : req.body['username']
+  };
+};
+
+// Also different from join, because this redirects
+var joinGame = function(req, res){
+
+  // Create session
+  req.session.regenerate(function(err)){
+    if(err) {res.redirect('/'); return; }
+
+    // Check for validity
+    var valid = validateJoinGame(req);
+    if(!valid) {res.redirect('/'); return; }
+
+    // Find game
+    var game = database.find(valid.gameID);
+    if(!game) {res.redirect('/'); return; }
+
+    // Save data
+    req.session.gameID = valid.gameID;
+    req.session.username = valid.username;
+
+    // Redirect to game page
+    res.redirect('/game/'+valid.gameID);
+
+  });
+};
 
 // When a player joins
 
@@ -84,7 +174,17 @@ var move = function(data){
     move : data.move,
     session: sess
   };
-  //var result = game.move(data.move)
+
+  // Find the game to make the move
+  var game = database.find(gameID);
+  if(!game){
+    console.log('Game could not be found.', debugInfo);
+    this.emit('error', {message: "Game not found. Check the ID."});
+  }
+
+  // Make the move
+  var result = game.move(data.move);
+  
   if(!result){
     console.log('Invalid move!', debugInfo);
     this.emit('error', {message: "Invalid move, try again."});
@@ -112,6 +212,12 @@ var withdraw = function(gameID){
     session: sess
   };
 
+  // Find the game to withdraw from
+  var game = database.find(gameID);
+  if(!game){
+    console.log('Game could not be found.', debugInfo);
+    this.emit('error', {message: "Game not found. Check the ID."});
+  }
   // Begin withdrawal process
   var result = game.withdraw(sess);
   // Something goes wrong
@@ -122,17 +228,12 @@ var withdraw = function(gameID){
   }
 
   // Update this to the game and players
-
   IO.sockets.in(gameID).emit('update', game);
   console.log(gameID+' '+sess.username+'': Withdrew');
-
   // Skip a turn, unless we want the game to end.
   this.nextTurn;
-
 };
-
 // Removing a player from the game when they disconnect.
-
 var remove = function(){
   var sess = this.handshake.session;
   var debugInfo = {
@@ -140,80 +241,62 @@ var remove = function(){
     event : 'disonnect',
     session : sess
   };
-
-  // Check if the game exists
   var game = database.find(gameID);
   if(!game){
     console.log('Game could not be found.', debugInfo);
     this.emit('error', {message: "Game not found. Maybe there was a mistake?"});
   }
-
   // Remove this player
-
   var result = game.removePlayer(sess);
   if(!result){
     console.log(sess.username+' failed to leave'+sess.gameID);
     return;
   }
-
   // Make update to players
-
   console.log(sess.username+' disconnected' +sess.gameID);
   console.log('Socket '+this.id+' disconnected');
-
   // Skip a turn, unless we want the game to end.
   this.nextTurn;
-}
-
+};
 // Attach events / functions to socket.io
-
 exports.attach = function(io, db){
   IO = io;
   database = db;
-
   io.sockets.on('connection', function (socket){
-
     // Event handling
     socket.on('join',join);
     socket.on('move', move);
     socket.on('withdraw', withdraw);
     socket.on('remove', remove);
-
     console.log('Socket'+socket.id+' connected');
-  })
-}
-
+  });
+};
 function nextTurn(){
   _turn = current_turn++ % players.length;
   players[_turn].emit('your_turn');
   console.log("next turn triggered " , _turn);
   triggerTimeout();
-}
-
+};
 function triggerTimeout(){
   timeOut = setTimeout(()=>{
     nextTurn();
   },MAX_WAITING);
-}
-
+};
 function resetTimeOut(){
   if(typeof timeOut === 'object'){
     console.log("timeout reset");
     clearTimeout(timeOut);
   }
-}
-
+};
  io.on('connection', function(socket){
   console.log('A player connected');
-
   players.push(socket);
   socket.on('pass_turn',function(){
      if(players[_turn] == socket){
         resetTimeOut();
         nextTurn();
      }
-  })
-
+  });
 socket.on('disconnect', function(){
   console.log('A player disconnected');
   players.splice(players.indexOf(socket),1);
