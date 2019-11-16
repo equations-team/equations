@@ -21,6 +21,39 @@ public class Algebra {
 	
 	public Algebra(String eq, String goal){
 		
+		eq = eq.replace(' ', '(');
+		int odd = 0;
+		int occur = 0;
+		
+		for(int i = 0; i < eq.length(); i++){
+
+			if(eq.charAt(i) == '(' && odd == 0) {
+				odd++;
+				occur++;
+			}else if(eq.charAt(i) == '(' && odd == 1) {
+				//String n = eq.substring(i,i+1);
+				occur++;
+				StringBuilder n = new StringBuilder(eq);
+				n.setCharAt(i, ')');
+				eq = n.toString();
+				odd--;
+			}
+			
+		}
+		
+		if(occur % 2 != 0) {
+			eq = eq + ")";
+		}
+		
+		if(eq.contains("?") == true) {
+			
+			int rootIndex = eq.indexOf("?");
+			
+			String rootNumber = eq.substring(rootIndex+1);
+
+			eq = "Math.sqrt(" + rootNumber + ")";
+		}
+		
 		solution = goal;
 		equation = eq;	
 
