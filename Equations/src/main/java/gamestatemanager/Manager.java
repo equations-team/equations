@@ -551,5 +551,7 @@ public class Manager implements Manger_Reader
         return solver;
     }
     
+    
+    
 
 }
