@@ -21,9 +21,18 @@ public class Algebra {
 	
 	public Algebra(String eq, String goal){
 		
-		if(eq.contains(" ") == true) {
+		if(eq.contains(" ") == true || eq.contains("?") == true) {
+			
+			int rootIndex = eq.indexOf("?");
+			
+			int nextSpace = eq.length();
+			
+			if(eq.contains(" ") == true) {
+			
+			nextSpace = eq.indexOf(' ', rootIndex);
+			}
 		
-		eq = eq.replace(' ', '(');
+		//eq = eq.replace(' ', '(');
 		
 		int odd = 0;
 		int occur = 0;
@@ -49,19 +58,29 @@ public class Algebra {
 		
 		if(eq.contains("?") == true) {
 			
-		int rootIndex = eq.indexOf("?");
-		
-		String rootNumber = eq.substring(rootIndex + 1);
-		
-		eq = eq.replace("?" + rootNumber, "Math.sqrt(" + rootNumber + ")");
-		}
+			String rootNumber = eq.substring(rootIndex + 1, nextSpace);
+			
+			eq = eq.replace("?" + rootNumber, "Math.sqrt(" + rootNumber + ")");
+
+			}
+			
 	}
 		
 		//Goal
 		
-		if(goal.contains(" ") == true) {
+		if(goal.contains(" ") == true || goal.contains("?") == true) {
 			
-			goal = goal.replace(' ', '(');
+			int rootIndex = goal.indexOf("?");
+			
+			int nextSpace = goal.length();
+			
+			if(goal.contains(" ") == true) {
+			
+			nextSpace = goal.indexOf(' ', rootIndex);
+				
+			}
+			
+			//goal = goal.replace(' ', '(');
 			
 			int odd = 0;
 			int occur = 0;
@@ -86,13 +105,13 @@ public class Algebra {
 			}
 			
 			if(goal.contains("?") == true) {
+
+				String rootNumber = goal.substring(rootIndex + 1, nextSpace);
 				
-			int rootIndex = goal.indexOf("?");
+				goal = goal.replace("?" + rootNumber, "Math.sqrt(" + rootNumber + ")");
+				}
 			
-			String rootNumber = goal.substring(rootIndex + 1);
-			
-			goal = goal.replace("?" + rootNumber, "Math.sqrt(" + rootNumber + ")");
-			}
+		
 		}
 		
 		solution = goal;
