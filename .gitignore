@@ -14,3 +14,16 @@ Equations/build/*
 
 # Also ignore any .class files
 *.class
+
+# The build script is unrefined and creates build artifacts along side the source file.
+# For the time being I'm just adding them to the git ignore, we need a more permanent soultion
+test/src/solver/*.class
+
+# Ignore DS_Store
+.DS_Store
+
+# Intellij Project Files
+ecs/.idea
+*.idea
+.idea/*
+*.iml
