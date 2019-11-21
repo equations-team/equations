@@ -18,7 +18,7 @@ public abstract class Die implements Dice{
 	/**
 	 * @param inPutString A DiceFace to be made the up facing side.
 	 */
-	protected void setMyUpSide(DiceFace inPutString) {
+	public void setMyUpSide(DiceFace inPutString) {
 		myUpSide = inPutString;
 	}
 	
