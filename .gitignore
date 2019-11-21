@@ -27,3 +27,4 @@ ecs/.idea
 *.idea
 .idea/*
 *.iml
+/bin/
