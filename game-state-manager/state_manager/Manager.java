@@ -112,9 +112,8 @@ public class Manager implements Manger_Reader {
 			}
 			goalEquation = str.toString();
 			int answer = (int) engine.eval(goalEquation);
+			lastPlayer = currentPlayer;
 			currentPlayer = this.nextPlayer();
-			lastPlayer = this.lastPlayer();
-
 			return true;
 
 		} catch (ScriptException e) {
@@ -171,8 +170,8 @@ public class Manager implements Manger_Reader {
 			throw new AssertionError("Please make a valid move!");
 		}
 
+		lastPlayer = currentPlayer;
 		currentPlayer = this.nextPlayer();
-		lastPlayer = this.lastPlayer();
 		return true;
 	}
 
@@ -357,18 +356,6 @@ public class Manager implements Manger_Reader {
 		return nextPlayer;
 	}
 
-	/**
-	 * 
-	 * @return last player
-	 */
-	private Player lastPlayer() {
-		count--;
-		if (count < 0) {
-			count = numPlayers - 1;
-		}
-		lastPlayer = players[count];
-		return lastPlayer;
-	}
 
 	private boolean checkForbidden(String str) {
 		for (int i = 0; i < myForbidden.getMyMat().size(); i++) {
@@ -381,11 +368,9 @@ public class Manager implements Manger_Reader {
 
 	private boolean checkRequired(String str) {
 		for (int i = 0; i < myRequired.getMyMat().size(); i++) {
-			String c = this
-					.dieFaceTranslator(myRequired.getMyMat().elementAt(i).getMyUpSide());
+		
 			if (str.contains(this.dieFaceTranslator(myRequired.getMyMat().elementAt(i).getMyUpSide()))) {
 				for (int j = 0; j < str.length(); j++) {
-					String s = str.substring(j, j + 1);
 					
 					if (str.substring(j, j + 1).compareTo(this
 							.dieFaceTranslator(myRequired.getMyMat().elementAt(i).getMyUpSide())) == 0) {
@@ -537,16 +522,6 @@ public class Manager implements Manger_Reader {
 	private boolean doingMath(String eq) {
 		this.setSolver(eq);
 		return solver.checkAnswer(eq);
-	}
-
-	/**
-	 * Enable the player to enter their eqaution
-	 * 
-	 * @param player
-	 * @param equation
-	 */
-	private void enteringEquation(Player p, String eq) {
-		p.setEquation(eq);
 	}
 
 	public Player getNextPlayer() {
