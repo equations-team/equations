@@ -1,17 +1,24 @@
 package fundementalgamemechanics;
 
-//A special die to be used by the system for functionalities.
-
+/**
+ * A die to be used as a dummy part that allowed (,) to be manipulated without altering functionality of Mat.
+ * @author James P Armstrong IV
+ */
 public class SpecialDie extends Die {
 	
-//	~ is used as an unsused string space this may be replaced at a later time if another character is needed.
 	public final static DiceFace[] SPECIALSIDES = new DiceFace[] {DiceFace.LEFT,DiceFace.RIGHT,DiceFace.LEFT,
 			DiceFace.RIGHT,DiceFace.LEFT,DiceFace.RIGHT};
 	
+	/**
+	 * @param index the face to start up.
+	 */
 	public SpecialDie(int index){
-		
+		selectSide(index);
 	}
 	
+	/**
+	 * @param index the face to turn up.
+	 */
 	public void selectSide(int index) {
 		this.setMyUpSide(SPECIALSIDES[index]);
 	}

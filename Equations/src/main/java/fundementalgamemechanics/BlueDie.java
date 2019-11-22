@@ -1,6 +1,10 @@
 package fundementalgamemechanics;
 
-//This is the blue die it contains a '0','1','2','3','÷', and '×' sides.
+/**
+ * A Blue Die that contains the 0, 1, 2, 3, Addition, Division, and Multiplication Symbols. Can be rolled to change the face.
+ * @author James P Armstrong IV
+ *
+ */
 
 public class BlueDie extends Die{
 	
@@ -11,6 +15,9 @@ public class BlueDie extends Die{
 		roll();
 	}
 	
+	/**
+	 * Changes the showing face when called.
+	 */
 	public void roll() {
 		roll(BLUESIDES);
 	}
