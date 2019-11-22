@@ -28,7 +28,7 @@ public class Solver {
 	
 	public double calculate(String eq) {
 		
-		double playerAnswer = 0;
+		double playerAnswer = 0.0;
 		
 		/**
 		 * 
@@ -39,7 +39,7 @@ public class Solver {
 		try {
 			
 			for(int i = 0; i+1 < eq.length(); i++) {
-			    if(eq == m.getGoalEquation() && Character.isDigit(eq.charAt(i)) && Character.isDigit(eq.charAt(i+1)) == true) {
+			    if(eq == a.getEquation() && Character.isDigit(eq.charAt(i)) && Character.isDigit(eq.charAt(i+1)) == true) {
 					System.out.println("ERROR not a valid equation -- no two digit numbers in YOUR solution.");
 					return 0;
 			} 
@@ -94,7 +94,7 @@ public class Solver {
 		try {
 			
 			for(int i = 0; i+1 < eq.length(); i++) {
-			    if(eq == m.getGoalEquation() && Character.isDigit(eq.charAt(i)) && Character.isDigit(eq.charAt(i+1)) == true) {
+			    if(eq == a.getEquation() && Character.isDigit(eq.charAt(i)) && Character.isDigit(eq.charAt(i+1)) == true) {
 					System.out.println("ERROR not a valid equation -- no two digit numbers in YOUR solution.");
 					return false;
 			} 
