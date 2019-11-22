@@ -1,6 +1,11 @@
 package fundementalgamemechanics;
 
-//This is the red die it contains a -, 0, 1, 2, 3, and + sides.
+/**
+ * 
+ * A Red die that has 0, 1, 2, 3, subtraction, addition symbols.
+ * @author James P Armstrong IV
+ * 
+ */
 
 public class RedDie extends Die{
 	

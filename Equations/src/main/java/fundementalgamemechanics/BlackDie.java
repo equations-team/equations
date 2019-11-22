@@ -1,6 +1,10 @@
 package fundementalgamemechanics;
 
-//This is the black die it contains a '√','÷','+','7','8', and '9' sides.
+/**
+ * The Black Die that has 7, 8, 0, addition, division, and root symbol sides. Can be rolled to change the up facing side.
+ * @author James P Armstrong IV
+ *
+ */
 
 public class BlackDie extends Die{
 	
@@ -11,6 +15,9 @@ public class BlackDie extends Die{
 		roll();
 	}
 	
+	/**
+	 * Changes the Showing die face when called.
+	 */
 	public void roll() {
 		roll(BLACKSIDES);
 	}
