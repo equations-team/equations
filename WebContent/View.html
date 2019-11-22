@@ -1,0 +1,118 @@
+{% extends "Base.html" %}
+
+{% block functions %}
+<!-- Sets the style for the elements -->
+<style>
+#resources{
+	background-color: #7B3DB2;
+  width: 100%;
+  height: 33vh;
+  border: 1px solid black;
+}
+#forbidden, #permitted, #required{
+	background-color: #12EC38;
+    margin: auto;
+  width: 33%;
+  float: left;
+  height: 66vh;
+  border: 1px solid black;
+}
+#proposedSolution{
+	background-color: #7B3DB2;
+    float: left;
+  width: 60%;
+  height: 33vh;
+  border: 1px solid black;
+}
+#solution{
+	background-color: #7B3DB2;
+    float: left;
+  width: 39%;
+  height: 33vh;
+  border: 1px solid black;
+}
+.menuButton{
+	height: 50px;
+	width: 100px;
+	font-size: 100%;
+	float: left;
+}
+</style>
+
+<!-- The code that allows the dice to be dropped into their places -->
+<script>
+function allowDrop(ev){
+	ev.preventDefault();
+}
+<!-- Essentially just transfers text data between locations -->
+function drag(ev){
+	ev.dataTransfer.setData("text", ev.target.id);
+}
+<!-- Allows dice to drop and sends drop location to Controller -->
+function drop(ev) {
+	ev.preventDefault();
+	var data = ev.dataTransfer.getData("text");
+	ev.target.appendChild(document.getElementById(data));
+	this.sendDropLoc(ev.target.id)
+}
+<!-- Loads the dice images when the page loads -->
+function loadDice(){
+	var diceId = [[${dieId}]];
+	var img = [[${link}]];
+	document.getElementById(dieId).src = link;
+}
+<!-- Sends drop location of dice -->
+function sendDropLoc(locId){
+	var url = "http://www.Equations.com/View";
+	var method = "POST";
+	var postData = locId;
+	var shouldBeAsync = true;
+	var request = new XMLHttpRequest();
+	request.onload = function(){
+		var status = request.status;
+		var data = request.responseText;
+	}
+	
+	request.open(method, url, shouldBeAsync);
+	request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+	request.send(postData);
+}
+</script>
+{% endblock %}
+
+{% block content %}
+<!-- Makes the dice and puts them in the resources -->
+<div id="resources" ondrop="drop(event)" ondragover="allowDrop(event)">
+<img [src]="loadDice(1)" draggable="true" ondragstart="drag(event)" id="1">
+<img [src]="loadDice(2)" draggable="true" ondragstart="drag(event)" id="2"> 
+<img [src]="loadDice(3)" draggable="true" ondragstart="drag(event)" id="3"> 
+<img [src]="loadDice(4)" draggable="true" ondragstart="drag(event)" id="4"> 
+<img [src]="loadDice(5)" draggable="true" ondragstart="drag(event)" id="5"> 
+<img [src]="loadDice(6)" draggable="true" ondragstart="drag(event)" id="6"> 
+<img [src]="loadDice(7)" draggable="true" ondragstart="drag(event)" id="7"> 
+<img [src]="loadDice(8)" draggable="true" ondragstart="drag(event)" id="8"> 
+<img [src]="loadDice(9)" draggable="true" ondragstart="drag(event)" id="9"> 
+<img [src]="loadDice(10)" draggable="true" ondragstart="drag(event)" id="10"> 
+<img [src]="loadDice(11)" draggable="true" ondragstart="drag(event)" id="11"> 
+<img [src]="loadDice(12)" draggable="true" ondragstart="drag(event)" id="12"> 
+<img [src]="loadDice(13)" draggable="true" ondragstart="drag(event)" id="13"> 
+<img [src]="loadDice(14)" draggable="true" ondragstart="drag(event)" id="14"> 
+<img [src]="loadDice(15)" draggable="true" ondragstart="drag(event)" id="15"> 
+<img [src]="loadDice(16)" draggable="true" ondragstart="drag(event)" id="16"> 
+<img [src]="loadDice(17)" draggable="true" ondragstart="drag(event)" id="17"> 
+<img [src]="loadDice(18)" draggable="true" ondragstart="drag(event)" id="18"> 
+<img [src]="loadDice(19)" draggable="true" ondragstart="drag(event)" id="19"> 
+<img [src]="loadDice(20)" draggable="true" ondragstart="drag(event)" id="20"> 
+<img [src]="loadDice(21)" draggable="true" ondragstart="drag(event)" id="21"> 
+<img [src]="loadDice(22)" draggable="true" ondragstart="drag(event)" id="22"> 
+<img [src]="loadDice(23)" draggable="true" ondragstart="drag(event)" id="23"> 
+<img [src]="loadDice(24)" draggable="true" ondragstart="drag(event)" id="24"> 
+</div>
+<!-- Makes the places of the board -->
+<div id="forbidden" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+<div id="permitted" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+<div id="required" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+<div id="proposedSolution" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+<div id="solution" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+ 
+{% endblock %}

@@ -1,9 +1,12 @@
 package Solver;
 import java.util.regex.Pattern;
+import gamestatemanager.*;
 
 import javax.script.*;
 
 public class Solver {
+	
+	private Manager m;
 	
 	private Algebra a;
 	
@@ -25,7 +28,7 @@ public class Solver {
 	
 	public double calculate(String eq) {
 		
-		double playerAnswer = 0;
+		double playerAnswer = 0.0;
 		
 		/**
 		 * 
