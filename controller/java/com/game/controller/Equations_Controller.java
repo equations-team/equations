@@ -1,3 +1,5 @@
+package com.game.controller;
+
 import java.awt.Image;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,9 +14,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import fundementalgamemechanics.Die;
-import fundementalgamemechanics.Game;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 /**
  * Controller for equations. It may also be called the presenter or medium for
@@ -25,8 +26,10 @@ import fundementalgamemechanics.Game;
  *
  */
 
+@EnableWebMvc
+@RequestMapping
 @Controller
-public class Equations_Controller {
+public class Equations_Controller implements Controller_Manager{
 
 	// private MockView myView;
 	private Game myModel;
@@ -40,12 +43,10 @@ public class Equations_Controller {
 	 * The Constructor
 	 */
 	public Equations_Controller() {
-		// myView = new MockView(this);
-		myModel = new Game();
-		myTurn = this.determineFirst();
-		// myView.setGoalSetter(myTurn);
-		myPlayers = new String[3];
-		myWebModel = new HashMap<String, Object>();
+		 myModel = new Game();
+		 myTurn = this.determineFirst();
+		 myPlayers = new String[3];
+		 myWebModel = new HashMap<String, Object>();
 	}
 
 	/////////////
@@ -94,17 +95,17 @@ public class Equations_Controller {
 
 	// The controller's interaction with the other player's view. Informs others of
 	// new movement.
-	@GetMapping("/game")
+	//@GetMapping("/View")
 	public String apprise(Model model, Die moved) {
 		System.out.println(moved.getMyUpSide().toString());
 		model.addAttribute("game", moved);
 		this.passTurn();
-		return "game";
+		return "View";
 
 	}
 
 	// Controller setting the goal from input from view.
-	@GetMapping("/game")
+	//@GetMapping("/View")
 	public String goalSet(Model model, String goal, String playerID) {
 		myGoal = goal;
 		model.addAttribute("game", goal);
@@ -114,7 +115,7 @@ public class Equations_Controller {
 		}
 		myCurrentPlayerID = playerID;
 		passTurn();
-		return "game";
+		return "View";
 	}
 
 	/**
@@ -148,27 +149,33 @@ public class Equations_Controller {
 	 * @param location
 	 * @param index
 	 */
-	@GetMapping ("/game")
-	public boolean moveDie(int location, int index, Model model) {
-		switch (location) {
+	//@GetMapping ("/View")
+	public void moveDie(Integer mat, Integer index, Model model) {
+		mat = 1;
+		index = 2;
+		switch (mat) {
 		case 0:
 			Die movedF = myModel.getMyResources().getMyMat().elementAt(index);
 			this.apprise(model, movedF);
-			return this.moveToForbidden(index);
+			//return this.moveToForbidden(index);
 		case 1:
 			Die movedR = myModel.getMyResources().getMyMat().elementAt(index);
 			this.apprise(model, movedR);
-			return this.moveToRequired(index);
+			boolean snap = this.moveToRequired(index);
+			model.addAttribute("boolean", snap);
+			model.addAttribute("mat", mat);
+			model.addAttribute("index", index);
+			//return snap;
 		case 2:
 			Die movedA = myModel.getMyResources().getMyMat().elementAt(index);
 			this.apprise(model, movedA);
-			return this.moveToAllowed(index);
+			//return this.moveToAllowed(index);
 
 		}
 
 		// If we're lucky, this shouldn't occur.
 		System.out.println("ERROR");
-		return false;
+		return;
 
 	}
 	
@@ -256,7 +263,7 @@ public class Equations_Controller {
 		return true;
 	}
 
-	@GetMapping
+//	@GetMapping("/View")
 	/**
 	 * A method that will get the dice ID from the view. @RequestParam will bind
 	 * that dice id to the int diceID. It should also get what mat it is going to
@@ -265,12 +272,12 @@ public class Equations_Controller {
 	 * @param model
 	 * @return /game 
 	 */
-	public String diceID(@RequestParam("diceID") int diceID, 
-			@RequestParam("matID") int matLocation, Model model) {
+	public String diceID(@RequestParam(value = "diceID") int diceID, 
+			@RequestParam(value = "matID") int matLocation, Model model) {
 		
 		model.addAttribute("diceID", diceID);
 		this.moveDie(matLocation, diceID, model);
-		return "game";
+		return "View";
 
 	}
 	
@@ -279,18 +286,26 @@ public class Equations_Controller {
 	 * @param model
 	 * @return
 	 */
-	@RequestMapping("/View")
-	public String loadDice(Map<String, Object> model){
+	@RequestMapping("/")
+	public String loadDice(Model model){
 	    for(int i = 1; i < 24; i++){
-	        model.put("dieId", i);
-	        String imageLink = myModel.getMyResources().getMyMat().get(i).getMyUpSide().toString();
-	        ImageIcon image = new ImageIcon("/images/Red0.svg");
-	        if(imageLink == "SUBTRACTION") {
-	        	model.put(image.toString(), image);
-	        }
-	        model.put("link", imageLink);
+	        model.addAttribute("dieId", i);
+	      //  String imageLink = myModel.getMyResources().getMyMat().get(i).getMyUpSide().toString();
+	        String link = "https://gilkalai.files.wordpress.com/2017/09/dice.png";
+	       /* if(imageLink == "SUBTRACTION") {
+	        	model.addAttribute(link.toString(), link);
+	        }*/
+	      //  model.addAttribute("imageLink", imageLink);
+	        model.addAttribute("link", link);
 	    }
-	    return ("/View");
+	    return "View";
+	}
+	
+	@GetMapping("/")
+	public String locatePage(Model model) {
+		String link = "https://gilkalai.files.wordpress.com/2017/09/dice.png";
+		model.addAttribute("link", link);
+		return "View";
 	}
 
 	/////////////////////////
@@ -360,5 +375,6 @@ public class Equations_Controller {
 	public void setCurrentPlayerID(String currentPlayerID) {
 		this.myCurrentPlayerID = currentPlayerID;
 	}
+
 
 }
