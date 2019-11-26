@@ -1,3 +1,5 @@
+package active_manager;
+
 import java.util.Vector;
 
 public interface IGameDB {

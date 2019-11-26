@@ -32,8 +32,6 @@ public class ActiveManager implements IActiveManager {
 			myDB.addPlayerToGame(tempGameId, players[i]);
 
 		}
-
-		
 	}
 	
 	public Player[] createPlayers(int[] ps) {
@@ -41,7 +39,6 @@ public class ActiveManager implements IActiveManager {
 		for(int i = 0; i <p.length; i++) {
 			p[i] = new Player(myDB.getName(ps[i]));
 		}
-		
 		return p;
 	}
 	/*
