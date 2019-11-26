@@ -6,7 +6,7 @@ import java.util.function.BooleanSupplier;
 
 public class GameTimer {
     public static final int SECONDS_PER_TURN = 15;
-    private static final int SECONDS_TO_MILLISECONDS = 100;
+    private static final int SECONDS_TO_MILLISECONDS = 1000;
 
     // Timers that fire every second and on expiration of the turn
     private Timer secondsTimer, expirationTimer;
