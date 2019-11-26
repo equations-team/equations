@@ -8,12 +8,12 @@ import java.util.Vector;
  */
 public class Mat implements DieHolder{
 	
-	protected Vector<Die> myMat = new Vector<Die>();
+	protected Vector<Dice> myMat = new Vector<Dice>();
 	
 	/**
 	 * @return Vector[Die] The Vector of dice.
 	 */
-	public Vector<Die> getMyMat() {
+	public Vector<Dice> getMyMat() {
 		return myMat;
 	}
 	
@@ -27,7 +27,7 @@ public class Mat implements DieHolder{
 	/**
 	 * @param in the Die to add to the Mat
 	 */
-	public void addToMyMat(Die in) {
+	public void addToMyMat(Dice in) {
 		myMat.add(in);
 	}
 	
@@ -51,7 +51,7 @@ public class Mat implements DieHolder{
 	 * @param die to find and remove.
 	 * @return true if the element was removed. false if not.
 	 */
-	public boolean removeDie(Die out) {
+	public boolean removeDie(Dice out) {
 		return myMat.removeElement(out);
 	}
 
@@ -62,13 +62,13 @@ public class Mat implements DieHolder{
 	 * @return true if successful and false when not.
 	 */
 	public boolean reorderDice(int firstIndex,int secondIndex) {
-		Die first;
+		Dice first;
 		try {
 			first = myMat.get(firstIndex);
 		} catch ( IndexOutOfBoundsException e ) {
 			return false;
 		}
-		Die second;
+		Dice second;
 		try {
 			second = myMat.get(secondIndex);
 		} catch ( IndexOutOfBoundsException e ) {

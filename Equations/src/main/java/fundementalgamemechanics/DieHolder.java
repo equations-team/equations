@@ -13,7 +13,7 @@ public interface DieHolder {
 	/**
 	 * @return Dice A vector of dice contaned by the object.
 	 */
-	public Vector<Die> getMyMat();
+	public Vector<Dice> getMyMat();
 	
 	/**
 	 * @return bool true if empty false elsewise.
@@ -23,7 +23,7 @@ public interface DieHolder {
 	/**
 	 * @param in The die to add to the object.
 	 */
-	public void addToMyMat(Die in);
+	public void addToMyMat(Dice in);
 	
 	/**
 	 * @param index the index of the die to remove.
@@ -35,7 +35,7 @@ public interface DieHolder {
 	 * @param out the die to remove
 	 * @return bool true if successful false elsewise
 	 */
-	public boolean removeDie(Die out);
+	public boolean removeDie(Dice out);
 
 	/**
 	 * @param firstIndex number to replace with the other die

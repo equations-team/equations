@@ -28,3 +28,4 @@ ecs/.idea
 .idea/*
 *.iml
 /.gradle/
+/bin/

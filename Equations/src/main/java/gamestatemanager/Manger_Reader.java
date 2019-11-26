@@ -1,11 +1,16 @@
 package gamestatemanager;
 
+import java.util.Vector;
+
 public interface Manger_Reader
 {
-    void setGoalSetter(Player p);
+	Player startTurn();
+	boolean checkInput(int flag, String str);
+	Vector<Player> getWinner();
     void setFirstPlayer();
-    void setGoal(int[] goal_indexes);
+    boolean setGoal(int[] goal_indexes);
     void setSolver(String str);
-    boolean moveDie(Player p, int i, GameMove d);
+    boolean moveDie(int i, GameMove d);
+    boolean challenge(int flag, String eq1, String eq2);
 
 }
