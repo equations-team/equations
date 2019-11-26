@@ -28,7 +28,17 @@ ecs/.idea
 .idea/*
 *.iml
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 430803025c2e2f60b9f41a7cb64aefe580196774
 /.gradle/
 =======
 /bin/
 >>>>>>> Update game manager and interfaces of die and mats
+<<<<<<< HEAD
+=======
+=======
+/bin/
+>>>>>>> 85d7039a6a724f0472d4a021e84362355e31181a
+>>>>>>> 430803025c2e2f60b9f41a7cb64aefe580196774
