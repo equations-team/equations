@@ -6,40 +6,12 @@
 	</projects>
 	<buildSpec>
 		<buildCommand>
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> 430803025c2e2f60b9f41a7cb64aefe580196774
 			<name>org.eclipse.buildship.core.gradleprojectbuilder</name>
-=======
-			<name>org.eclipse.jdt.core.javabuilder</name>
->>>>>>> Update game manager and interfaces of die and mats
-<<<<<<< HEAD
-=======
-=======
-			<name>org.eclipse.jdt.core.javabuilder</name>
->>>>>>> 85d7039a6a724f0472d4a021e84362355e31181a
->>>>>>> 430803025c2e2f60b9f41a7cb64aefe580196774
 			<arguments>
 			</arguments>
 		</buildCommand>
 	</buildSpec>
 	<natures>
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> 430803025c2e2f60b9f41a7cb64aefe580196774
 		<nature>org.eclipse.buildship.core.gradleprojectnature</nature>
-=======
-		<nature>org.eclipse.jdt.core.javanature</nature>
->>>>>>> Update game manager and interfaces of die and mats
-<<<<<<< HEAD
-=======
-=======
-		<nature>org.eclipse.jdt.core.javanature</nature>
->>>>>>> 85d7039a6a724f0472d4a021e84362355e31181a
->>>>>>> 430803025c2e2f60b9f41a7cb64aefe580196774
 	</natures>
 </projectDescription>
