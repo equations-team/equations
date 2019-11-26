@@ -4,7 +4,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.function.BooleanSupplier;
 
-public class GameTimer {
+public class GameTimeUpdater {
     public static final int SECONDS_PER_TURN = 15;
     private static final int SECONDS_TO_MILLISECONDS = 1000;
 
@@ -25,7 +25,7 @@ public class GameTimer {
      * the return should indicate whether or not the timer should keep counting down
      * @param everySecond
      */
-    public GameTimer setOnSecondsUpdate(BooleanSupplier everySecond) {
+    public GameTimeUpdater setOnSecondsUpdate(BooleanSupplier everySecond) {
         this.everySecond = everySecond;
         return this;
     }
@@ -33,7 +33,7 @@ public class GameTimer {
      * This method takes in a function that it will call on the expiration of the total time for the game timer.
      * @param onExpiration
      */
-    public GameTimer setOnExpirationUpdate(BooleanSupplier onExpiration) {
+    public GameTimeUpdater setOnExpirationUpdate(BooleanSupplier onExpiration) {
         this.onExpiration = onExpiration;
         return this;
     }
@@ -43,7 +43,8 @@ public class GameTimer {
      * this call
      */
     public void cancel() {
-
+        secondsTimer.cancel();
+        expirationTimer.cancel();
     }
 
     /**
@@ -54,7 +55,7 @@ public class GameTimer {
         expirationTimer = new Timer();
 
         // This is stupid janky...
-        GameTimer itself = this;
+        GameTimeUpdater itself = this;
 
         secondsTimer.scheduleAtFixedRate(new TimerTask() {
             @Override

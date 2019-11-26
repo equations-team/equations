@@ -24,7 +24,7 @@ public class Manager implements Manger_Reader
 
     //Data members
     private Solver    solver;
-    private GameTimer timer;
+    private GameTimeUpdater timer;
     private Player[]  players;
     private ScriptEngine engine;
 
@@ -52,7 +52,7 @@ public class Manager implements Manger_Reader
         myForbidden = new Mat();
         myPermitted = new Mat();
         myRequired = new Mat();
-        timer = new GameTimer(1);
+        timer = new GameTimeUpdater();
         engine = new ScriptEngineManager().getEngineByName("js");
 
         players = p;
