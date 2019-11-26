@@ -108,10 +108,10 @@ public class Manager implements Manger_Reader {
 			myGoal.Read();
 
 			for (int i = 0; i < myGoal.getMyGoal().size(); i++) {
-				str.append(this.dieFaceTranslator(myGoal.getMyGoal().elementAt(i)));
+				str.append(this.dieFaceTranslatorGoal(myGoal.getMyGoal().elementAt(i)));
 			}
 			goalEquation = str.toString();
-			int answer = (int) engine.eval(goalEquation);
+			double answer = (double) engine.eval(goalEquation);
 			lastPlayer = currentPlayer;
 			currentPlayer = this.nextPlayer();
 			return true;
@@ -185,7 +185,6 @@ public class Manager implements Manger_Reader {
 			case 1:
 
 				if (ThirdPlayerEq == null) {
-					if (this.checkInput(flag, PlayerEq)) {
 						if (this.doingMath(PlayerEq)) {
 							this.getLastPlayer().setScore(6);
 							this.getCurrentPlayer().setScore(2);
@@ -196,10 +195,9 @@ public class Manager implements Manger_Reader {
 							this.getCurrentPlayer().setScore(6);
 							this.getThirdPlayer().setScore(6);
 						}
-					}
+					
 
 				} else {
-					if (this.checkInput(flag, PlayerEq) && this.checkInput(flag, ThirdPlayerEq)) {
 						if(this.doingMath(PlayerEq) && this.doingMath(ThirdPlayerEq)) {
 							this.getCurrentPlayer().setScore(2);
 							this.getThirdPlayer().setScore(6);
@@ -218,7 +216,7 @@ public class Manager implements Manger_Reader {
 							this.getThirdPlayer().setScore(4);
 						}
 						
-					}
+					
 				}
 
 				break;
@@ -226,7 +224,6 @@ public class Manager implements Manger_Reader {
 			case 2:
 
 				if (ThirdPlayerEq == null) {
-					if (this.checkInput(flag, PlayerEq)) {
 						if (this.doingMath(PlayerEq)) {
 							this.getLastPlayer().setScore(2);
 							this.getThirdPlayer().setScore(4);
@@ -237,10 +234,9 @@ public class Manager implements Manger_Reader {
 							this.getThirdPlayer().setScore(6);
 							this.getCurrentPlayer().setScore(2);;
 						}
-					}
+					
 
 				} else {
-					if (this.checkInput(flag, PlayerEq) && this.checkInput(flag, ThirdPlayerEq)) {
 						if (this.doingMath(PlayerEq) && this.doingMath(ThirdPlayerEq)) {
 							this.getLastPlayer().setScore(2);
 							this.getCurrentPlayer().setScore(6);
@@ -258,7 +254,7 @@ public class Manager implements Manger_Reader {
 							this.getCurrentPlayer().setScore(2);
 							this.getThirdPlayer().setScore(4);
 						}
-					}
+					
 				}
 				break;
 				
@@ -269,7 +265,6 @@ public class Manager implements Manger_Reader {
 			switch (flag) {
 			case 1:
 
-				if (this.checkInput(flag, PlayerEq)) {
 					if (this.doingMath(PlayerEq)) {
 						this.getLastPlayer().setScore(6);
 						this.getCurrentPlayer().setScore(2);
@@ -277,12 +272,11 @@ public class Manager implements Manger_Reader {
 						this.getLastPlayer().setScore(2);
 						this.getCurrentPlayer().setScore(6);
 					}
-				}
+				
 
 				break;
 
 			case 2:
-				if (this.checkInput(flag, PlayerEq)) {
 					if (this.doingMath(PlayerEq)) {
 						this.getLastPlayer().setScore(2);
 						this.getCurrentPlayer().setScore(6);
@@ -290,7 +284,7 @@ public class Manager implements Manger_Reader {
 						this.getLastPlayer().setScore(6);
 						this.getCurrentPlayer().setScore(2);
 					}
-				}
+				
 				
 				break;
 				
@@ -391,12 +385,8 @@ public class Manager implements Manger_Reader {
 		for (int i = 0; i < myPermitted.getMyMat().size(); i++) {
 			if (str.contains(this.dieFaceTranslator(myPermitted.getMyMat().elementAt(i).getMyUpSide()))) {
 				for (int j = 0; j < str.length(); j++) {
-					if (str.substring(j, j + 1).compareTo("(") == 0 || str.substring(j, j + 1).compareTo(")") == 0 ) {
-						str = str.substring(0, j) + str.substring(j + 1);
-					}
-
-					else if (str.substring(j, j + 1).compareTo(this
-							.dieFaceTranslator(myPermitted.getMyMat().elementAt(i).getMyUpSide())) == 0 ) {
+					if (str.substring(j, j + 1).compareTo(this
+							.dieFaceTranslator(myPermitted.getMyMat().elementAt(i).getMyUpSide())) == 0) {
 						str = str.substring(0, j) + str.substring(j + 1);
 						break;
 					}
@@ -404,6 +394,15 @@ public class Manager implements Manger_Reader {
 			}
 
 		}
+		
+		for(int i =0; i<str.length(); i++) {
+			if (str.substring(i, i + 1).compareTo("(") == 0 || str.substring(i, i + 1).compareTo(")") == 0 ) {
+				str = str.substring(0, i) + str.substring(i + 1);
+				i--;
+				
+			}
+		}
+		
 		checkEquation = str;
 		return true;
 	}
@@ -484,6 +483,66 @@ public class Manager implements Manger_Reader {
 
 		case ZERO:
 			return "0";
+
+		case ADDITION:
+			return "+";
+
+		case SUBTRACTION:
+			return "-";
+
+		case MULTIPLICATION:
+			return "*";
+
+		case DIVISION:
+			return "/";
+
+		case POWER:
+			return "^";
+
+		case ROOT:
+			return "?";
+
+		case LEFT:
+			return "(";
+
+		case RIGHT:
+			return ")";
+
+		}
+		return null;
+	}
+	
+	private String dieFaceTranslatorGoal(DiceFace d) {
+		switch (d) {
+		case ONE:
+			return "1.0";
+
+		case TWO:
+			return "2.0";
+
+		case THREE:
+			return "3.0";
+
+		case FOUR:
+			return "4.0";
+
+		case FIVE:
+			return "5.0";
+
+		case SIX:
+			return "6.0";
+
+		case SEVEN:
+			return "7.0";
+
+		case EIGHT:
+			return "8.0";
+
+		case NINE:
+			return "9.0";
+
+		case ZERO:
+			return "0.0";
 
 		case ADDITION:
 			return "+";

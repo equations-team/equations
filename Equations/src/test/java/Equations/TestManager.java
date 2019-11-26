@@ -46,7 +46,6 @@ public class TestManager {
 		 * 
 		 * }
 		 */
-		
 
 		manager.moveDie(0, GameMove.ADDFORBIDDEN);
 		manager.moveDie(1, GameMove.ADDPERMITTED);
@@ -58,8 +57,7 @@ public class TestManager {
 		manager.moveDie(7, GameMove.ADDREQUIRED);
 		manager.moveDie(8, GameMove.ADDREQUIRED);
 		manager.moveDie(9, GameMove.ADDPERMITTED);
-		
-		
+
 		manager.getMyForbidden().getMyMat().elementAt(0).setMyUpSide(DiceFace.EIGHT);
 		manager.getMyPermitted().getMyMat().elementAt(0).setMyUpSide(DiceFace.ADDITION);
 		manager.getMyRequired().getMyMat().elementAt(0).setMyUpSide(DiceFace.DIVISION);
@@ -70,7 +68,7 @@ public class TestManager {
 		manager.getMyRequired().getMyMat().elementAt(2).setMyUpSide(DiceFace.ONE);
 		manager.getMyRequired().getMyMat().elementAt(3).setMyUpSide(DiceFace.NINE);
 		manager.getMyPermitted().getMyMat().elementAt(3).setMyUpSide(DiceFace.SIX);
-		
+
 		manager.getMyResources().getMyMat().elementAt(0).setMyUpSide(DiceFace.FIVE);
 		manager.getMyResources().getMyMat().elementAt(1).setMyUpSide(DiceFace.SIX);
 		manager.getMyResources().getMyMat().elementAt(2).setMyUpSide(DiceFace.SUBTRACTION);
@@ -86,7 +84,7 @@ public class TestManager {
 	public void testGameSetup() {
 
 		assertFalse(manager.getCurrentPlayer() == null);
-		assertTrue(manager.getGoalEquation().compareTo("1+2*4") == 0);
+		assertTrue(manager.getGoalEquation().compareTo("1.0+2.0*4.0") == 0);
 	}
 
 	@Test
@@ -95,8 +93,6 @@ public class TestManager {
 		manager.moveDie(0, GameMove.ADDFORBIDDEN);
 		assertTrue(manager.getMyForbidden().getMyMat().lastElement().getMyUpSide() == DiceFace.FOUR);
 	}
-
-	
 
 	@Test
 	public void testChallengeWithNullEq() {
@@ -139,9 +135,8 @@ public class TestManager {
 		assertTrue(manager.checkInput(1, "/519+"));
 		assertTrue(manager.checkInput(1, "/519+516"));
 
-
 	}
-	
+
 	@Test
 	public void testCheckInputChallenge() {
 		assertTrue(manager.checkInput(1, "/519+51656"));
@@ -149,12 +144,63 @@ public class TestManager {
 		assertTrue(manager.checkInput(1, "/519+5166"));
 		assertFalse(manager.checkInput(2, "/519+51656"));
 	}
-	
+
 	@Test
-	public void testChallenge() {
-		//assertTrue(manager.challenge(2, "9/1+5-5", null));
+	public void testChallengeNow1() {
+		assertTrue(manager.checkInput(2, "9/1+5-5"));
+		assertTrue(manager.challenge(2, "9.0/1.0+5.0-5.0", null));
+		assertTrue(manager.getCurrentPlayer().getScore() == 6);
+		assertTrue(manager.getLastPlayer().getScore() == 2);
+		assertTrue(manager.getThirdPlayer().getScore() == 4);
+		assertTrue(manager.isGameEnd());
+	}
+
+	@Test
+	public void testChallengeNow2() {
+		assertTrue(manager.challenge(2, "9.0/1.0+5.0-5.0", "1.0+1.0"));
+		assertTrue(manager.getCurrentPlayer().getScore() == 6);
+		assertTrue(manager.getLastPlayer().getScore() == 2);
+		assertTrue(manager.getThirdPlayer().getScore() == 4);
+		assertTrue(manager.isGameEnd());
+	}
+
+	@Test
+	public void testChallengeNow3() {
+		assertTrue(manager.challenge(2, "1.0+1.0", "9.0/1.0+5.0-5.0"));
+		assertTrue(manager.getCurrentPlayer().getScore() == 2);
+		assertTrue(manager.getLastPlayer().getScore() == 2);
+		assertTrue(manager.getThirdPlayer().getScore() == 6);
+		assertTrue(manager.isGameEnd());
 	}
 	
+	public void testChallengeNow4() {
+		assertTrue(manager.challenge(2, "1.0+1.0", "1.0+1.0"));
+		assertTrue(manager.getCurrentPlayer().getScore() == 2);
+		assertTrue(manager.getLastPlayer().getScore() == 6);
+		assertTrue(manager.getThirdPlayer().getScore() == 2);
+		assertTrue(manager.isGameEnd());
+	}
+
+	@Test
+	public void testParenthesis() {
+		assertTrue(manager.checkInput(2, "(((9/1)+5)-5)"));
+		assertTrue(manager.challenge(2, "(((9.0/1.0)+5.0)-5.0)", null));
+		assertTrue(manager.getCurrentPlayer().getScore() == 6);
+		assertTrue(manager.getLastPlayer().getScore() == 2);
+		assertTrue(manager.getThirdPlayer().getScore() == 4);
+		assertTrue(manager.isGameEnd());
+	}
+
+	@Test
+	public void testChallengeImpossible() {
+		assertTrue(manager.checkInput(1, "9/1+5-5"));
+		assertTrue(manager.challenge(1, "9.0/1.0+5.0-5.0", null));
+		assertTrue(manager.getCurrentPlayer().getScore() == 2);
+		assertTrue(manager.getLastPlayer().getScore() == 6);
+		assertTrue(manager.getThirdPlayer().getScore() == 4);
+		assertTrue(manager.isGameEnd());
+	}
+
 	@Test
 	public void testStartTurn() {
 		Player p = manager.startTurn();
@@ -162,7 +208,7 @@ public class TestManager {
 		assertFalse(p.getName().compareTo(manager.startTurn().getName()) == 0);
 
 	}
-	
+
 	@Test
 	public void testGetThirdPlayer() {
 		manager.startTurn();
@@ -171,10 +217,9 @@ public class TestManager {
 		Player testThird = manager.getThirdPlayer();
 		manager.moveDie(0, GameMove.ADDFORBIDDEN);
 		Player third = manager.startTurn();
-		
+
 		assertTrue(testThird.getName().compareTo(third.getName()) == 0);
-		
+
 	}
-	
 
 }
