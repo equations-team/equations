@@ -1,4 +1,4 @@
-
+package active_manager;
 public interface IPlayerDB {
 
     public int getID(String username);

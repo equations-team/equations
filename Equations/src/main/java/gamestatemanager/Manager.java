@@ -636,5 +636,7 @@ public class Manager implements Manger_Reader {
 	public void setGameEnd(boolean gameEnd) {
 		this.gameEnd = gameEnd;
 	}
+	
+	
 
 }
