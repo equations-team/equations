@@ -118,6 +118,7 @@ public class GameDBImpl implements IGameDB, IPlayerDB {
                     if (PlayerID != playerId1 && PlayerID != playerId2) {
                         query = "update gameDB set player_3_id=" + PlayerID + " where gameID= " + GameID;
                         ps = conn.prepareStatement(query);
+         
                         if (ps.executeUpdate() > 0) {
                             // System.out.println("Visit Counts updated for" + id1);
                         }
