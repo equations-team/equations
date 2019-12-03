@@ -27,7 +27,7 @@ public class DiceInterpreterTest {
     @Test
     public void test3NValidAnswer() {
         List<String> input = new ArrayList<>();
-        input.add("1 ");
+        input.add("1");
         input.add("+");
         input.add("2");
         input.add("/");

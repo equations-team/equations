@@ -34,10 +34,10 @@ public class DiceInterpreter {
             if (c == '-' || c == '+' || c == '*' || c == '/') {
                 String a = expression.substring(0, i);
                 String b = expression.substring(i + 1);
-                List<Double> aTmpList = computePermutations(a);
-                List<Double> bTmpList = computePermutations(b);
-                for (double r : aTmpList) {
-                    for (double l : bTmpList) {
+                List<Double> al = computePermutations(a);
+                List<Double> bl = computePermutations(b);
+                for (double l : al) {
+                    for (double r : bl) {
                         if (c == '-') {
                             result.add(l - r);
                         } else if (c == '+') {
