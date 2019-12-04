@@ -9,15 +9,11 @@ import io.dropwizard.jdbi3.JdbiFactory;
 import io.dropwizard.jdbi3.bundles.JdbiExceptionsBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
-import io.dropwizard.views.ViewBundle;
 import org.jdbi.v3.core.Jdbi;
-import request.CreateGameRequest;
 import resource.CreateGameResource;
 import resource.CreateUserResource;
 import resource.GetUserResource;
 import resource.UpdateUserResource;
-
-import java.util.Map;
 
 public class EquationsApplication extends Application<EquationsConfiguration> {
 
@@ -31,7 +27,7 @@ public class EquationsApplication extends Application<EquationsConfiguration> {
                 new EnvironmentVariableSubstitutor(false)
         ));
         bootstrap.addBundle(
-                new AssetsBundle("/assets/html", "/html", null, "html")
+                new AssetsBundle("/assets/html", "/html", "index.html", "html")
         );
         bootstrap.addBundle(
                 new AssetsBundle("/assets/css", "/css", null, "css")
