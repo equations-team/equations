@@ -1,12 +1,10 @@
-package main.java.servercontroller;
+package servercontroller;
 
-import main.java.gamestatemanager.Manager;
+import gamestatemanager.Manager;
 
 import java.util.Vector;
 
-import main.java.fundementalgamemechanics.DiceInterpreter;
-import main.java.gamestatemanager.GameMove;
-import main.java.servercontroller.*;
+import gamestatemanager.GameMove;
 
 public class Controller implements UserCalls, GameCalls{
 
@@ -14,6 +12,7 @@ public class Controller implements UserCalls, GameCalls{
 	private Manager myGame;
 	
 	Controller(Caller[] Players,Manager Game){
+		
 		myPlayers = Players;
 		myGame = Game;
 	}
@@ -41,8 +40,15 @@ public class Controller implements UserCalls, GameCalls{
 	}
 
 	@Override
-	public boolean checkSolution(String solution) {
-		return myGame.Solution(solution);
+	public boolean checkSolution(int challangeType, String solution) {
+		if(myGame.checkInput(challangeType,solution)) {
+			if(myPlayers.length==2) {
+				return myGame.challenge(challangeType, solution, null);
+			}
+		}else {
+			return false;
+		}
+		return true;
 	}
 
 	@Override
@@ -64,7 +70,21 @@ public class Controller implements UserCalls, GameCalls{
 	public void StartPlayer(Caller playerStart) {
 		playerStart.Start();
 	}
-
+	
+	@Override
+	public void goalStage(Caller goalSetter) {
+		Vector<Integer> players = new Vector<Integer>();
+		for(int i = 0;i < myPlayers.length;i++)
+			players.add(i);
+		for(int i = 0;i < myPlayers.length;i++)
+			if(myPlayers[i].PlayerID() == goalSetter.PlayerID()) {
+				for(int j = 0;j < players.size();j++)
+					if(j != i)
+						this.WaitPlayer(myPlayers[j]);
+				myPlayers[i].SetGoal();				
+			}
+	}
+	
 	@Override
 	public void WaitPlayer(Caller playerWait) {
 		playerWait.Wait();
@@ -73,9 +93,14 @@ public class Controller implements UserCalls, GameCalls{
 	@Override
 	public boolean UpdatePlayer(Caller playerUpdate) {
 		for(int i = 0;i < myPlayers.length;i++)
-			if(myPlayers[i] == playerUpdate)
+			if(myPlayers[i].PlayerID() == playerUpdate.PlayerID())
 				return myPlayers[i].UpdateUI();
 		return false;
+	}
+	
+	@Override
+	public boolean SetGoal(int[] GoalDice) {
+		myGame.setGoal(GoalDice);
 	}
 
 	@Override
@@ -84,7 +109,7 @@ public class Controller implements UserCalls, GameCalls{
 		for(int i = 0;i < myPlayers.length;i++)
 			players.add(i);
 		for(int i = 0;i < myPlayers.length;i++)
-			if(myPlayers[i] == challangingPlayer)
+			if(myPlayers[i].PlayerID() == challangingPlayer.PlayerID())
 				for(int j = 0;j < players.size();j++)
 					if(j != i)
 						this.CallToSolve(myPlayers[j]);

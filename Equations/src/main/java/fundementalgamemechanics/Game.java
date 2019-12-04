@@ -25,7 +25,7 @@ public class Game {
 	}
 	
 	public int moveDie(int index, int destination) {
-		Die moved = myResources.getMyMat().get(index);
+		Dice moved = myResources.getMyMat().get(index);
 		if(moved == null) return -1;
 		myResources.removeDie(moved);
 		switch(destination){

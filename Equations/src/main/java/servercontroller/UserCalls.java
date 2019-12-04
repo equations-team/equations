@@ -1,7 +1,4 @@
-package main.java.servercontroller;
-
-import main.java.gamestatemanager.GameMove;
-import main.java.servercontroller.*;
+package servercontroller;
 
 public interface UserCalls {
 
@@ -14,4 +11,5 @@ public interface UserCalls {
 	public boolean Inform(Caller informedPlayer, boolean didWin);
 	public boolean InformLoss(Caller informedPlayer);
 	public boolean InformWin(Caller informedPlayer);
+	boolean SetGoal(int[] GoalDice);
 }

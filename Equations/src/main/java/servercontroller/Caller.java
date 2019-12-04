@@ -1,4 +1,4 @@
-package src.main.java.servercontroller;
+package servercontroller;
 
 public interface Caller{
 	public void Player();
@@ -9,4 +9,5 @@ public interface Caller{
 	public boolean Challange();
 	public boolean Win();
 	public boolean Lose();
+	public void SetGoal();
 }
