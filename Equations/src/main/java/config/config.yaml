@@ -1,0 +1,15 @@
+database:
+  driverClass: com.mysql.cj.jdbc.Driver
+  user: equations
+  url: jdbc:mysql://localhost:3306/equations
+  password: changeit
+  maxWaitForConnection: 1s
+  validationQuery: "/* Equations Health Check */ SELECT 1"
+  validationQueryTimeout: 3s
+  minSize: 8
+  maxSize: 16
+  checkConnectionWhileIdle: false
+  evictionInterval: 10s
+  minIdleTime: 1 minute
+  properties:
+    charSet: UTF-8
