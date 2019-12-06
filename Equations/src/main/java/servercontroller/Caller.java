@@ -3,7 +3,7 @@ package servercontroller;
 public interface Caller{
 	public void Player();
 	public int PlayerID();
-	public boolean UpdateUI();
+	public boolean UpdateUI(String update);
 	public void Start();
 	public void Wait();
 	public boolean Challange();

@@ -12,7 +12,8 @@ public class RedDie extends Die{
 	public final static DiceFace[] REDSIDES = new DiceFace[] {DiceFace.ZERO,DiceFace.ONE,DiceFace.TWO,DiceFace.THREE
 			,DiceFace.SUBTRACTION,DiceFace.ADDITION};
 	
-	public RedDie() {
+	public RedDie(int id) {
+		super(id);
 		roll();
 	}
 	

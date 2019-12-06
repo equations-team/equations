@@ -26,11 +26,10 @@ public class Goal extends Mat implements MatReader{
 	 * Adds an open and close perenthises to the object.
 	 */
 	public void addPerenthises() {
-		myMat.add(new SpecialDie(0));
-		myMat.add(new SpecialDie(1));
+		myMat.add(new SpecialDie(0,-1));
+		myMat.add(new SpecialDie(1,-2));
 	}
 	
-	@Override
 	public void addToMyMat(Die in) {
 		myNumNormalDice++;
 		myMat.add(in);

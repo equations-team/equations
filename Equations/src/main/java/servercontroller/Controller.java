@@ -4,6 +4,7 @@ import gamestatemanager.Manager;
 
 import java.util.Vector;
 
+import fundementalgamemechanics.Mat;
 import gamestatemanager.GameMove;
 
 public class Controller implements UserCalls, GameCalls{
@@ -91,16 +92,30 @@ public class Controller implements UserCalls, GameCalls{
 	}
 
 	@Override
-	public boolean UpdatePlayer(Caller playerUpdate) {
+	public boolean UpdatePlayer(Caller playerUpdate,String Action) {
 		for(int i = 0;i < myPlayers.length;i++)
 			if(myPlayers[i].PlayerID() == playerUpdate.PlayerID())
-				return myPlayers[i].UpdateUI();
+				return myPlayers[i].UpdateUI(Action);
 		return false;
 	}
 	
+	public boolean GameStartState() {
+		String GameState = this.proccessMat(myGame.getMyResources());
+		for(int i = 0;i < myPlayers.length;i++) {
+			
+		}
+		return false;
+	}
+	
+	private String proccessMat(Mat myResources) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
 	@Override
 	public boolean SetGoal(int[] GoalDice) {
-		myGame.setGoal(GoalDice);
+		return myGame.setGoal(GoalDice);
 	}
 
 	@Override
@@ -123,7 +138,7 @@ public class Controller implements UserCalls, GameCalls{
 
 	@Override
 	public boolean CheckSolution(Caller solvingPlayer, String solution) {
-		if(checkSolution(solution)) {
+		if(checkSolution(0, solution)) {
 			return Inform(solvingPlayer, true);			
 		}else {
 			return Inform(solvingPlayer, false);
