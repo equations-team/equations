@@ -5,7 +5,7 @@ import entity.User;
 import org.jdbi.v3.core.Jdbi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import request.CreateUserRequest;
+import request.RegisterUserRequest;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -31,7 +31,7 @@ public class CreateUserResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createUser(CreateUserRequest createUserRequest) {
+    public Response createUser(RegisterUserRequest createUserRequest) {
         User user = createUserRequest.getUser();
         String guid = UUID.randomUUID().toString();
         Response response;
