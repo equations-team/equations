@@ -10,8 +10,9 @@ public class Database {
         
         Connection con = null;
         try{
+        	//jdbc:mysql://localhost/DatabseName","Username","Password"
             Class.forName("com.mysql.jdbc.Driver");
-          con = DriverManager.getConnection("jdbc:mysql://localhost/pythonlogin","root","mussaed0566060299");
+          con = DriverManager.getConnection("jdbc:mysql://localhost/pythonlogin","root","434816");
             
         }catch(ClassNotFoundException | SQLException ex){
             System.out.println(ex.getMessage());

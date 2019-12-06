@@ -637,4 +637,11 @@ public class Manager implements Manger_Reader {
 		this.gameEnd = gameEnd;
 	}
 
+
+	public Player[] getPlayers() {
+		return players;
+	}
+	
+	
+
 }
