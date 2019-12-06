@@ -8,6 +8,7 @@ public class BlueDie extends Die{
 			DiceFace.DIVISION,DiceFace.MULTIPLICATION};
 	
 	public BlueDie() {
+		this.setColor("BLUE");
 		roll();
 	}
 	

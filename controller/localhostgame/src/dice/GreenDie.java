@@ -8,6 +8,7 @@ public class GreenDie extends Die{
 			DiceFace.POWER,DiceFace.MULTIPLICATION};
 	
 	public GreenDie() {
+		this.setColor("GREEN");
 		roll();
 	}
 	

@@ -38,19 +38,27 @@ public class Equations_Controller {
 	private int myCurrentTurn;
 	private Die[] myDice;
 	private DieIcon[] myDieImages;
+	private int myGoalCounter;
+	private int[] myGoalIndex;
 
 	/**
 	 * The Constructor
 	 */
 	public Equations_Controller() {
-		// myView = new MockView(this);
+		myDieImages = new DieIcon[24];
+		myGoalCounter = 0; // This is to stop players from adding too many dice to the goal.
+		myGoalIndex = new int[5];
 		myModel = new Game();
+		myDice = new Die[24];
+		myPlayerCount = 2;
+		myPlayers = new Player[myPlayerCount];
 		myManager = new Manager(myPlayers, myModel.getMyResources().getMyMat());
+		this.determineFirst(myPlayers);
+		this.createPlayerArray("P1", "P2", "P3");
 		for (int i = 0; i < 23; i++) {
 			myDice[i] = myManager.getMyResources().getMyMat().elementAt(i);
 		}
 		myDieImages = this.loadDice();
-		myPlayers = new Player[3];
 	}
 
 	/////////////
@@ -86,14 +94,10 @@ public class Equations_Controller {
 			myCurrentTurn = 1;
 		if (players[1] == myManager.getCurrentPlayer())
 			myCurrentTurn = 2;
-		if (players[2] == myManager.getCurrentPlayer())
-			myCurrentTurn = 3;
+		if(myPlayerCount > 2)
+			if (players[2] == myManager.getCurrentPlayer())
+					myCurrentTurn = 3;
 
-	}
-
-	// Controller setting the goal from input from view.
-	public void goalSet(String goal, String playerID) {
-		myGoal = new Algebra(goal, playerID);
 	}
 
 	/**
@@ -103,11 +107,25 @@ public class Equations_Controller {
 	 * 
 	 * @param index
 	 */
-	public void goalSet(int index, Die moved) {
+	public void goalSet(int index) {
 		// Send die to goal
-		myModel.moveDie(index, 0);
+		if(myGoalCounter == 5) {
+			System.out.println("You have reached the maximum number of dice. ");
+			this.finalizeGoal(myGoalIndex);
+			return;
+		}
+		
+		myGoalIndex[myGoalCounter] = index;
+		myGoalCounter++;
+		int remainingDice = 6-myGoalCounter;
+		System.out.println("Added die. You can add "+remainingDice+" more dice to the goal. ");
 	}
 
+	// Finalizes the goal. Selected indices will be used for the rest of the game. 
+	public void finalizeGoal(int[] goal) {
+		myManager.setGoal(goal);
+	}
+	
 	/**
 	 * Skip to the next persons turn. It should be 1 if the last turn is player 3's.
 	 */
@@ -126,69 +144,27 @@ public class Equations_Controller {
 	 * 
 	 * @param location
 	 * @param index
+	 * @return true if the die was moved properly, false if something bad happened along the way.
 	 */
 	// @GetMapping ("/View")
-	public void moveDie(Integer mat, Integer index) {
+	public boolean moveDie(Integer mat, Integer index) {
 		switch (mat) {
 		case 0:
 			// Forbidden
 			myManager.moveDie(index, GameMove.ADDFORBIDDEN);
+			return true;
 		case 1:
 			// Required
 			myManager.moveDie(index, GameMove.ADDREQUIRED);
+			return true;
 		case 2:
 			// Allowed
 			myManager.moveDie(index, GameMove.ADDPERMITTED);
+			return true;
 		}
 		// If we're lucky, this shouldn't occur.
 		System.out.println("ERROR");
-		return;
-	}
-
-	/**
-	 * Move die to forbidden, uses die from resources at the index position.
-	 * 
-	 * @param index
-	 * @return true, if successful.
-	 */
-	private boolean moveToForbidden(int index) {
-		myModel.moveDie(index, 1);
-		if (myModel.moveDie(index, 1) == -1) {
-			return false;
-		}
-
-		return true;
-
-	}
-
-	/**
-	 * Move die to required, uses die from resources at the index position.
-	 * 
-	 * @param index
-	 * @return true, if successful.
-	 */
-	private boolean moveToRequired(int index) {
-		myModel.moveDie(index, 2);
-		if (myModel.moveDie(index, 2) == -1) {
-			return false;
-		}
-
-		return true;
-	}
-
-	/**
-	 * Move die to allowed, uses die from resources at the index position.
-	 * 
-	 * @param index
-	 * @return true, if successful.
-	 */
-	private boolean moveToAllowed(int index) {
-		myModel.moveDie(index, 3);
-		if (myModel.moveDie(index, 3) == -1) {
-			return false;
-		}
-
-		return true;
+		return false;
 	}
 
 	/**
@@ -421,6 +397,30 @@ public class Equations_Controller {
 
 	public void setCurrentPlayerID(String currentPlayerID) {
 		this.myCurrentPlayerID = currentPlayerID;
+	}
+	
+	public Manager getManager() {
+		return myManager;
+	}
+	
+	public DieIcon[] getDieImages() {
+		return myDieImages;
+	}
+	
+	public int[] getGoalIndex() {
+		return myGoalIndex;
+	}
+	
+	public void setGoalIndex(int[] goal) {
+		myGoalIndex = goal;
+	}
+	
+	public int getGoalCounter() {
+		return myGoalCounter;
+	}
+	
+	public void setGoalCounter(int counter) {
+		myGoalCounter = counter;
 	}
 
 }

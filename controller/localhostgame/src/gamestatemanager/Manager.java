@@ -645,5 +645,9 @@ public class Manager implements Manger_Reader {
 	public void setCurrentPlayer(Player player) {
 		currentPlayer = player;
 	}
+	
+	public void setPlayerCount(int c) {
+		numPlayers = c;
+	}
 
 }

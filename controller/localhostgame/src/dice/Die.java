@@ -8,15 +8,24 @@ public abstract class Die implements Dice{
 	
 	private DiceFace myUpSide;
 	private int myRotation;
+	private String myColor;
 	
 	public static final Random diceRoller = new Random(System.currentTimeMillis());
-	
+		
 	protected void setMyUpSide(DiceFace inPutString) {
 		myUpSide = inPutString;
 	}
 	
 	public DiceFace getMyUpSide() {
 		return myUpSide;
+	}
+	
+	public void setColor(String c) {
+		myColor = c;
+	}
+	
+	public String getColor() {
+		return myColor;
 	}
 	
 	public void roll(DiceFace[] sides) {

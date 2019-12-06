@@ -8,6 +8,7 @@ public class RedDie extends Die{
 			,DiceFace.SUBTRACTION,DiceFace.ADDITION};
 	
 	public RedDie() {
+		this.setColor("RED");
 		roll();
 	}
 	

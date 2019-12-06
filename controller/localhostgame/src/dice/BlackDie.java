@@ -8,6 +8,7 @@ public class BlackDie extends Die{
 			DiceFace.DIVISION,DiceFace.ROOT};
 	
 	public BlackDie() {
+		this.setColor("BLACK");
 		roll();
 	}
 	
