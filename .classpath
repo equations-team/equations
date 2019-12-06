@@ -9,6 +9,9 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="Equations/gradle/wrapper/gradle-wrapper.jar"/>
+	<classpathentry kind="lib" path="game-state-manager/state_manager/lib/jdbc.jar"/>
+	<classpathentry kind="lib" path="game-state-manager/state_manager/lib/mysql-connector-java-5.1.20-bin.jar"/>
+	<classpathentry kind="lib" path="game-state-manager/state_manager/lib/mysql-connector-java-8.0.17.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/5"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -15,15 +15,18 @@ public class ActiveManager implements IActiveManager {
 	
 	private GameDBImpl myDB;
 	private Map<Integer, Manager> myGames;
+	private Vector<Integer> myGameIDs;
 	
 	public ActiveManager(GameDBImpl db) {
 		myGames = new HashMap<Integer, Manager>();
 		myDB = db;
+		myGameIDs = new Vector<Integer>();
 	}
 	
 	
 	public void addNewGame(int[] players, Dice[] dice) {
 		int tempGameId = myDB.makeGame();
+		myGameIDs.add(tempGameId);
 		Player[] tempPlayers = this.createPlayers(players);
 		
 		
@@ -80,6 +83,8 @@ public class ActiveManager implements IActiveManager {
 		return myGames.size();
 	}
 	
+	
+	
 
 	//TODO: Need to check the return type for both functions.
 	public Vector<Player[]> getMyPlayers(int gameID) {
@@ -88,6 +93,15 @@ public class ActiveManager implements IActiveManager {
 
 	public Vector<Manager> getMyGames() {
 		return myDB.getGames();
+	}
+	
+	public Map<Integer, Manager> getGame(){
+		return myGames;
+	}
+
+
+	public Vector<Integer> getMyGameIDs() {
+		return myGameIDs;
 	}
 	
 	
