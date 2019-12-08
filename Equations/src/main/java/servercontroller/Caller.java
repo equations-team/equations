@@ -4,10 +4,10 @@ public interface Caller{
 	public void Player();
 	public int PlayerID();
 	public boolean UpdateUI(String update);
-	public void Start();
-	public void Wait();
-	public boolean Challange();
-	public boolean Win();
-	public boolean Lose();
-	public void SetGoal();
+	public void Start(String inform);
+	public void Wait(String inform);
+	public boolean Challange(String inform);
+	public boolean Win(String inform);
+	public boolean Lose(String inform);
+	public void SetGoal(String inform);
 }

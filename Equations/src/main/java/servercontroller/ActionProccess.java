@@ -40,6 +40,26 @@ public class ActionProccess {
 		return proccessedMat;
 	}
 	
+	public static String doGoal() {
+		return "SetGoal";
+	}
+	
+	public static String doWait() {
+		return "Wait";
+	}
+	
+	public static String doTurn() {
+		return "TakeTurn";
+	}
+	
+	public static String giveLoss() {
+		return "DidLose";
+	}
+	
+	public static String giveWin() {
+		return "DidWin";
+	}
+	
 	private static String classProccess(Dice in) {
 		if(in.getClass()==RedDie.class) {
 			return "RED";

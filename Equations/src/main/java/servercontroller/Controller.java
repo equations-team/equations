@@ -4,7 +4,9 @@ import gamestatemanager.Manager;
 
 import java.util.Vector;
 
+import fundementalgamemechanics.BlueDie;
 import fundementalgamemechanics.Mat;
+import fundementalgamemechanics.RedDie;
 import gamestatemanager.GameMove;
 
 public class Controller implements UserCalls, GameCalls{
@@ -69,7 +71,7 @@ public class Controller implements UserCalls, GameCalls{
 
 	@Override
 	public void StartPlayer(Caller playerStart) {
-		playerStart.Start();
+		playerStart.Start(ActionProccess.doTurn());
 	}
 	
 	@Override
@@ -82,13 +84,13 @@ public class Controller implements UserCalls, GameCalls{
 				for(int j = 0;j < players.size();j++)
 					if(j != i)
 						this.WaitPlayer(myPlayers[j]);
-				myPlayers[i].SetGoal();				
+				myPlayers[i].SetGoal(ActionProccess.doGoal());				
 			}
 	}
 	
 	@Override
 	public void WaitPlayer(Caller playerWait) {
-		playerWait.Wait();
+		playerWait.Wait(ActionProccess.doWait());
 	}
 
 	@Override
@@ -100,18 +102,12 @@ public class Controller implements UserCalls, GameCalls{
 	}
 	
 	public boolean GameStartState() {
-		String GameState = this.proccessMat(myGame.getMyResources());
+		String GameState = ActionProccess.proccessMat(myGame.getMyResources());
 		for(int i = 0;i < myPlayers.length;i++) {
-			
+			myPlayers[i].UpdateUI(GameState);
 		}
-		return false;
+		return true;
 	}
-	
-	private String proccessMat(Mat myResources) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 
 	@Override
 	public boolean SetGoal(int[] GoalDice) {
@@ -119,7 +115,7 @@ public class Controller implements UserCalls, GameCalls{
 	}
 
 	@Override
-	public boolean Challenge(Caller challangingPlayer) {
+	public boolean Challenge(int challangeType, Caller challangingPlayer) {
 		Vector<Integer> players = new Vector<Integer>();
 		for(int i = 0;i < myPlayers.length;i++)
 			players.add(i);
@@ -127,13 +123,13 @@ public class Controller implements UserCalls, GameCalls{
 			if(myPlayers[i].PlayerID() == challangingPlayer.PlayerID())
 				for(int j = 0;j < players.size();j++)
 					if(j != i)
-						this.CallToSolve(myPlayers[j]);
+						this.CallToSolve(challangeType, myPlayers[j]);
 		return false;
 	}
 
 	@Override
-	public boolean CallToSolve(Caller challangedPlayer) {
-		return challangedPlayer.Challange();
+	public boolean CallToSolve(int challangeType, Caller challangedPlayer) {
+		return challangedPlayer.Challange(ActionProccess.proccessChallange(challangeType, challangedPlayer.PlayerID()));
 	}
 
 	@Override
@@ -157,12 +153,12 @@ public class Controller implements UserCalls, GameCalls{
 
 	@Override
 	public boolean InformLoss(Caller informedPlayer) {
-		return informedPlayer.Lose();
+		return informedPlayer.Lose(ActionProccess.giveLoss());
 	}
 
 	@Override
 	public boolean InformWin(Caller informedPlayer) {
-		return informedPlayer.Win();
+		return informedPlayer.Win(ActionProccess.giveWin());
 	}
 
 }
