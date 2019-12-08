@@ -20,12 +20,10 @@ import java.util.UUID;
 public class RegisterUserResource {
     private final Jdbi jdbi;
     private final UserDAO userDAO;
-    private final byte[] salt;
 
-    public RegisterUserResource(Jdbi jdbi, UserDAO userDAO, byte[] salt) {
+    public RegisterUserResource(Jdbi jdbi, UserDAO userDAO) {
         this.jdbi = jdbi;
         this.userDAO = userDAO;
-        this.salt = salt;
     }
 
     @POST
@@ -34,14 +32,15 @@ public class RegisterUserResource {
     public Response registerUser(RegisterUserRequest registerUserRequest) {
         User user = registerUserRequest.getUser();
         String guid = UUID.randomUUID().toString();
+        String salt = Cryptographer.generateSalt(32).get().toString();
         try {
             String password = Cryptographer.getSaltedHash(user.getUserPassword(), salt);
-
-            userDAO.insertUser(guid, user.getUserName(), password);
+            userDAO.insertUser(guid, user.getUserName(), password, salt);
             User success = User.newBuilder()
                     .setUserId(guid)
                     .setUserName(user.getUserName())
                     .setUserPassword(password)
+                    .setUserSalt(salt)
                     .build();
             return Response.status(200).entity(success).build();
         } catch (Exception e) {

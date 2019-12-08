@@ -22,7 +22,7 @@ public class Cryptographer {
             return Optional.empty();
         }
     }
-    public static String getSaltedHash(String password, byte[]salt) {
-        return Base64.encodeBase64String(salt) + "$" + hash(password, salt);
+    public static String getSaltedHash(String password, String salt) {
+        return Base64.encodeBase64String(salt.getBytes()) + "$" + hash(password, salt);
     }
 }

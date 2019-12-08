@@ -19,12 +19,10 @@ import javax.ws.rs.core.Response;
 public class LoginUserResource {
     private final Jdbi jdbi;
     private final UserDAO userDAO;
-    private final byte[] salt;
 
-    public LoginUserResource(Jdbi jdbi, UserDAO userDAO, byte[] salt) {
+    public LoginUserResource(Jdbi jdbi, UserDAO userDAO) {
         this.jdbi = jdbi;
         this.userDAO = userDAO;
-        this.salt = salt;
     }
 
     @POST
@@ -32,6 +30,7 @@ public class LoginUserResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response loginUser(LoginUserRequest loginUserRequest) {
         try {
+            String salt = userDAO.getSaltByUsername(loginUserRequest.getUserName());
             String passToCheck = Cryptographer.getSaltedHash(loginUserRequest.getUserPassword(), salt);
             User user = userDAO.getUserByNameAndPassword(loginUserRequest.getUserName(), passToCheck);
             return Response.status(200).entity(user).build();
