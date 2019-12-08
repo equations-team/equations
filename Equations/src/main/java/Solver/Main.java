@@ -9,7 +9,7 @@ public class Main {
 	public static void main(String[] args) throws ScriptException {
 
 		
-		Algebra a = new Algebra("5.0* 2.0+1.0", "7.0+8.0");
+		Algebra a = new Algebra("?6.0", "?6.0* 3.0/3.0 ");
 		
 		Solver manage = new Solver(a);
 		
