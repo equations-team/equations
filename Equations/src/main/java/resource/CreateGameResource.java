@@ -24,7 +24,7 @@ public class CreateGameResource {
     private final GameDAO gameDAO;
     private final static Logger LOGGER = LoggerFactory.getLogger(CreateGameResource.class);
 
-    public CreateGameResource(Jdbi jdbi, GameDAO gameDAO, Manager manager) {
+    public CreateGameResource(Jdbi jdbi, GameDAO gameDAO) {
         this.jdbi = jdbi;
         this.gameDAO = gameDAO;
     }

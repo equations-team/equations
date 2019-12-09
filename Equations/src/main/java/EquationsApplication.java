@@ -9,6 +9,7 @@ import io.dropwizard.jdbi3.JdbiFactory;
 import io.dropwizard.jdbi3.bundles.JdbiExceptionsBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+import io.dropwizard.views.ViewBundle;
 import org.jdbi.v3.core.Jdbi;
 import resource.*;
 
@@ -52,6 +53,7 @@ public class EquationsApplication extends Application<EquationsConfiguration> {
         final GetUserResource getUserResource = new GetUserResource(jdbi, userDAO);
         final UpdateUserResource updateUserResource = new UpdateUserResource(jdbi, userDAO);
         final CreateGameResource createGameResource = new CreateGameResource(jdbi, gameDAO);
+        final GetGameViewResource getGameViewResource = new GetGameViewResource(gameDAO);
 
         // Health Checks
 
@@ -61,5 +63,7 @@ public class EquationsApplication extends Application<EquationsConfiguration> {
         environment.jersey().register(getUserResource);
         environment.jersey().register(updateUserResource);
         environment.jersey().register(createGameResource);
+        environment.jersey().register(getGameViewResource);
+
     }
 }
