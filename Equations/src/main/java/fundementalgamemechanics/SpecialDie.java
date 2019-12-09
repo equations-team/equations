@@ -12,8 +12,7 @@ public class SpecialDie extends Die {
 	/**
 	 * @param index the face to start up.
 	 */
-	public SpecialDie(int index,int id) {
-		super(id);
+	public SpecialDie(int index) {
 		selectSide(index);
 	}
 	
