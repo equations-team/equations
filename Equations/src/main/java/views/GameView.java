@@ -1,17 +1,18 @@
 package views;
 
+import entity.GameRepresentation;
 import fundementalgamemechanics.Game;
 import io.dropwizard.views.View;
 
 public class GameView extends View {
-    private final Game game;
+    private final GameRepresentation game;
 
-    public GameView(Game game) {
+    public GameView(GameRepresentation game) {
         super("gameview.ftl");
         this.game = game;
     }
 
-    public Game getGame() {
+    public GameRepresentation getGame() {
         return game;
     }
 
