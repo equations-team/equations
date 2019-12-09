@@ -46,18 +46,13 @@ public class Equations_Controller {
 		Random random = new Random();
 		p1 = random.nextInt(10 - 1 + 1) + 1;
 		p2 = random.nextInt(10 - 1 + 1) + 1;
-//		p3 = random.nextInt(10 - 1 + 1) + 1;
-//		int high = Math.max(p1, Math.max(p2, p3));
 		int high = Math.max(p1, p2)
 		myTurn = high;
 		if(high == p1) {
 			myTurn = 1;
 		}else if(high == p2){
 			myTurn = 2;
-		}
-//		}else if(high == p3) {
-//			myTurn = 3;
-//		}
+		}\
 		return myTurn;
 	}
 
@@ -80,9 +75,7 @@ public class Equations_Controller {
 	 */
 	public void passTurn() {
 		if (myTurn == 2) {
-//		if (myTurn == 3) {
-//			myTurn = 1;
-//			myView.setTurn(1);
+			myView.setTurn(1);
 		} else {
 			myTurn++;
 			myView.setTurn(myTurn);

@@ -13,13 +13,13 @@ public class Game {
 	public Game() {
 		for(int i = 0; i < DICENUMBER; i++) {
 			if(i < REDNUMBER) {
-				myResources.addToMyMat(new RedDie(i));
+				myResources.addToMyMat(new RedDie());
 			}else if(i < REDNUMBER + BLUENUMBER) {
-				myResources.addToMyMat(new BlueDie(i));
+				myResources.addToMyMat(new BlueDie());
 			}else if(i < REDNUMBER + BLUENUMBER + GREENNUMBER) {
-				myResources.addToMyMat(new GreenDie(i));
+				myResources.addToMyMat(new GreenDie());
 			}else {
-				myResources.addToMyMat(new BlackDie(i));
+				myResources.addToMyMat(new BlackDie());
 			}
 		}	
 	}

@@ -637,4 +637,11 @@ public class Manager implements Manger_Reader {
 		this.gameEnd = gameEnd;
 	}
 
+	
+	public int[] getScores() {
+		int[] scores = new int[numPlayers];
+		for(int i = 0;i < players.length;i++)
+			scores[i] = players[i].getScore();
+		return scores;
+	}
 }

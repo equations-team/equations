@@ -1,164 +1,171 @@
 package servercontroller;
 
 import gamestatemanager.Manager;
-
-import java.util.Vector;
-
+import gamestatemanager.Player;
+import fundementalgamemechanics.BlackDie;
 import fundementalgamemechanics.BlueDie;
+import fundementalgamemechanics.Die;
+import fundementalgamemechanics.GreenDie;
 import fundementalgamemechanics.Mat;
 import fundementalgamemechanics.RedDie;
 import gamestatemanager.GameMove;
 
-public class Controller implements UserCalls, GameCalls{
-
-	private Caller[] myPlayers;
+public class Controller implements Calls{
 	private Manager myGame;
+	private Caller[] myPlayers;
+	private IDDIE[] myDice;
+	private int lastTurnPlayer;
 	
-	Controller(Caller[] Players,Manager Game){
-		
-		myPlayers = Players;
-		myGame = Game;
-	}
-	
-	
-	@Override
-	public boolean StartTurn(int UserID) {
-		Vector<Integer> players = new Vector<Integer>();
-		for(int i = 0;i < myPlayers.length;i++)
-			players.add(i);
-		for(int i = 0;i < myPlayers.length;i++)
-			if(myPlayers[i].PlayerID() == UserID) {
-				for(int j = 0;j < players.size();j++)
-					if(j != i)
-						this.WaitPlayer(myPlayers[j]);
-				this.StartPlayer(myPlayers[i]);
-				return true;
-			}
-		return false;
+	private int myChallengeType;
+	private int response;
+	private String[] Solutions;
+
+	Controller(Caller[] players){
+		myPlayers = players;
 	}
 
 	@Override
-	public boolean MoveDie(GameMove gameMat, int dieIndex) {
-		return myGame.moveDie(dieIndex, gameMat);
-	}
-
-	@Override
-	public boolean checkSolution(int challangeType, String solution) {
-		if(myGame.checkInput(challangeType,solution)) {
-			if(myPlayers.length==2) {
-				return myGame.challenge(challangeType, solution, null);
-			}
-		}else {
-			return false;
-		}
-		return true;
-	}
-
-	@Override
-	public boolean Win(int winner) {
-		Vector<Integer> players = new Vector<Integer>();
-		for(int i = 0;i < myPlayers.length;i++)
-			players.add(i);
-		for(int i = 0;i < myPlayers.length;i++)
-			if(myPlayers[i].PlayerID() == winner) {
-				for(int j = 0;j < players.size();j++)
-					if(j != i)
-						this.Inform(myPlayers[j],false);
-				return this.Inform(myPlayers[i],true);
-			}
-		return false;
-	}
-
-	@Override
-	public void StartPlayer(Caller playerStart) {
-		playerStart.Start(ActionProccess.doTurn());
-	}
-	
-	@Override
-	public void goalStage(Caller goalSetter) {
-		Vector<Integer> players = new Vector<Integer>();
-		for(int i = 0;i < myPlayers.length;i++)
-			players.add(i);
-		for(int i = 0;i < myPlayers.length;i++)
-			if(myPlayers[i].PlayerID() == goalSetter.PlayerID()) {
-				for(int j = 0;j < players.size();j++)
-					if(j != i)
-						this.WaitPlayer(myPlayers[j]);
-				myPlayers[i].SetGoal(ActionProccess.doGoal());				
-			}
-	}
-	
-	@Override
-	public void WaitPlayer(Caller playerWait) {
-		playerWait.Wait(ActionProccess.doWait());
-	}
-
-	@Override
-	public boolean UpdatePlayer(Caller playerUpdate,String Action) {
-		for(int i = 0;i < myPlayers.length;i++)
-			if(myPlayers[i].PlayerID() == playerUpdate.PlayerID())
-				return myPlayers[i].UpdateUI(Action);
-		return false;
-	}
-	
-	public boolean GameStartState() {
-		String GameState = ActionProccess.proccessMat(myGame.getMyResources());
+	public void Start() {
+		Die[] dice = gameDice();
+		Player[] players = makePlayers();
+		myGame = new Manager(players, dice);
+		myGame.setFirstPlayer();
+		lastTurnPlayer = findPlayer(players,myGame.getGoalSetter());
+		setDice(myGame.getMyResources());
 		for(int i = 0;i < myPlayers.length;i++) {
-			myPlayers[i].UpdateUI(GameState);
+			myPlayers[i].UpdateUI(ActionProccess.proccessStart(myDice));
+			if(i == lastTurnPlayer) {
+				myPlayers[i].SetGoal(ActionProccess.doGoal());
+			}else
+				myPlayers[i].Wait(ActionProccess.doWait());
 		}
-		return true;
+	}
+	
+	private void setDice(Mat myResources) {
+		myDice = new IDDIE[myResources.getMyMat().size()];
+		for(int i = 0;i < myDice.length;i++)
+			myDice[i] = new IDDIE((Die) myResources.getMyMat().get(i),i);
+	}
+
+	private int findPlayer(Player[] players, Player test) {
+		for(int i = 0;i < players.length;i++)
+			if(players[i].equals(test))
+				return i;
+		return -1;
+	}
+
+	private Player[] makePlayers() {
+		Player[] players = new Player[myPlayers.length];
+		for(int i = 0;i < players.length;i++)
+			players[i] = new Player(myPlayers[i].PlayerNamer());
+		return players;
+	}
+
+	private Die[] gameDice() {
+		Die[] dice = new Die[24];
+		for(int i = 0; i < 24; i++) {
+			if(i < 6) {
+				dice[i] = (new RedDie());
+			}else if(i < 12) {
+				dice[i] = (new BlueDie());
+			}else if(i < 18) {
+				dice[i] = (new GreenDie());
+			}else {
+				dice[i] = (new BlackDie());
+			}
+		}	
+		return dice;
 	}
 
 	@Override
-	public boolean SetGoal(int[] GoalDice) {
-		return myGame.setGoal(GoalDice);
-	}
-
-	@Override
-	public boolean Challenge(int challangeType, Caller challangingPlayer) {
-		Vector<Integer> players = new Vector<Integer>();
+	public void Challenge(int challengetype, int playerid) {
+		response = 1;
+		Solutions = new String[myPlayers.length];
+		myChallengeType = challengetype;
+		int index = findPlayer(playerid);
+		Solutions[index] = "NO";
+		myPlayers[index].Wait(ActionProccess.doWait());
+		myPlayers[lastTurnPlayer].Challange(ActionProccess.proccessChallenge(challengetype));
 		for(int i = 0;i < myPlayers.length;i++)
-			players.add(i);
+			if(i!=index&&i!=lastTurnPlayer)
+				myPlayers[i].ConciderChallange(ActionProccess.proccessConciderChallenge(challengetype));
+	}
+	
+	private int nextPlayer() {
+		if(lastTurnPlayer == myPlayers.length-1)
+			return 0;
+		return lastTurnPlayer + 1;
+	}
+	
+	@Override
+	public void SetGoal(int[] diceids) {
+		if(myGame.setGoal(diceids)) {
+			for(int i = 0;i < myPlayers.length;i++)
+				if(i!=lastTurnPlayer)
+					myPlayers[i].UpdateUI(ActionProccess.proccessGoal(diceids));
+			newTurn();
+		}else
+			myPlayers[lastTurnPlayer].SetGoal(ActionProccess.doGoal());
+	}
+	
+	private void newTurn() {
+		int next = nextPlayer();
+		myPlayers[next].Start(ActionProccess.doTurn());
 		for(int i = 0;i < myPlayers.length;i++)
-			if(myPlayers[i].PlayerID() == challangingPlayer.PlayerID())
-				for(int j = 0;j < players.size();j++)
-					if(j != i)
-						this.CallToSolve(challangeType, myPlayers[j]);
-		return false;
+			if(i != next)
+				myPlayers[i].Wait(ActionProccess.doWait());
 	}
 
 	@Override
-	public boolean CallToSolve(int challangeType, Caller challangedPlayer) {
-		return challangedPlayer.Challange(ActionProccess.proccessChallange(challangeType, challangedPlayer.PlayerID()));
+	public void Move(int dieid, GameMove move) {
+		lastTurnPlayer = nextPlayer();
+		for(int i = 0;i < myPlayers.length;i++)
+			if(i!=lastTurnPlayer)
+				myPlayers[i].UpdateUI(ActionProccess.proccessMove(dieid, move));
+		int index = findDie(myGame.getMyResources(),myDice[whichDie(dieid)]);
+		myGame.moveDie(index, move);
+		newTurn();
+	}
+	
+	private int findDie(Mat mat, IDDIE iddie) {
+		for(int i = 0;i < mat.getMyMat().size();i++)
+			if(mat.getMyMat().get(i).equals(iddie.getDie()))
+					return i;					
+		return -1;
+	}
+
+	private int whichDie(int dieid) {
+		for(int i = 0;i < myDice.length;i++)
+			if(myDice[i].getID() == dieid)
+				return i;
+		return -1;
 	}
 
 	@Override
-	public boolean CheckSolution(Caller solvingPlayer, String solution) {
-		if(checkSolution(0, solution)) {
-			return Inform(solvingPlayer, true);			
-		}else {
-			return Inform(solvingPlayer, false);
-		}
+	public void Solution(String solution, int playerid) {
+		int index = findPlayer(playerid);
+		Solutions[index] = solution;
+		if(++response>=myPlayers.length)
+			challangeComplete();
 	}
-
-	@Override
-	public boolean Inform(Caller informedPlayer, boolean didWin) {
-		if(didWin) {
-			this.InformWin(informedPlayer);
-		}else {
-			this.InformLoss(informedPlayer);
-		}
-		return false;
+	
+	private int findPlayer(int playerid) {
+		for(int i = 0;i < myPlayers.length;i++)
+			if(playerid == myPlayers[i].PlayerID())
+				return i;
+		return -1;
 	}
-
-	@Override
-	public boolean InformLoss(Caller informedPlayer) {
-		return informedPlayer.Lose(ActionProccess.giveLoss());
+	
+	private void challangeComplete() {
+		String PlayerEq = Solutions[lastTurnPlayer];
+		String ThirdPlayerEq = null;
+		for(int i = 0;i < myPlayers.length;i++)
+			if(i!=lastTurnPlayer&&Solutions[i].equals("NO"))
+				ThirdPlayerEq = Solutions[i];
+		myGame.challenge(myChallengeType, PlayerEq, ThirdPlayerEq);
+		int[] scores = myGame.getScores();
+		for(int i = 0;i < myPlayers.length;i++)
+			myPlayers[i].End(ActionProccess.giveEnd(scores[i]));
 	}
-
-	@Override
-	public boolean InformWin(Caller informedPlayer) {
-		return informedPlayer.Win(ActionProccess.giveWin());
-	}
-
+	
 }

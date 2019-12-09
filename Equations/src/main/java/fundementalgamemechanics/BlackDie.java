@@ -11,8 +11,7 @@ public class BlackDie extends Die{
 	public final static DiceFace[] BLACKSIDES = new DiceFace[] {DiceFace.SEVEN,DiceFace.EIGHT,DiceFace.NINE,DiceFace.ADDITION,
 			DiceFace.DIVISION,DiceFace.ROOT};
 	
-	public BlackDie(int id) {
-		super(id);
+	public BlackDie() {
 		roll();
 	}
 	

@@ -8,11 +8,13 @@ import fundementalgamemechanics.Mat;
 import fundementalgamemechanics.RedDie;
 import gamestatemanager.GameMove;
 
+
+//Outgoing translator
 public class ActionProccess {
 	
-	public static String proccessMove(Die moved, GameMove Location) {
+	public static String proccessMove(int dieid, GameMove Location) {
 		String action = "";
-		action += "MoveDie " + moved.getID() + " " + Location.name();
+		action += "MoveDie " + dieid + " " + Location.name();
 		return action;
 	}
 	
@@ -22,20 +24,30 @@ public class ActionProccess {
 		return timer;
 	}
 	
-	public static String proccessChallange(int challangeType,int playerID) {
+	public static String proccessChallenge(int challangeType) {
 		String challange = "";
-		challange += "Challange " + challangeType + " " + playerID;
+		challange += "Challenge " + challangeType;
 		return challange;		
 	}
+
+	public static String proccessConciderChallenge(int challangeType) {
+		String challange = "";
+		challange += "ConciderChallenge " + challangeType;
+		return challange;
+	}
 	
-	public static String proccessMat(Mat mat) {
+	public static String proccessGoal(int[] ids) {
+		String goal = "";
+		for(int i = 0; i == ids.length;i++) {
+			goal += "MoveDie " + ids[i] + " " + GameMove.ADDGOAL.name() + "\n";
+		}
+		return goal;
+	}
+	
+	public static String proccessStart(IDDIE[] mat) {
 		String proccessedMat = "";
-		String Class;
-		Die die;
-		for(int i = 0; i == mat.getMyMat().size();i++) {
-			die = (Die) mat.getMyMat().get(i);
-			Class = classProccess(die);
-			proccessedMat += "AddDie " + Class + " " + die.getMyUpSide().name() + " " + die.getID() + "\n";
+		for(int i = 0; i == mat.length;i++) {
+			proccessedMat += "AddDie " + mat[i] + "\n";
 		}
 		return proccessedMat;
 	}
@@ -52,15 +64,11 @@ public class ActionProccess {
 		return "TakeTurn";
 	}
 	
-	public static String giveLoss() {
-		return "DidLose";
+	public static String giveEnd(int score) {
+		return "Scored " + score;
 	}
 	
-	public static String giveWin() {
-		return "DidWin";
-	}
-	
-	private static String classProccess(Dice in) {
+	public static String classProccess(Dice in) {
 		if(in.getClass()==RedDie.class) {
 			return "RED";
 		}else if(in.getClass()==BlueDie.class) {
