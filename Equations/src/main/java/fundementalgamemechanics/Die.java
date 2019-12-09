@@ -12,6 +12,11 @@ public abstract class Die implements Dice{
 	
 	private DiceFace myUpSide;
 	private int myRotation;
+	private int myID;
+	
+	Die(int id){
+		myID = id;
+	}
 	
 	public static final Random diceRoller = new Random(System.currentTimeMillis());
 	
@@ -50,5 +55,9 @@ public abstract class Die implements Dice{
 		}else {
 			myRotation = 8;
 		}
+	}
+
+	public int getID() {
+		return myID;
 	}
 }

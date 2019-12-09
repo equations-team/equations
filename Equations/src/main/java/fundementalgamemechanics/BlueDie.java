@@ -11,7 +11,8 @@ public class BlueDie extends Die{
 	public final static DiceFace[] BLUESIDES = new DiceFace[] {DiceFace.ZERO,DiceFace.ONE,DiceFace.TWO,DiceFace.THREE,
 			DiceFace.DIVISION,DiceFace.MULTIPLICATION};
 	
-	public BlueDie() {
+	public BlueDie(int id) {
+		super(id);
 		roll();
 	}
 	

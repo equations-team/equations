@@ -13,19 +13,19 @@ public class Game {
 	public Game() {
 		for(int i = 0; i < DICENUMBER; i++) {
 			if(i < REDNUMBER) {
-				myResources.addToMyMat(new RedDie());
+				myResources.addToMyMat(new RedDie(i));
 			}else if(i < REDNUMBER + BLUENUMBER) {
-				myResources.addToMyMat(new BlueDie());
+				myResources.addToMyMat(new BlueDie(i));
 			}else if(i < REDNUMBER + BLUENUMBER + GREENNUMBER) {
-				myResources.addToMyMat(new GreenDie());
+				myResources.addToMyMat(new GreenDie(i));
 			}else {
-				myResources.addToMyMat(new BlackDie());
+				myResources.addToMyMat(new BlackDie(i));
 			}
 		}	
 	}
 	
 	public int moveDie(int index, int destination) {
-		Die moved = myResources.getMyMat().get(index);
+		Dice moved = myResources.getMyMat().get(index);
 		if(moved == null) return -1;
 		myResources.removeDie(moved);
 		switch(destination){
