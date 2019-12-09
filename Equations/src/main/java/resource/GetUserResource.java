@@ -5,7 +5,6 @@ import entity.User;
 import org.jdbi.v3.core.Jdbi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import request.CreateUserRequest;
 import request.GetUserRequest;
 
 import javax.ws.rs.Consumes;
@@ -15,7 +14,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.NoSuchElementException;
-import java.util.UUID;
 
 @Path("/api/GetUser")
 @Produces(MediaType.APPLICATION_JSON)
