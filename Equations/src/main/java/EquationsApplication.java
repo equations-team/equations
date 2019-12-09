@@ -40,6 +40,7 @@ public class EquationsApplication extends Application<EquationsConfiguration> {
                 new AssetsBundle("/assets/js", "/js", null, "js")
         );
         bootstrap.addBundle(new JdbiExceptionsBundle());
+        bootstrap.addBundle(new ViewBundle<EquationsConfiguration>());
     }
 
     @Override
