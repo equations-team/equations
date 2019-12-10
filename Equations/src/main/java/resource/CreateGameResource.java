@@ -2,6 +2,7 @@ package resource;
 
 import db.GameDAO;
 import entity.GameRepresentation;
+import gamestatemanager.Manager;
 import org.jdbi.v3.core.Jdbi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,22 +35,11 @@ public class CreateGameResource {
     public Response createGame(CreateGameRequest createGameRequest) {
         GameRepresentation game = createGameRequest.getGameRepresentation();
         String guid = UUID.randomUUID().toString();
-
         Response response;
         try {
             gameDAO.insertGame(guid, game.getRefUserIdOne(), game.getRefUserIdTwo(),
-                    game.getRefUserIdThree(), game.getUserOneScore(), game.getUserTwoScore(),
-                    game.getUserThreeScore());
-            GameRepresentation success = GameRepresentation.newBuilder()
-                    .setGameId(guid)
-                    .setRefUserIdOne(game.getRefUserIdOne())
-                    .setRefUserIdTwo(game.getRefUserIdTwo())
-                    .setRefUserIdThree(game.getRefUserIdThree())
-                    .setUserOneScore(game.getUserOneScore())
-                    .setUserTwoScore(game.getUserTwoScore())
-                    .setUserThreeScore(game.getUserThreeScore())
-                    .build();
-            response = Response.status(200).entity(success).build();
+                    game.getRefUserIdThree());
+            response = Response.status(200).entity(guid).build();
         } catch (NoSuchElementException e) {
             String error = e.getMessage() + '\n' + e.getStackTrace();
             LOGGER.error(error);

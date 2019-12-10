@@ -5,4 +5,5 @@ public enum GameMove
     ADDREQUIRED,
     ADDPERMITTED,
     ADDFORBIDDEN,
+    ADDGOAL;
 }

@@ -1,6 +1,8 @@
 import config.EquationsConfiguration;
 import db.GameDAO;
 import db.UserDAO;
+import db.helper.PlayerHelper;
+import gamestatemanager.Player;
 import io.dropwizard.Application;
 import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.configuration.EnvironmentVariableSubstitutor;
@@ -11,13 +13,9 @@ import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import io.dropwizard.views.ViewBundle;
 import org.jdbi.v3.core.Jdbi;
-import request.CreateGameRequest;
-import resource.CreateGameResource;
-import resource.CreateUserResource;
-import resource.GetUserResource;
-import resource.UpdateUserResource;
+import resource.*;
 
-import java.util.Map;
+import java.util.List;
 
 public class EquationsApplication extends Application<EquationsConfiguration> {
 
@@ -31,7 +29,7 @@ public class EquationsApplication extends Application<EquationsConfiguration> {
                 new EnvironmentVariableSubstitutor(false)
         ));
         bootstrap.addBundle(
-                new AssetsBundle("/assets/html", "/html", null, "html")
+                new AssetsBundle("/assets/html", "/html", "index.html", "html")
         );
         bootstrap.addBundle(
                 new AssetsBundle("/assets/css", "/css", null, "css")
@@ -40,6 +38,7 @@ public class EquationsApplication extends Application<EquationsConfiguration> {
                 new AssetsBundle("/assets/js", "/js", null, "js")
         );
         bootstrap.addBundle(new JdbiExceptionsBundle());
+        bootstrap.addBundle(new ViewBundle<EquationsConfiguration>());
     }
 
     @Override
@@ -52,18 +51,26 @@ public class EquationsApplication extends Application<EquationsConfiguration> {
         final UserDAO userDAO = jdbi.onDemand(UserDAO.class);
         final GameDAO gameDAO = jdbi.onDemand(GameDAO.class);
 
+        // Helper
+        PlayerHelper playerHelper = new PlayerHelper(gameDAO, userDAO);
+
         // Resources
-        final CreateUserResource createUserResource = new CreateUserResource(jdbi, userDAO);
+        final RegisterUserResource registerUserResource = new RegisterUserResource(jdbi, userDAO);
+        final LoginUserResource loginUserResource = new LoginUserResource(jdbi, userDAO);
         final GetUserResource getUserResource = new GetUserResource(jdbi, userDAO);
         final UpdateUserResource updateUserResource = new UpdateUserResource(jdbi, userDAO);
         final CreateGameResource createGameResource = new CreateGameResource(jdbi, gameDAO);
+        final GetGameViewResource getGameViewResource = new GetGameViewResource(gameDAO);
 
         // Health Checks
 
-        //Registration
-        environment.jersey().register(createUserResource);
+        // Registration
+        environment.jersey().register(registerUserResource);
+        environment.jersey().register(loginUserResource);
         environment.jersey().register(getUserResource);
         environment.jersey().register(updateUserResource);
         environment.jersey().register(createGameResource);
+        environment.jersey().register(getGameViewResource);
+
     }
 }
