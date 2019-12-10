@@ -39,6 +39,19 @@ dependencies {
     compile group: 'io.dropwizard', name: 'dropwizard-views', version: '1.3.17'
     // https://mvnrepository.com/artifact/mysql/mysql-connector-java
     compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.18'
+    // https://mvnrepository.com/artifact/io.dropwizard/dropwizard-views-freemarker
+    compile group: 'io.dropwizard', name: 'dropwizard-views-freemarker', version: '2.0.0-rc14'
+    // https://mvnrepository.com/artifact/com.liveperson/dropwizard-websockets
+    compile group: 'com.liveperson', name: 'dropwizard-websockets', version: '1.2'
+    // https://mvnrepository.com/artifact/org.eclipse.jetty/jetty-util
+    compile group: 'org.eclipse.jetty', name: 'jetty-util', version: '9.4.24.v20191120'
+    // https://mvnrepository.com/artifact/org.eclipse.jetty.websocket/websocket-server
+    compile group: 'org.eclipse.jetty.websocket', name: 'websocket-server', version: '9.4.18.v20190429'
+    // https://mvnrepository.com/artifact/org.eclipse.jetty/jetty-websocket
+    compile group: 'org.eclipse.jetty', name: 'jetty-websocket', version: '8.2.0.v20160908'
+    // https://mvnrepository.com/artifact/org.eclipse.jetty.websocket/javax-websocket-server-impl
+    compile group: 'org.eclipse.jetty.websocket', name: 'javax-websocket-server-impl', version: '9.4.24.v20191120'
+
 }
 
 flyway {

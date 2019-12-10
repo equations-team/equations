@@ -1,3 +1,4 @@
+import activegamemanager.Websocket;
 import config.EquationsConfiguration;
 import db.GameDAO;
 import db.UserDAO;
@@ -12,6 +13,7 @@ import io.dropwizard.jdbi3.bundles.JdbiExceptionsBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import io.dropwizard.views.ViewBundle;
+import io.dropwizard.websockets.WebsocketBundle;
 import org.jdbi.v3.core.Jdbi;
 import resource.*;
 
@@ -45,6 +47,8 @@ public class EquationsApplication extends Application<EquationsConfiguration> {
                 return config.getViewRendererConfiguration();
             }
         });
+        WebsocketBundle websocketBundle = new WebsocketBundle(Websocket.class);
+        bootstrap.addBundle(websocketBundle);
     }
 
     @Override
