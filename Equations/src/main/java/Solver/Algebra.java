@@ -21,18 +21,28 @@ public class Algebra {
 	
 	public Algebra(String eq, String goal){
 		
+		if(eq.contains("*") == true) {
+			
+			if(eq.charAt(eq.indexOf("*")+1) == ' ') {
+				
+				System.out.println("Yes");
+				
+			}
+			
+		}
+		
 		if(eq.contains(" ") == true || eq.contains("?") == true) {
 			
 			int rootIndex = eq.indexOf("?");
-			
+
 			int nextSpace = eq.length();
 			
 			if(eq.contains(" ") == true) {
 			
 			nextSpace = eq.indexOf(' ', rootIndex);
 			}
+			
 		
-		//eq = eq.replace(' ', '(');
 		
 		int odd = 0;
 		int occur = 0;
@@ -63,10 +73,25 @@ public class Algebra {
 			eq = eq.replace("?" + rootNumber, "Math.sqrt(" + rootNumber + ")");
 
 			}
+		
+		if(eq.charAt(nextSpace - 1) == ')') {
+			System.out.print("yes");
+		}
 			
 	}
 		
 		//Goal
+		
+		if(goal.contains("*") == true) {
+			
+			if(goal.charAt(goal.indexOf("*")+1) == ' ') {
+				System.out.println("Yes");
+				
+				goal = goal.replace(" ","");
+				
+			}
+			
+		}
 		
 		if(goal.contains(" ") == true || goal.contains("?") == true) {
 			
@@ -111,6 +136,9 @@ public class Algebra {
 				goal = goal.replace("?" + rootNumber, "Math.sqrt(" + rootNumber + ")");
 				}
 			
+			if(goal.charAt(nextSpace - 1) == ')') {
+				System.out.print("yes");
+			}
 		
 		}
 		
