@@ -42,8 +42,24 @@ public class ActiveManager {
 		return players;
 	}
 		
-	public void createGame(List<Player> p, Dice[] dice) {
-		games.add(new Manager((Player[])p.toArray(),dice));
+	public void createGame(List<Player> p) {
+		Dice[] dice = new Dice[24];
+		for(int i =0; i <24; i++) {
+			if(i < 6) {
+				dice[i] = new RedDie();
+			}else if(i <12) {
+				dice[i] = new BlueDie();
+			}else if(i < 18) {
+				dice[i] = new GreenDie();
+			}else {
+				dice[i] = new BlackDie();
+			}
+		}
+		Player[] players = new Player[p.size()];
+		for (int i = 0; i < players.length; i++) {
+			players[i] = p.get(i);
+		}
+		games.add(new Manager(players, dice));
 	}
 	
 }

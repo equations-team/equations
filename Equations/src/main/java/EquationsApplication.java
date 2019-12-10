@@ -1,3 +1,4 @@
+import activegamemanager.ActiveManager;
 import config.EquationsConfiguration;
 import db.GameDAO;
 import db.UserDAO;
@@ -19,58 +20,61 @@ import java.util.List;
 
 public class EquationsApplication extends Application<EquationsConfiguration> {
 
-    public static void main(String[] args) throws Exception {
-        new EquationsApplication().run(args);
-    }
+  public static void main(String[] args) throws Exception {
+    new EquationsApplication().run(args);
+  }
 
-    public void initialize(Bootstrap<EquationsConfiguration> bootstrap) {
-        bootstrap.setConfigurationSourceProvider(new SubstitutingSourceProvider(
-                bootstrap.getConfigurationSourceProvider(),
-                new EnvironmentVariableSubstitutor(false)
-        ));
-        bootstrap.addBundle(
-                new AssetsBundle("/assets/html", "/html", "index.html", "html")
-        );
-        bootstrap.addBundle(
-                new AssetsBundle("/assets/css", "/css", null, "css")
-        );
-        bootstrap.addBundle(
-                new AssetsBundle("/assets/js", "/js", null, "js")
-        );
-        bootstrap.addBundle(new JdbiExceptionsBundle());
-        bootstrap.addBundle(new ViewBundle<EquationsConfiguration>());
-    }
+  public void initialize(Bootstrap<EquationsConfiguration> bootstrap) {
+    bootstrap.setConfigurationSourceProvider(new SubstitutingSourceProvider(
+        bootstrap.getConfigurationSourceProvider(),
+        new EnvironmentVariableSubstitutor(false)
+    ));
+    bootstrap.addBundle(
+        new AssetsBundle("/assets/html", "/html", "index.html", "html")
+    );
+    bootstrap.addBundle(
+        new AssetsBundle("/assets/css", "/css", null, "css")
+    );
+    bootstrap.addBundle(
+        new AssetsBundle("/assets/js", "/js", null, "js")
+    );
+    bootstrap.addBundle(new JdbiExceptionsBundle());
+    bootstrap.addBundle(new ViewBundle<EquationsConfiguration>());
+  }
 
-    @Override
-    public void run(EquationsConfiguration configuration, Environment environment) throws Exception {
-        // Database
-        final JdbiFactory jdbiFactory = new JdbiFactory();
-        final Jdbi jdbi = jdbiFactory.build(environment, configuration.getDatabase(), "mysql");
+  @Override
+  public void run(EquationsConfiguration configuration, Environment environment) throws Exception {
+    // Database
+    final JdbiFactory jdbiFactory = new JdbiFactory();
+    final Jdbi jdbi = jdbiFactory.build(environment, configuration.getDatabase(), "mysql");
 
-        // DAOs
-        final UserDAO userDAO = jdbi.onDemand(UserDAO.class);
-        final GameDAO gameDAO = jdbi.onDemand(GameDAO.class);
+    // DAOs
+    final UserDAO userDAO = jdbi.onDemand(UserDAO.class);
+    final GameDAO gameDAO = jdbi.onDemand(GameDAO.class);
 
-        // Helper
-        PlayerHelper playerHelper = new PlayerHelper(gameDAO, userDAO);
+    // Helper
+    PlayerHelper playerHelper = new PlayerHelper(gameDAO, userDAO);
 
-        // Resources
-        final RegisterUserResource registerUserResource = new RegisterUserResource(jdbi, userDAO);
-        final LoginUserResource loginUserResource = new LoginUserResource(jdbi, userDAO);
-        final GetUserResource getUserResource = new GetUserResource(jdbi, userDAO);
-        final UpdateUserResource updateUserResource = new UpdateUserResource(jdbi, userDAO);
-        final CreateGameResource createGameResource = new CreateGameResource(jdbi, gameDAO);
-        final GetGameViewResource getGameViewResource = new GetGameViewResource(gameDAO);
+    // Game
+    ActiveManager activeManager = new ActiveManager();
 
-        // Health Checks
+    // Resources
+    final RegisterUserResource registerUserResource = new RegisterUserResource(jdbi, userDAO);
+    final LoginUserResource loginUserResource = new LoginUserResource(jdbi, userDAO);
+    final GetUserResource getUserResource = new GetUserResource(jdbi, userDAO);
+    final UpdateUserResource updateUserResource = new UpdateUserResource(jdbi, userDAO);
+    final CreateGameResource createGameResource =
+        new CreateGameResource(jdbi, gameDAO, activeManager, playerHelper);
+    final GetGameViewResource getGameViewResource = new GetGameViewResource(gameDAO);
 
-        // Registration
-        environment.jersey().register(registerUserResource);
-        environment.jersey().register(loginUserResource);
-        environment.jersey().register(getUserResource);
-        environment.jersey().register(updateUserResource);
-        environment.jersey().register(createGameResource);
-        environment.jersey().register(getGameViewResource);
+    // Health Checks
 
-    }
+    // Registration
+    environment.jersey().register(registerUserResource);
+    environment.jersey().register(loginUserResource);
+    environment.jersey().register(getUserResource);
+    environment.jersey().register(updateUserResource);
+    environment.jersey().register(createGameResource);
+    environment.jersey().register(getGameViewResource);
+  }
 }
