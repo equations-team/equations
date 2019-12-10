@@ -14,7 +14,7 @@ database:
   properties:
     charSet: UTF-8
 #views:
-#  freemarker:
+#   freemarker:
 #    strict_syntax: true
 #  mustache:
 #    cache: false

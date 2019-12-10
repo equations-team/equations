@@ -20,6 +20,7 @@ public class GetGameViewResource {
 
     @GET
     public GameView getGameView(@PathParam("gameId") String gameId) {
-        return new GameView(gameDAO.getGame(gameId));
+        System.out.println("WHY WON YOU WOR");
+        return new GameView(null /*gameDAO.getGame(gameId)*/);
     }
 }

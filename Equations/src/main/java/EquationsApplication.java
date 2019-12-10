@@ -16,6 +16,7 @@ import org.jdbi.v3.core.Jdbi;
 import resource.*;
 
 import java.util.List;
+import java.util.Map;
 
 public class EquationsApplication extends Application<EquationsConfiguration> {
 
@@ -38,18 +39,23 @@ public class EquationsApplication extends Application<EquationsConfiguration> {
                 new AssetsBundle("/assets/js", "/js", null, "js")
         );
         bootstrap.addBundle(new JdbiExceptionsBundle());
-        bootstrap.addBundle(new ViewBundle<EquationsConfiguration>());
+        bootstrap.addBundle(new ViewBundle<EquationsConfiguration>() {
+            @Override
+            public Map<String, Map<String, String>> getViewConfiguration(EquationsConfiguration config) {
+                return config.getViewRendererConfiguration();
+            }
+        });
     }
 
     @Override
     public void run(EquationsConfiguration configuration, Environment environment) throws Exception {
         // Database
-        final JdbiFactory jdbiFactory = new JdbiFactory();
-        final Jdbi jdbi = jdbiFactory.build(environment, configuration.getDatabase(), "mysql");
+        final JdbiFactory jdbiFactory;// = new JdbiFactory();
+        final Jdbi jdbi = null;// = jdbiFactory;.build(environment, configuration.getDatabase(), "mysql");
 
         // DAOs
-        final UserDAO userDAO = jdbi.onDemand(UserDAO.class);
-        final GameDAO gameDAO = jdbi.onDemand(GameDAO.class);
+        final UserDAO userDAO = null;// = jdbi.onDemand(UserDAO.class);
+        final GameDAO gameDAO = null;// = jdbi.onDemand(GameDAO.class);
 
         // Helper
         PlayerHelper playerHelper = new PlayerHelper(gameDAO, userDAO);
