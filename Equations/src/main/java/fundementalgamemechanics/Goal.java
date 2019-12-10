@@ -30,6 +30,7 @@ public class Goal extends Mat implements MatReader{
 		myMat.add(new SpecialDie(1));
 	}
 	
+	@Override
 	public void addToMyMat(Die in) {
 		myNumNormalDice++;
 		myMat.add(in);
