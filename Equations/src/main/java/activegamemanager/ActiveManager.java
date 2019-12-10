@@ -55,7 +55,11 @@ public class ActiveManager {
 				dice[i] = new BlackDie();
 			}
 		}
-		games.add(new Manager((Player[])p.toArray(),dice));
+		Player[] players = new Player[p.size()];
+		for (int i = 0; i < players.length; i++) {
+			players[i] = p.get(i);
+		}
+		games.add(new Manager(players, dice));
 	}
 	
 }
