@@ -1,6 +1,8 @@
 import config.EquationsConfiguration;
 import db.GameDAO;
 import db.UserDAO;
+import db.helper.PlayerHelper;
+import gamestatemanager.Player;
 import io.dropwizard.Application;
 import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.configuration.EnvironmentVariableSubstitutor;
@@ -12,6 +14,8 @@ import io.dropwizard.setup.Environment;
 import io.dropwizard.views.ViewBundle;
 import org.jdbi.v3.core.Jdbi;
 import resource.*;
+
+import java.util.List;
 
 public class EquationsApplication extends Application<EquationsConfiguration> {
 
@@ -46,6 +50,9 @@ public class EquationsApplication extends Application<EquationsConfiguration> {
         // DAOs
         final UserDAO userDAO = jdbi.onDemand(UserDAO.class);
         final GameDAO gameDAO = jdbi.onDemand(GameDAO.class);
+
+        // Helper
+        PlayerHelper playerHelper = new PlayerHelper(gameDAO, userDAO);
 
         // Resources
         final RegisterUserResource registerUserResource = new RegisterUserResource(jdbi, userDAO);

@@ -26,4 +26,7 @@ public interface UserDAO {
 
     @SqlQuery("SELECT user_salt FROM user WHERE user_name = ?")
     String getSaltByUsername(String userName);
+
+    @SqlQuery("SELECT user_name FROM user WHERE user_id = ?")
+    String getUserNameByUserId(String userId);
 }

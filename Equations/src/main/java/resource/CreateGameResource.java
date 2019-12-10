@@ -38,8 +38,7 @@ public class CreateGameResource {
         Response response;
         try {
             gameDAO.insertGame(guid, game.getRefUserIdOne(), game.getRefUserIdTwo(),
-                    game.getRefUserIdThree(), game.getUserOneScore(), game.getUserTwoScore(),
-                    game.getUserThreeScore());
+                    game.getRefUserIdThree());
             response = Response.status(200).entity(guid).build();
         } catch (NoSuchElementException e) {
             String error = e.getMessage() + '\n' + e.getStackTrace();
