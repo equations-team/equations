@@ -1,6 +1,8 @@
 package resource;
 
+import activegamemanager.ActiveManager;
 import db.GameDAO;
+import db.helper.PlayerHelper;
 import entity.GameRepresentation;
 import gamestatemanager.Manager;
 import org.jdbi.v3.core.Jdbi;
@@ -20,31 +22,37 @@ import java.util.UUID;
 @Path("/api/CreateGame")
 @Consumes(MediaType.APPLICATION_JSON)
 public class CreateGameResource {
-    private final Jdbi jdbi;
-    private final GameDAO gameDAO;
-    private final static Logger LOGGER = LoggerFactory.getLogger(CreateGameResource.class);
+  private final Jdbi jdbi;
+  private final GameDAO gameDAO;
+  private final ActiveManager activeManager;
+  private final PlayerHelper playerHelper;
+  private final static Logger LOGGER = LoggerFactory.getLogger(CreateGameResource.class);
 
-    public CreateGameResource(Jdbi jdbi, GameDAO gameDAO) {
-        this.jdbi = jdbi;
-        this.gameDAO = gameDAO;
-    }
+  public CreateGameResource(Jdbi jdbi, GameDAO gameDAO, ActiveManager activeManager,
+      PlayerHelper playerHelper) {
+    this.jdbi = jdbi;
+    this.gameDAO = gameDAO;
+    this.activeManager = activeManager;
+    this.playerHelper = playerHelper;
+  }
 
-    @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response createGame(CreateGameRequest createGameRequest) {
-        GameRepresentation game = createGameRequest.getGameRepresentation();
-        String guid = UUID.randomUUID().toString();
-        Response response;
-        try {
-            gameDAO.insertGame(guid, game.getRefUserIdOne(), game.getRefUserIdTwo(),
-                    game.getRefUserIdThree());
-            response = Response.status(200).entity(guid).build();
-        } catch (NoSuchElementException e) {
-            String error = e.getMessage() + '\n' + e.getStackTrace();
-            LOGGER.error(error);
-            response = Response.status(500).entity(error).build();
-        }
-        return response;
+  @POST
+  @Consumes(MediaType.APPLICATION_JSON)
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response createGame(CreateGameRequest createGameRequest) {
+    GameRepresentation game = createGameRequest.getGameRepresentation();
+    String guid = UUID.randomUUID().toString();
+    Response response;
+    try {
+      gameDAO.insertGame(guid, game.getRefUserIdOne(), game.getRefUserIdTwo(),
+          game.getRefUserIdThree());
+      activeManager.createGame(playerHelper.getPlayersByGameId(guid));
+      response = Response.status(200).entity(guid).build();
+    } catch (NoSuchElementException e) {
+      String error = e.getMessage() + '\n' + e.getStackTrace();
+      LOGGER.error(error);
+      response = Response.status(500).entity(error).build();
     }
+    return response;
+  }
 }
