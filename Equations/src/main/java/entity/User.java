@@ -15,6 +15,10 @@ public class User {
             user.userPassword = userPassword;
             return this;
         }
+        public Builder setUserSalt(String salt) {
+            user.userSalt = salt;
+            return this;
+        }
         public User build() {
             return user;
         }
@@ -23,6 +27,7 @@ public class User {
     private String userId;
     private String userName;
     private String userPassword;
+    private String userSalt;
 
     public String getUserId() { return userId; }
     public String getUserName() {
@@ -31,6 +36,9 @@ public class User {
     public String getUserPassword() {
         return userPassword;
     }
+    public String getUserSalt() {
+        return userSalt;
+    }
     public static Builder newBuilder() {
         return new User.Builder();
     }
@@ -38,6 +46,7 @@ public class User {
         return new User.Builder()
                 .setUserId(userId)
                 .setUserName(userName)
-                .setUserPassword(userPassword);
+                .setUserPassword(userPassword)
+                .setUserSalt(userSalt);
     }
 }

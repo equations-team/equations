@@ -3,12 +3,12 @@ package request;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import entity.User;
 
-public class CreateUserRequest {
+public class RegisterUserRequest {
     private User user;
 
-    public CreateUserRequest() {}
+    public RegisterUserRequest() {}
 
-    public CreateUserRequest(User user) {
+    public RegisterUserRequest(User user) {
         this.user = user;
     }
 
