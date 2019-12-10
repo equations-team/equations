@@ -37,32 +37,31 @@ public class EquationsController {
 	private GameTurns myTurns;
 	private int myCurrentTurn;
 	private Die[] myDice;
-	private DieIcon[] myDieImages;
+	private ImageIcon[] myDieImages;
 	private int myGoalCounter;
 	private int[] myGoalIndex;
 	private GameView myGameView;
 
 	/**
 	 * The Constructor
-	 */
-	public EquationsController() {
-		myDieImages = new DieIcon[24];
+	 */	public EquationsController() {
+		myDieImages = new ImageIcon[24];
 		myGoalCounter = 0; // This is to stop players from adding too many dice to the goal.
 		myGoalIndex = new int[5];
 		myModel = new Game();
 		myDice = new Die[24];
 		myPlayerCount = 2;
 		myPlayers = new Player[myPlayerCount];
-		myManager = new Manager(myPlayers, myModel.getMyRequired().getMyMat());
-		this.determineFirst(myPlayers);
 		this.createPlayerArray("P1", "P2", "P3");
+		myManager = new Manager(myPlayers, myModel.getMyResources().getMyMat());
+		this.determineFirst(myPlayers);
 		for (int i = 0; i < 23; i++) {
 			myDice[i] = myManager.getMyResources().getMyMat().elementAt(i);
 		}
 		myDieImages = this.loadDice();
 		myGameView = new GameView(this);
 	}
-	
+
 	public static void main(String[] args) {
 		new EquationsController();
 	}
@@ -84,7 +83,6 @@ public class EquationsController {
 		if (myPlayerCount > 2)
 			myPlayers[2] = new Player(p3);
 		myTurns = new GameTurns(myPlayerCount);
-		this.determineFirst(myPlayers);
 	}
 
 	/**
@@ -96,13 +94,20 @@ public class EquationsController {
 
 	private void determineFirst(Player[] players) {
 		myManager.setFirstPlayer();
-		if (players[0] == myManager.getCurrentPlayer())
+		if (players[0] == myManager.getCurrentPlayer()) {
 			myCurrentTurn = 1;
-		if (players[1] == myManager.getCurrentPlayer())
+			myCurrentPlayerID = players[0].getName();
+		}
+		if (players[1] == myManager.getCurrentPlayer()) {
+			myCurrentPlayerID = players[1].getName();
 			myCurrentTurn = 2;
-		if (myPlayerCount > 2)
+		}
+		if (myPlayerCount > 2) {
 			if (players[2] == myManager.getCurrentPlayer())
 				myCurrentTurn = 3;
+			myCurrentPlayerID = players[2].getName();
+
+		}
 	}
 
 	/**
@@ -196,141 +201,141 @@ public class EquationsController {
 	/**
 	 * This method will load dice based on what the die face in resources is.
 	 */
-	public DieIcon[] loadDice() {
+	public ImageIcon[] loadDice() {
 		for (int i = 0; i < 23; i++) {
 
 			// Zero, one, two, and three can only be red or blue.
 
 			if (myDice[i].getMyUpSide() == DiceFace.ONE) {
 				if (myDice[i].getColor() == "RED") {
-					myDieImages[i] = new DieIcon(new ImageIcon("images/Red1.svg"), DiceFace.ONE);
+					myDieImages[i] = new ImageIcon(getClass().getResource("/myImages/Red1.png"));
 				}
 
 				if (myDice[i].getColor() == "BLUE") {
-					myDieImages[i] = new DieIcon(new ImageIcon("images/Blue1.svg"), DiceFace.ONE);
+					myDieImages[i] = new ImageIcon(getClass().getResource("/myImages/Blue1.png"));
 				}
 			}
 
 			if (myDice[i].getMyUpSide() == DiceFace.TWO) {
 				if (myDice[i].getColor() == "RED") {
-					myDieImages[i] = new DieIcon(new ImageIcon("images/Red2.svg"), DiceFace.TWO);
+					myDieImages[i] = new ImageIcon(getClass().getResource("/myImages/Red2.png"));
 				}
 
 				if (myDice[i].getColor() == "BLUE") {
-					myDieImages[i] = new DieIcon(new ImageIcon("images/Blue2.svg"), DiceFace.TWO);
+					myDieImages[i] = new ImageIcon(getClass().getResource("/myImages/Blue2.png"));
 				}
 			}
 
 			if (myDice[i].getMyUpSide() == DiceFace.THREE) {
 				if (myDice[i].getColor() == "RED") {
-					myDieImages[i] = new DieIcon(new ImageIcon("images/Red3.svg"), DiceFace.THREE);
+					myDieImages[i] = new ImageIcon(getClass().getResource("/myImages/Red3.png"));
 				}
 
 				if (myDice[i].getColor() == "BLUE") {
-					myDieImages[i] = new DieIcon(new ImageIcon("images/Blue3.svg"), DiceFace.THREE);
+					myDieImages[i] = new ImageIcon(getClass().getResource("/myImages/Blue3.png"));
 				}
 			}
 
 			// Four is either blue or green
 			if (myDice[i].getMyUpSide() == DiceFace.FOUR) {
 				if (myDice[i].getColor() == "GREEN") {
-					myDieImages[i] = new DieIcon(new ImageIcon("images/Green4.svg"), DiceFace.FOUR);
+					myDieImages[i] = new ImageIcon(getClass().getResource("/myImages/Green4.png"));
 				}
 
 				if (myDice[i].getColor() == "BLUE") {
-					myDieImages[i] = new DieIcon(new ImageIcon("images/Blue4.svg"), DiceFace.FOUR);
+					myDieImages[i] = new ImageIcon(getClass().getResource("/myImages/Blue4.png"));
 				}
 			}
 
 			// Five and six are green
 
 			if (myDice[i].getMyUpSide() == DiceFace.FIVE) {
-				myDieImages[i] = new DieIcon(new ImageIcon("images/Green5.svg"), DiceFace.FIVE);
+				myDieImages[i] = new ImageIcon(getClass().getResource("/myImages/Green5.png"));
 			}
 
 			if (myDice[i].getMyUpSide() == DiceFace.SIX) {
-				myDieImages[i] = new DieIcon(new ImageIcon("images/Green6.svg"), DiceFace.SIX);
+				myDieImages[i] = new ImageIcon(getClass().getResource("/myImages/Green6.png"));
 			}
 
 			// Seven, eight, and nine are black
 
 			if (myDice[i].getMyUpSide() == DiceFace.SEVEN) {
-				myDieImages[i] = new DieIcon(new ImageIcon("images/Black7.svg"), DiceFace.SEVEN);
+				myDieImages[i] = new ImageIcon(getClass().getResource("/myImages/Black7.png"));
 			}
 
 			if (myDice[i].getMyUpSide() == DiceFace.EIGHT) {
-				myDieImages[i] = new DieIcon(new ImageIcon("images/Black8.svg"), DiceFace.EIGHT);
+				myDieImages[i] = new ImageIcon(getClass().getResource("/myImages/Black8.png"));
 			}
 
 			if (myDice[i].getMyUpSide() == DiceFace.NINE) {
-				myDieImages[i] = new DieIcon(new ImageIcon("images/Black9.svg"), DiceFace.NINE);
+				myDieImages[i] = new ImageIcon(getClass().getResource("/myImages/Black9.png"));
 			}
 
 			// Zero can be blue or red
 
 			if (myDice[i].getMyUpSide() == DiceFace.ZERO) {
 				if (myDice[i].getColor() == "RED") {
-					myDieImages[i] = new DieIcon(new ImageIcon("images/Red0.svg"), DiceFace.ZERO);
+					myDieImages[i] = new ImageIcon(getClass().getResource("/myImages/Red0.png"));
 				}
 
 				if (myDice[i].getColor() == "BLUE") {
-					myDieImages[i] = new DieIcon(new ImageIcon("images/Blue0.svg"), DiceFace.ZERO);
+					myDieImages[i] = new ImageIcon(getClass().getResource("/myImages/Blue0.png"));
 				}
 			}
 
 			// Addition can be black or red
 			if (myDice[i].getMyUpSide() == DiceFace.ADDITION) {
 				if (myDice[i].getColor() == "RED") {
-					myDieImages[i] = new DieIcon(new ImageIcon("images/RedPlus.svg"), DiceFace.ADDITION);
+					myDieImages[i] = new ImageIcon(getClass().getResource("/myImages/RedPlus.png"));
 				}
 
 				if (myDice[i].getColor() == "BLACK") {
-					myDieImages[i] = new DieIcon(new ImageIcon("images/BlackPlus.svg"), DiceFace.ADDITION);
+					myDieImages[i] = new ImageIcon(getClass().getResource("/myImages/BlackPlus.png"));
 				}
 			}
 
 			// Multiplication can be blue or green
 			if (myDice[i].getMyUpSide() == DiceFace.MULTIPLICATION) {
 				if (myDice[i].getColor() == "GREEN") {
-					myDieImages[i] = new DieIcon(new ImageIcon("images/GreenMulti.svg"), DiceFace.MULTIPLICATION);
+					myDieImages[i] = new ImageIcon(getClass().getResource("/myImages/GreenMulti.png"));
 				}
 
 				if (myDice[i].getColor() == "BLUE") {
-					myDieImages[i] = new DieIcon(new ImageIcon("images/BlueMulti.svg"), DiceFace.MULTIPLICATION);
+					myDieImages[i] = new ImageIcon(getClass().getResource("/myImages/BlueMulti.png"));
 				}
 			}
 
 			// Subtraction can be red or green
 			if (myDice[i].getMyUpSide() == DiceFace.SUBTRACTION) {
 				if (myDice[i].getColor() == "RED") {
-					myDieImages[i] = new DieIcon(new ImageIcon("images/RedMinus.svg"), DiceFace.SUBTRACTION);
+					myDieImages[i] = new ImageIcon(getClass().getResource("/myImages/RedMinus.png"));
 				}
 
 				if (myDice[i].getColor() == "GREEN") {
-					myDieImages[i] = new DieIcon(new ImageIcon("images/GreenMinus.svg"), DiceFace.SUBTRACTION);
+					myDieImages[i] = new ImageIcon(getClass().getResource("/myImages/GreenMinus.png"));
 				}
 			}
 
 			// Division can be black or blue
 			if (myDice[i].getMyUpSide() == DiceFace.DIVISION) {
 				if (myDice[i].getColor() == "BLACK") {
-					myDieImages[i] = new DieIcon(new ImageIcon("images/BlackDivision.svg"), DiceFace.DIVISION);
+					myDieImages[i] = new ImageIcon(getClass().getResource("/myImages/BlackDivision.png"));
 				}
 
 				if (myDice[i].getColor() == "BLUE") {
-					myDieImages[i] = new DieIcon(new ImageIcon("images/BlueDivision.svg"), DiceFace.DIVISION);
+					myDieImages[i] = new ImageIcon(getClass().getResource("/myImages/BlueDivision.png"));
 				}
 			}
 
 			// Powers are green
 			if (myDice[i].getMyUpSide() == DiceFace.POWER) {
-				myDieImages[i] = new DieIcon(new ImageIcon("images/GreenPower.svg"), DiceFace.POWER);
+				myDieImages[i] = new ImageIcon(getClass().getResource("/myImages/GreenPower.png"));
 
 			}
 
 			// Roots are black
 			if (myDice[i].getMyUpSide() == DiceFace.ROOT) {
-				myDieImages[i] = new DieIcon(new ImageIcon("images/BlackRoot.svg"), DiceFace.ROOT);
+				myDieImages[i] = new ImageIcon(getClass().getResource("/myImages/BlackRoot.png"));
 			}
 
 		}
@@ -381,14 +386,6 @@ public class EquationsController {
 		this.myModel = model;
 	}
 
-	public Map getWebModel() {
-		return myWebModel;
-	}
-
-	public void setWebModel(Map webModel) {
-		this.myWebModel = webModel;
-	}
-
 	public Algebra getGoal() {
 		return myGoal;
 	}
@@ -409,7 +406,7 @@ public class EquationsController {
 		return myManager;
 	}
 
-	public DieIcon[] getDieImages() {
+	public ImageIcon[] getDieImages() {
 		return myDieImages;
 	}
 
